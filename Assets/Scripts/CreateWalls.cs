@@ -8,9 +8,10 @@ public class CreateWalls : MonoBehaviour
     //Width and height must be even.
     private int width;
     private int height;
-    private List<Tuple<int, int>> edges;
     
     public GameObject wallPrefab;
+
+    public List<Tuple<int, int>> Edges { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +30,7 @@ public class CreateWalls : MonoBehaviour
 
     private void CreateEdges()
     {
-        edges = new List<Tuple<int, int>>
+        Edges = new List<Tuple<int, int>>
         {
             new Tuple<int, int>(61, 62), new Tuple<int, int>(51, 61), new Tuple<int, int>(50, 51), new Tuple<int, int>(40, 50), new Tuple<int, int>(30, 40), new Tuple<int, int>(20, 30), 
             new Tuple<int, int>(10, 20), new Tuple<int, int>(0, 10), new Tuple<int, int>(10, 11), new Tuple<int, int>(1, 11), new Tuple<int, int>(20, 21), new Tuple<int, int>(1, 2),
@@ -83,7 +84,7 @@ public class CreateWalls : MonoBehaviour
             int currentNode = lastNode + 1;
             for (int j = height / 2-1; j > -height / 2; j--)
             {
-                if (!edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i + 0.5f, j, 0), Quaternion.identity);
+                if (!Edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i + 0.5f, j, 0), Quaternion.identity);
                 lastNode = currentNode;
                 currentNode += 1;
             }
@@ -94,7 +95,7 @@ public class CreateWalls : MonoBehaviour
             int currentNode = lastNode + height;
             for (int i = -width / 2+1; i < width / 2; i++)
             {
-                if (!edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i, j - 0.5f, 0), Quaternion.Euler(0, 0, 90));
+                if (!Edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i, j - 0.5f, 0), Quaternion.Euler(0, 0, 90));
                 lastNode = currentNode;
                 currentNode += height;
             }
