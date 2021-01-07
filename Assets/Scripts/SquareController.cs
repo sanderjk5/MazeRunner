@@ -16,6 +16,9 @@ public class SquareController : MonoBehaviour
         
     }
 
+    /**
+     * Quits the game if the player reaches the square.
+     */
     void OnTriggerEnter2D(Collider2D other){
         Application.Quit();
     }
