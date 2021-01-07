@@ -7,5 +7,5 @@ Daraufhin werden über den Befehl "Build" die notwendigen Dateien und zusätzlic
 
 Alternativ können die Zip Dateien in dem Ordner Releases gedownloadet werden, da diese bereits die Builds inklusive der ausführbaren Dateien enthalten.
 
-Das Spiel beinhält bisher eine Szene in der die Spielfigur durch ein Labyrinth navigiert werden kann. Das Spiel wird automatisch beendet, wenn die Spielfigur das rote Quadrat
-erreicht hat. Das Labyrinth wird noch nicht zufällig erzeugt, da der Algorithmus, der die Wände erzeugt, mit vorher festgelegten Kanten arbeitet.
+Das Spiel beinhält bisher eine Szene in der die Spielfigur durch ein Labyrinth navigiert werden kann. Die Navigation erfolgt über die Pfeiltasten bzw. WASD.
+Das Spiel wird automatisch beendet, wenn die Spielfigur das rote Quadrat erreicht hat. Das Labyrinth wird noch nicht zufällig erzeugt, da der Algorithmus, der die Wände erstellt, mit vorher festgelegten Kanten arbeitet.
