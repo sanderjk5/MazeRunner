@@ -13,7 +13,7 @@ public class MainScript : MonoBehaviour
     public static Dictionary<int, NodeController> AllNodes { get; set; }
     public static List<EdgeController> AllEdges { get; set; }
 
-
+    public GameObject createWallsPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,5 +22,8 @@ public class MainScript : MonoBehaviour
         NumberofStates = 0;
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
+        GameObject createWallsObject = Instantiate(createWallsPrefab);
+        CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
+        createWallsScript.CreateAllWalls();
     }
 }
