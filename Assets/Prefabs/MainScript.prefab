@@ -45,3 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   createWallsPrefab: {fileID: 3996216593411326060, guid: ed80751fca8c1fc42bb3da13d9ce24d3,
     type: 3}
+  nodePrefab: {fileID: 7492467521080932995, guid: a9d74920ff9b4d743b3c277a3501034f,
+    type: 3}
+  edgePrefab: {fileID: 7490493649719249067, guid: 935231388ca6b3648aef41543e7357e8,
+    type: 3}

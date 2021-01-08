@@ -10,13 +10,6 @@ public class NodeController : MonoBehaviour
     public int Button { get; set; }
     public List<NodeController> Neighbours { get; set; }
 
-    public void Initialize(int id, int[] states)
-    {
-        Id = id;
-        States = states;
-        OutgoingEdges = new List<EdgeController>();
-    }
-
     public void Initialize(int id, int[] states, int button)
     {
         Id = id;

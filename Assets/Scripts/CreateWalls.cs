@@ -78,7 +78,7 @@ public class CreateWalls : MonoBehaviour
             for (int i = -MainScript.Width / 2+1; i < MainScript.Width / 2; i++)
             {
                 //if (!Edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i, j - 0.5f, 0), Quaternion.Euler(0, 0, 90));
-                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3(i + 0.5f, j, 0), Quaternion.identity);
+                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3(i, j - 0.5f, 0), Quaternion.Euler(0, 0, 90));
                 lastNode = currentNode;
                 currentNode += MainScript.Height;
             }

@@ -9,13 +9,6 @@ public class EdgeController : MonoBehaviour
     public int[] Costs { get;  set; }
     public int Obstacle { get; set; }
 
-    public void Initialize(NodeController node0, NodeController node1, int[] costs)
-    {
-        Node0 = node0;
-        Node1 = node1;
-        Costs = costs;
-    }
-
     public void Initialize(NodeController node0, NodeController node1, int[] costs, int obstacle)
     {
         Node0 = node0;
