@@ -17,6 +17,7 @@ public class EdgeController : MonoBehaviour
         Obstacle = obstacle;
     }
 
+    // Gets the cost for the respective state
     public int GetCostForState(int state)
     {
         if (Obstacle != -1) return Costs[state];
