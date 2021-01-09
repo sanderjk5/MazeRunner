@@ -4,22 +4,34 @@ using UnityEngine;
 
 public class MainScript : MonoBehaviour
 {
+    //The width of the maze.
     public static int Width { get; set; }
+    //The height of the maze.
     public static int Height { get; set; }
+    //The number of nodes of the maze (width * height).
     public static int NumberOfNodes { get; set; }
+    //The number of edges of the maze.
     public static int NumberofEdges { get; set; }
+    //The number of states.
     public static int NumberofStates { get; set; }
+    //The number of buttons.
     public static int NumberofButtons { get; set; }
+    //Contains all nodes of the maze.
     public static Dictionary<int, NodeController> AllNodes { get; set; }
+    //Contains all edges of the maze.
     public static List<EdgeController> AllEdges { get; set; }
 
+    //The prefab of the walls.
     public GameObject createWallsPrefab;
+    //The prefab of the nodes.
     public GameObject nodePrefab;
+    //The prefab of the edges.
     public GameObject edgePrefab;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        //Initializes the static variables of the game.
         NumberOfNodes = 0;
         NumberofEdges = 0;
         NumberofStates = 0;
@@ -28,13 +40,18 @@ public class MainScript : MonoBehaviour
 
         this.CreateFakeData();
 
+        //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
     }
 
+    /**
+     * An example of creating a small maze.
+     */
     private void CreateFakeData()
     {
+        //Sets the variables.
         NumberOfNodes = 4;
         NumberofEdges = 3;
         NumberofStates = 1;
@@ -42,6 +59,7 @@ public class MainScript : MonoBehaviour
         Width = 2;
         Height = 2;
 
+        //Creates all nodes.
         NodeController node0 = Instantiate(nodePrefab, new Vector3(-0.5f, 0.5f, -1), Quaternion.identity).GetComponent<NodeController>();
         node0.Initialize(0, null, -1);
         AllNodes.Add(0, node0);
@@ -58,6 +76,7 @@ public class MainScript : MonoBehaviour
         node3.Initialize(3, null, -1);
         AllNodes.Add(3, node3);
 
+        //Creates all edges.
         EdgeController edge0 = Instantiate(edgePrefab, new Vector3(0, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
         edge0.Initialize(node0, node2, null, -1);
         node0.OutgoingEdges.Add(edge0);

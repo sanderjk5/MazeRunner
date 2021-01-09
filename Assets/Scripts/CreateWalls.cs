@@ -5,6 +5,7 @@ using System;
 
 public class CreateWalls : MonoBehaviour
 {
+    //The prefab of the walls.
     public GameObject wallPrefab;
 
     //public List<Tuple<int, int>> Edges { get; set; }
@@ -46,19 +47,25 @@ public class CreateWalls : MonoBehaviour
     //    };
     //}
 
+    /**
+     * Creates all walls of the labyrinth.
+     */
     public void CreateAllWalls()
     {
+        //Upper and lower bound of the labyrinth.
         for (int i = -MainScript.Width / 2; i < MainScript.Width / 2; i++)
         {
             Instantiate(wallPrefab, new Vector3(i + 0.5f, MainScript.Height / 2, 0), Quaternion.identity);
             Instantiate(wallPrefab, new Vector3(i + 0.5f, -MainScript.Height / 2, 0), Quaternion.identity);
         }
+        //Right and left bound of the labyrinth.
         for (int i = -MainScript.Height / 2; i < MainScript.Height / 2; i++)
         {
             Instantiate(wallPrefab, new Vector3(-MainScript.Width / 2, i + 0.5f, 0), Quaternion.Euler(0, 0, 90));
             Instantiate(wallPrefab, new Vector3(MainScript.Width / 2, i + 0.5f, 0), Quaternion.Euler(0, 0, 90));
         }
 
+        //All horizontal walls.
         for (int i = -MainScript.Width / 2; i < MainScript.Width / 2; i++)
         {
             int lastNode = (i + MainScript.Width / 2) * MainScript.Height;
@@ -66,11 +73,13 @@ public class CreateWalls : MonoBehaviour
             for (int j = MainScript.Height / 2-1; j > -MainScript.Height / 2; j--)
             {
                 //if (!Edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i + 0.5f, j, 0), Quaternion.identity);
-                if(MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3(i + 0.5f, j, 0), Quaternion.identity);
+                //Checks if a edge exits between these nodes.
+                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3(i + 0.5f, j, 0), Quaternion.identity);
                 lastNode = currentNode;
                 currentNode += 1;
             }
         }
+        //All vertical walls.
         for (int j = MainScript.Height / 2; j > -MainScript.Height / 2; j--)
         {
             int lastNode = -j + MainScript.Height / 2;
@@ -78,6 +87,7 @@ public class CreateWalls : MonoBehaviour
             for (int i = -MainScript.Width / 2+1; i < MainScript.Width / 2; i++)
             {
                 //if (!Edges.Contains(new Tuple<int, int>(lastNode, currentNode))) Instantiate(wallPrefab, new Vector3(i, j - 0.5f, 0), Quaternion.Euler(0, 0, 90));
+                //Checks if a edge exits between these nodes.
                 if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3(i, j - 0.5f, 0), Quaternion.Euler(0, 0, 90));
                 lastNode = currentNode;
                 currentNode += MainScript.Height;

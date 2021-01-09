@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class NodeController : MonoBehaviour
 {
+    //The Id of the node.
     public int Id { get; private set; }
+    //The state transition array.
     public int[] States { get; set; }
+    //All outgoing edges of the node.
     public List<EdgeController> OutgoingEdges { get; private set; }
+    //The id of the button (-1 if the node is not a button)
     public int Button { get; set; }
+    //All neighbour nodes.
     public List<NodeController> Neighbours { get; set; }
 
+    /**
+     * Sets all variables of the node.
+     */
     public void Initialize(int id, int[] states, int button)
     {
         Id = id;
@@ -19,12 +27,18 @@ public class NodeController : MonoBehaviour
         Button = button;
     }
 
+    /**
+     * Gets the new state respective to the current state.
+     */
     public int ChangeState(int state)
     {
         if (Button != -1) return States[state];
         return state;
     }
 
+    /**
+     * Gets the edge to the given node.
+     */
     public EdgeController GetEdgeToNode(NodeController targetNode)
     {
         foreach(EdgeController edge in OutgoingEdges)
