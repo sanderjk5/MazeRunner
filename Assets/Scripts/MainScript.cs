@@ -131,10 +131,28 @@ public class MainScript : MonoBehaviour
         }
 
         // Create all edges
-        EdgeController edge0 = Instantiate(edgePrefab, new Vector3(0, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
-        edge0.Initialize(AllNodes[0], AllNodes[6], null, -1);
+        EdgeController edge0 = Instantiate(edgePrefab, new Vector3(-4.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge0.Initialize(AllNodes[0], AllNodes[1], null, -1);
         AllNodes[0].OutgoingEdges.Add(edge0);
-        AllNodes[6].OutgoingEdges.Add(edge0);
+        AllNodes[1].OutgoingEdges.Add(edge0);
         AllEdges.Add(edge0);
+
+        EdgeController edge1 = Instantiate(edgePrefab, new Vector3(-4.5f, 1f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge1.Initialize(AllNodes[1], AllNodes[2], null, -1);
+        AllNodes[1].OutgoingEdges.Add(edge1);
+        AllNodes[2].OutgoingEdges.Add(edge1);
+        AllEdges.Add(edge1);
+
+        EdgeController edge2 = Instantiate(edgePrefab, new Vector3(-4.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge1.Initialize(AllNodes[2], AllNodes[3], null, -1);
+        AllNodes[2].OutgoingEdges.Add(edge2);
+        AllNodes[3].OutgoingEdges.Add(edge2);
+        AllEdges.Add(edge2);
+
+        EdgeController edge3 = Instantiate(edgePrefab, new Vector3(-4f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge1.Initialize(AllNodes[2], AllNodes[8], null, -1);
+        AllNodes[2].OutgoingEdges.Add(edge3);
+        AllNodes[8].OutgoingEdges.Add(edge3);
+        AllEdges.Add(edge3);
     }
 }
