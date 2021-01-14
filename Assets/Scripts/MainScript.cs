@@ -107,23 +107,6 @@ public class MainScript : MonoBehaviour
         Width = 10;
         Height = 6;
 
-        // Create all nodes
-        //NodeController node0 = Instantiate(nodePrefab, new Vector3(-4.5f, 2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
-        //node0.Initialize(0, null, -1);
-        //AllNodes.Add(0, node0);
-
-        //NodeController node1 = Instantiate(nodePrefab, new Vector3(-4.5f, -2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
-        //node1.Initialize(1, null, -1);
-        //AllNodes.Add(1, node1);
-
-        //NodeController node2 = Instantiate(nodePrefab, new Vector3(4.5f, 2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
-        //node2.Initialize(2, null, -1);
-        //AllNodes.Add(2, node2);
-
-        //NodeController node3 = Instantiate(nodePrefab, new Vector3(4.5f, -2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
-        //node3.Initialize(3, null, -1);
-        //AllNodes.Add(3, node3);
-
         float x = -4.5f;
         int counter = 0;
         for (int i = 0; i < Width; i++)
@@ -148,6 +131,10 @@ public class MainScript : MonoBehaviour
         }
 
         // Create all edges
-        
+        EdgeController edge0 = Instantiate(edgePrefab, new Vector3(0, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge0.Initialize(AllNodes[0], AllNodes[6], null, -1);
+        AllNodes[0].OutgoingEdges.Add(edge0);
+        AllNodes[6].OutgoingEdges.Add(edge0);
+        AllEdges.Add(edge0);
     }
 }
