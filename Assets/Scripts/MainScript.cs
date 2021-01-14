@@ -95,4 +95,51 @@ public class MainScript : MonoBehaviour
         node3.OutgoingEdges.Add(edge2);
         AllEdges.Add(edge2);
     }
+
+    private void CreateExampleMaze()
+    {
+        // Set the variables
+        NumberOfNodes = 60;
+        NumberofEdges = 118;
+        NumberofStates = 2;
+        NumberofButtons = 1;
+        Width = 10;
+        Height = 6;
+
+        // Create all nodes
+        NodeController node0 = Instantiate(nodePrefab, new Vector3(-4.5f, 2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
+        node0.Initialize(0, null, -1);
+        AllNodes.Add(0, node0);
+
+        NodeController node1 = Instantiate(nodePrefab, new Vector3(-4.5f, -2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
+        node1.Initialize(1, null, -1);
+        AllNodes.Add(1, node1);
+
+        NodeController node2 = Instantiate(nodePrefab, new Vector3(4.5f, 2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
+        node2.Initialize(2, null, -1);
+        AllNodes.Add(2, node2);
+
+        NodeController node3 = Instantiate(nodePrefab, new Vector3(4.5f, -2.5f, -1), Quaternion.identity).GetComponent<NodeController>();
+        node3.Initialize(3, null, -1);
+        AllNodes.Add(3, node3);
+
+        // Create all edges
+        EdgeController edge0 = Instantiate(edgePrefab, new Vector3(0, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge0.Initialize(node0, node2, null, -1);
+        node0.OutgoingEdges.Add(edge0);
+        node2.OutgoingEdges.Add(edge0);
+        AllEdges.Add(edge0);
+
+        EdgeController edge1 = Instantiate(edgePrefab, new Vector3(0.5f, 0, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge1.Initialize(node2, node3, null, -1);
+        node2.OutgoingEdges.Add(edge1);
+        node3.OutgoingEdges.Add(edge1);
+        AllEdges.Add(edge1);
+
+        EdgeController edge2 = Instantiate(edgePrefab, new Vector3(0, -0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge2.Initialize(node1, node3, null, -1);
+        node1.OutgoingEdges.Add(edge2);
+        node3.OutgoingEdges.Add(edge2);
+        AllEdges.Add(edge2);
+    }
 }
