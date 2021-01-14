@@ -27,6 +27,8 @@ public class MainScript : MonoBehaviour
     public GameObject nodePrefab;
     //The prefab of the edges.
     public GameObject edgePrefab;
+    //The prefab of the wall
+    public GameObject wallPrefab;
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
@@ -144,15 +146,21 @@ public class MainScript : MonoBehaviour
         AllEdges.Add(edge1);
 
         EdgeController edge2 = Instantiate(edgePrefab, new Vector3(-4.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
-        edge1.Initialize(AllNodes[2], AllNodes[3], null, -1);
+        edge2.Initialize(AllNodes[2], AllNodes[3], null, -1);
         AllNodes[2].OutgoingEdges.Add(edge2);
         AllNodes[3].OutgoingEdges.Add(edge2);
         AllEdges.Add(edge2);
 
         EdgeController edge3 = Instantiate(edgePrefab, new Vector3(-4f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
-        edge1.Initialize(AllNodes[2], AllNodes[8], null, -1);
+        edge3.Initialize(AllNodes[2], AllNodes[8], null, -1);
         AllNodes[2].OutgoingEdges.Add(edge3);
         AllNodes[8].OutgoingEdges.Add(edge3);
         AllEdges.Add(edge3);
+
+        EdgeController edge4 = Instantiate(edgePrefab, new Vector3(-4f, -0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge4.Initialize(AllNodes[3], AllNodes[9], new int[2] { 10, 1 }, 0);
+        AllNodes[3].OutgoingEdges.Add(edge4);
+        AllNodes[9].OutgoingEdges.Add(edge4);
+        AllEdges.Add(edge4);
     }
 }
