@@ -132,9 +132,14 @@ public class MainScript : MonoBehaviour
             for (int j = 0; j < Height; j++)
             {
                 int[] states = new int[2] { 0, 1 };
-                if (i == 7 && j == 0) states = new int[2] { 1, 0 };
+                int button = -1;
+                if (i == 7 && j == 0)
+                {
+                    states = new int[2] { 1, 0 };
+                    button = 0;
+                }
                 NodeController node = Instantiate(nodePrefab, new Vector3(x, y, -1), Quaternion.identity).GetComponent<NodeController>();
-                node.Initialize(counter, states, -1);
+                node.Initialize(counter, states, button);
                 AllNodes.Add(counter, node);
                 counter++;
                 y--;
