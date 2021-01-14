@@ -38,4 +38,61 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
             }
         }
     }
+
+    // Performs the modified dijkstra algorithm and calls the method to fill the shortestPathBetweenStartAndEndNode list.
+    public void CalculateModifiedDijkstraAlgorithm()
+    {
+        HelperNodeController endHelperNode = null;
+
+        // Add the start node with state = 0 and distance = 0 to the SimplePriorityQueue
+        HelperNodeController help = new HelperNodeController();
+        help.Initialize(startNode.Id, 0, 0, null);
+        prioQueue.Enqueue(help, 0);
+        allDistances[startNode.Id, 0] = 0;
+
+        while(prioQueue.Count != 0)
+        {
+            // Retrieve the node with the smallest distance
+            HelperNodeController currentHelperNode = prioQueue.Dequeue();
+
+            // Skip the node if it was treated yet
+            if(currentHelperNode.Distance != allDistances[currentHelperNode.Id, currentHelperNode.State]) continue;
+
+            NodeController currentNode = MainScript.AllNodes[currentHelperNode.Id];
+
+            // End node test
+            if(currentHelperNode.Id == endNode.Id)
+            {
+                endHelperNode = currentHelperNode;
+                break;
+            }
+
+            // Perform the state change of the current node
+            int newState = currentNode.ChangeState(currentHelperNode.State);
+
+            // Handle all outgoing edges of the current node
+            foreach(EdgeController edge in currentNode.OutgoingEdges)
+            {
+                // Calculate the new distance of the end node of the edge
+                int newDistance = currentHelperNode.Distance + edge.GetCostForState(newState);
+
+                // Create the new node and add it if allowed
+                HelperNodeController newNode = new HelperNodeController();
+                newNode.Initialize(edge.Node1.Id, newState, newDistance, currentHelperNode);
+                if (DecideToAddNewNode(newNode)) prioQueue.Enqueue(newNode, newDistance);
+            }
+        }
+    }
+
+    // Checks whether to add the node to the queue or not
+    private bool DecideToAddNewNode(HelperNodeController nodeController)
+    {
+        if(nodeController.Distance < allDistances[nodeController.Id, nodeController.State])
+        {
+            // Update smallest known distance
+            allDistances[nodeController.Id, nodeController.State] = nodeController.Distance;
+            return true;
+        }
+        return false;
+    }
 }
