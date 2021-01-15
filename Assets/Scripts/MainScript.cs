@@ -217,5 +217,275 @@ public class MainScript : MonoBehaviour
         AllNodes[11].OutgoingEdges.Add(edge13);
         AllNodes[17].OutgoingEdges.Add(edge13);
         AllEdges.Add(edge13);
+
+        EdgeController edge14 = Instantiate(edgePrefab, new Vector3(-2f, 2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge14.Initialize(AllNodes[12], AllNodes[18], null, -1);
+        AllNodes[12].OutgoingEdges.Add(edge14);
+        AllNodes[18].OutgoingEdges.Add(edge14);
+        AllEdges.Add(edge14);
+
+        EdgeController edge15 = Instantiate(edgePrefab, new Vector3(-2f, 1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge15.Initialize(AllNodes[13], AllNodes[19], null, -1);
+        AllNodes[13].OutgoingEdges.Add(edge15);
+        AllNodes[19].OutgoingEdges.Add(edge15);
+        AllEdges.Add(edge15);
+
+        EdgeController edge16 = Instantiate(edgePrefab, new Vector3(-2.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge16.Initialize(AllNodes[14], AllNodes[15], null, -1);
+        AllNodes[14].OutgoingEdges.Add(edge16);
+        AllNodes[15].OutgoingEdges.Add(edge16);
+        AllEdges.Add(edge16);
+
+        EdgeController edge17 = Instantiate(edgePrefab, new Vector3(-2f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge17.Initialize(AllNodes[14], AllNodes[20], null, -1);
+        AllNodes[14].OutgoingEdges.Add(edge17);
+        AllNodes[20].OutgoingEdges.Add(edge17);
+        AllEdges.Add(edge17);
+
+        EdgeController edge18 = Instantiate(edgePrefab, new Vector3(-2.5f, -1f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge18.Initialize(AllNodes[15], AllNodes[16], null, -1);
+        AllNodes[15].OutgoingEdges.Add(edge18);
+        AllNodes[16].OutgoingEdges.Add(edge18);
+        AllEdges.Add(edge18);
+
+        EdgeController edge19 = Instantiate(edgePrefab, new Vector3(-2f, -1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge19.Initialize(AllNodes[16], AllNodes[22], null, -1);
+        AllNodes[16].OutgoingEdges.Add(edge19);
+        AllNodes[22].OutgoingEdges.Add(edge19);
+        AllEdges.Add(edge19);
+
+        EdgeController edge20 = Instantiate(edgePrefab, new Vector3(-2f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge20.Initialize(AllNodes[17], AllNodes[23], null, -1);
+        AllNodes[17].OutgoingEdges.Add(edge20);
+        AllNodes[23].OutgoingEdges.Add(edge20);
+        AllEdges.Add(edge20);
+
+        EdgeController edge21 = Instantiate(edgePrefab, new Vector3(-1f, 1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge21.Initialize(AllNodes[19], AllNodes[25], null, -1);
+        AllNodes[19].OutgoingEdges.Add(edge21);
+        AllNodes[25].OutgoingEdges.Add(edge21);
+        AllEdges.Add(edge21);
+
+        EdgeController edge22 = Instantiate(edgePrefab, new Vector3(-1f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge22.Initialize(AllNodes[20], AllNodes[26], null, -1);
+        AllNodes[20].OutgoingEdges.Add(edge22);
+        AllNodes[26].OutgoingEdges.Add(edge22);
+        AllEdges.Add(edge22);
+
+        EdgeController edge23 = Instantiate(edgePrefab, new Vector3(-1f, -0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge23.Initialize(AllNodes[21], AllNodes[27], null, -1);
+        AllNodes[21].OutgoingEdges.Add(edge23);
+        AllNodes[27].OutgoingEdges.Add(edge23);
+        AllEdges.Add(edge23);
+
+        EdgeController edge24 = Instantiate(edgePrefab, new Vector3(-1f, -1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge24.Initialize(AllNodes[22], AllNodes[28], null, -1);
+        AllNodes[22].OutgoingEdges.Add(edge24);
+        AllNodes[28].OutgoingEdges.Add(edge24);
+        AllEdges.Add(edge24);
+
+        EdgeController edge25 = Instantiate(edgePrefab, new Vector3(-1f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge25.Initialize(AllNodes[23], AllNodes[29], null, -1);
+        AllNodes[23].OutgoingEdges.Add(edge25);
+        AllNodes[29].OutgoingEdges.Add(edge25);
+        AllEdges.Add(edge25);
+
+        EdgeController edge26 = Instantiate(edgePrefab, new Vector3(0f, 2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge26.Initialize(AllNodes[24], AllNodes[30], null, -1);
+        AllNodes[24].OutgoingEdges.Add(edge26);
+        AllNodes[30].OutgoingEdges.Add(edge26);
+        AllEdges.Add(edge26);
+
+        EdgeController edge27 = Instantiate(edgePrefab, new Vector3(0f, 1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge27.Initialize(AllNodes[25], AllNodes[31], null, -1);
+        AllNodes[25].OutgoingEdges.Add(edge27);
+        AllNodes[31].OutgoingEdges.Add(edge27);
+        AllEdges.Add(edge27);
+
+        EdgeController edge28 = Instantiate(edgePrefab, new Vector3(-0.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge28.Initialize(AllNodes[26], AllNodes[27], null, -1);
+        AllNodes[26].OutgoingEdges.Add(edge28);
+        AllNodes[27].OutgoingEdges.Add(edge28);
+        AllEdges.Add(edge28);
+
+        EdgeController edge29 = Instantiate(edgePrefab, new Vector3(0f, -1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge29.Initialize(AllNodes[28], AllNodes[34], null, -1);
+        AllNodes[28].OutgoingEdges.Add(edge29);
+        AllNodes[34].OutgoingEdges.Add(edge29);
+        AllEdges.Add(edge29);
+
+        EdgeController edge30 = Instantiate(edgePrefab, new Vector3(0f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge30.Initialize(AllNodes[29], AllNodes[35], null, -1);
+        AllNodes[29].OutgoingEdges.Add(edge30);
+        AllNodes[35].OutgoingEdges.Add(edge30);
+        AllEdges.Add(edge30);
+
+        EdgeController edge31 = Instantiate(edgePrefab, new Vector3(0.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge31.Initialize(AllNodes[30], AllNodes[31], null, -1);
+        AllNodes[30].OutgoingEdges.Add(edge31);
+        AllNodes[31].OutgoingEdges.Add(edge31);
+        AllEdges.Add(edge31);
+
+        EdgeController edge32 = Instantiate(edgePrefab, new Vector3(1f, 2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge32.Initialize(AllNodes[30], AllNodes[36], null, -1);
+        AllNodes[30].OutgoingEdges.Add(edge32);
+        AllNodes[36].OutgoingEdges.Add(edge32);
+        AllEdges.Add(edge32);
+
+        EdgeController edge33 = Instantiate(edgePrefab, new Vector3(0.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge33.Initialize(AllNodes[32], AllNodes[33], null, -1);
+        AllNodes[32].OutgoingEdges.Add(edge33);
+        AllNodes[33].OutgoingEdges.Add(edge33);
+        AllEdges.Add(edge33);
+
+        EdgeController edge34 = Instantiate(edgePrefab, new Vector3(1f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge34.Initialize(AllNodes[32], AllNodes[38], null, -1);
+        AllNodes[32].OutgoingEdges.Add(edge34);
+        AllNodes[38].OutgoingEdges.Add(edge34);
+        AllEdges.Add(edge34);
+
+        EdgeController edge35 = Instantiate(edgePrefab, new Vector3(1f, -0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge35.Initialize(AllNodes[33], AllNodes[39], null, -1);
+        AllNodes[33].OutgoingEdges.Add(edge35);
+        AllNodes[39].OutgoingEdges.Add(edge35);
+        AllEdges.Add(edge35);
+
+        EdgeController edge36 = Instantiate(edgePrefab, new Vector3(1f, -1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge36.Initialize(AllNodes[34], AllNodes[40], null, -1);
+        AllNodes[34].OutgoingEdges.Add(edge36);
+        AllNodes[40].OutgoingEdges.Add(edge36);
+        AllEdges.Add(edge36);
+
+        EdgeController edge37 = Instantiate(edgePrefab, new Vector3(1f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge37.Initialize(AllNodes[35], AllNodes[41], null, -1);
+        AllNodes[35].OutgoingEdges.Add(edge37);
+        AllNodes[41].OutgoingEdges.Add(edge37);
+        AllEdges.Add(edge37);
+
+        EdgeController edge38 = Instantiate(edgePrefab, new Vector3(1.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge38.Initialize(AllNodes[36], AllNodes[37], null, -1);
+        AllNodes[36].OutgoingEdges.Add(edge38);
+        AllNodes[37].OutgoingEdges.Add(edge38);
+        AllEdges.Add(edge38);
+
+        EdgeController edge39 = Instantiate(edgePrefab, new Vector3(2f, 1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge39.Initialize(AllNodes[37], AllNodes[43], null, -1);
+        AllNodes[37].OutgoingEdges.Add(edge39);
+        AllNodes[43].OutgoingEdges.Add(edge39);
+        AllEdges.Add(edge39);
+
+        EdgeController edge40 = Instantiate(edgePrefab, new Vector3(2f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge40.Initialize(AllNodes[38], AllNodes[44], null, -1);
+        AllNodes[38].OutgoingEdges.Add(edge40);
+        AllNodes[44].OutgoingEdges.Add(edge40);
+        AllEdges.Add(edge40);
+
+        EdgeController edge41 = Instantiate(edgePrefab, new Vector3(1.5f, -1f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge41.Initialize(AllNodes[39], AllNodes[40], null, -1);
+        AllNodes[39].OutgoingEdges.Add(edge41);
+        AllNodes[40].OutgoingEdges.Add(edge41);
+        AllEdges.Add(edge41);
+
+        EdgeController edge42 = Instantiate(edgePrefab, new Vector3(2f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge42.Initialize(AllNodes[41], AllNodes[47], null, -1);
+        AllNodes[41].OutgoingEdges.Add(edge42);
+        AllNodes[47].OutgoingEdges.Add(edge42);
+        AllEdges.Add(edge42);
+
+        EdgeController edge43 = Instantiate(edgePrefab, new Vector3(3f, 2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge43.Initialize(AllNodes[42], AllNodes[48], null, -1);
+        AllNodes[42].OutgoingEdges.Add(edge43);
+        AllNodes[48].OutgoingEdges.Add(edge43);
+        AllEdges.Add(edge43);
+
+        EdgeController edge44 = Instantiate(edgePrefab, new Vector3(3f, 1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge44.Initialize(AllNodes[43], AllNodes[49], null, -1);
+        AllNodes[43].OutgoingEdges.Add(edge44);
+        AllNodes[49].OutgoingEdges.Add(edge44);
+        AllEdges.Add(edge44);
+
+        EdgeController edge45 = Instantiate(edgePrefab, new Vector3(3f, 0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge45.Initialize(AllNodes[44], AllNodes[50], null, -1);
+        AllNodes[44].OutgoingEdges.Add(edge45);
+        AllNodes[50].OutgoingEdges.Add(edge45);
+        AllEdges.Add(edge45);
+
+        EdgeController edge46 = Instantiate(edgePrefab, new Vector3(2.5f, -1f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge46.Initialize(AllNodes[45], AllNodes[46], null, -1);
+        AllNodes[45].OutgoingEdges.Add(edge46);
+        AllNodes[46].OutgoingEdges.Add(edge46);
+        AllEdges.Add(edge46);
+
+        EdgeController edge47 = Instantiate(edgePrefab, new Vector3(3f, -1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge47.Initialize(AllNodes[46], AllNodes[52], null, -1);
+        AllNodes[46].OutgoingEdges.Add(edge47);
+        AllNodes[52].OutgoingEdges.Add(edge47);
+        AllEdges.Add(edge47);
+
+        EdgeController edge48 = Instantiate(edgePrefab, new Vector3(3f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge48.Initialize(AllNodes[47], AllNodes[53], null, -1);
+        AllNodes[47].OutgoingEdges.Add(edge48);
+        AllNodes[53].OutgoingEdges.Add(edge48);
+        AllEdges.Add(edge48);
+
+        EdgeController edge49 = Instantiate(edgePrefab, new Vector3(4f, 2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge49.Initialize(AllNodes[48], AllNodes[54], null, -1);
+        AllNodes[48].OutgoingEdges.Add(edge49);
+        AllNodes[54].OutgoingEdges.Add(edge49);
+        AllEdges.Add(edge49);
+
+        EdgeController edge50 = Instantiate(edgePrefab, new Vector3(4f, 1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge50.Initialize(AllNodes[49], AllNodes[55], null, -1);
+        AllNodes[49].OutgoingEdges.Add(edge50);
+        AllNodes[55].OutgoingEdges.Add(edge50);
+        AllEdges.Add(edge50);
+
+        EdgeController edge51 = Instantiate(edgePrefab, new Vector3(3.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge51.Initialize(AllNodes[50], AllNodes[51], null, -1);
+        AllNodes[50].OutgoingEdges.Add(edge51);
+        AllNodes[51].OutgoingEdges.Add(edge51);
+        AllEdges.Add(edge51);
+
+        EdgeController edge52 = Instantiate(edgePrefab, new Vector3(4f, -0.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge52.Initialize(AllNodes[51], AllNodes[57], null, -1);
+        AllNodes[51].OutgoingEdges.Add(edge52);
+        AllNodes[57].OutgoingEdges.Add(edge52);
+        AllEdges.Add(edge52);
+
+        EdgeController edge53 = Instantiate(edgePrefab, new Vector3(4f, -1.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge53.Initialize(AllNodes[52], AllNodes[58], null, -1);
+        AllNodes[52].OutgoingEdges.Add(edge53);
+        AllNodes[58].OutgoingEdges.Add(edge53);
+        AllEdges.Add(edge53);
+
+        EdgeController edge54 = Instantiate(edgePrefab, new Vector3(4f, -2.5f, -1), Quaternion.Euler(0, 0, 90)).GetComponent<EdgeController>();
+        edge54.Initialize(AllNodes[53], AllNodes[59], null, -1);
+        AllNodes[53].OutgoingEdges.Add(edge54);
+        AllNodes[59].OutgoingEdges.Add(edge54);
+        AllEdges.Add(edge54);
+
+        EdgeController edge55 = Instantiate(edgePrefab, new Vector3(4.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge55.Initialize(AllNodes[54], AllNodes[55], null, -1);
+        AllNodes[54].OutgoingEdges.Add(edge55);
+        AllNodes[55].OutgoingEdges.Add(edge55);
+        AllEdges.Add(edge55);
+
+        EdgeController edge56 = Instantiate(edgePrefab, new Vector3(4.5f, 1f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge56.Initialize(AllNodes[55], AllNodes[56], null, -1);
+        AllNodes[55].OutgoingEdges.Add(edge56);
+        AllNodes[56].OutgoingEdges.Add(edge56);
+        AllEdges.Add(edge56);
+
+        EdgeController edge57 = Instantiate(edgePrefab, new Vector3(4.5f, 0f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge57.Initialize(AllNodes[56], AllNodes[57], null, -1);
+        AllNodes[56].OutgoingEdges.Add(edge57);
+        AllNodes[57].OutgoingEdges.Add(edge57);
+        AllEdges.Add(edge57);
+
+        EdgeController edge58 = Instantiate(edgePrefab, new Vector3(4.5f, -2f, -1), Quaternion.identity).GetComponent<EdgeController>();
+        edge58.Initialize(AllNodes[58], AllNodes[59], null, -1);
+        AllNodes[58].OutgoingEdges.Add(edge58);
+        AllNodes[59].OutgoingEdges.Add(edge58);
+        AllEdges.Add(edge58);
     }
 }
