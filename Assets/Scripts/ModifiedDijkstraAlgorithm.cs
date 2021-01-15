@@ -29,7 +29,7 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     // Initialize all distances of the nodes
     private void InitializeAllDistances()
     {
-        allDistances = new int[MainScript.AllNodes.Count, MainScript.NumberOfNodes];
+        allDistances = new int[MainScript.NumberOfNodes, MainScript.NumberofStates];
         for(int i = 0; i < MainScript.AllNodes.Count; i++)
         {
             for(int j = 0; j < MainScript.NumberofStates; j++)
@@ -78,7 +78,16 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
 
                 // Create the new node and add it if allowed
                 HelperNodeController newNode = new HelperNodeController();
-                newNode.Initialize(edge.Node1.Id, newState, newDistance, currentHelperNode);
+                // edge.Node1.Id ungleich currentNode.Id ansonsten edge.Node0.Id
+                if(edge.Node1.Id != currentNode.Id)
+                {
+                    newNode.Initialize(edge.Node1.Id, newState, newDistance, currentHelperNode);
+                }
+                else
+                {
+                    newNode.Initialize(edge.Node0.Id, newState, newDistance, currentHelperNode);
+
+                }
                 if (DecideToAddNewNode(newNode)) prioQueue.Enqueue(newNode, newDistance);
             }
         }

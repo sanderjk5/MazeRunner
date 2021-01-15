@@ -27,8 +27,6 @@ public class MainScript : MonoBehaviour
     public GameObject nodePrefab;
     //The prefab of the edges.
     public GameObject edgePrefab;
-    //The prefab of the wall
-    public GameObject wallPrefab;
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
@@ -42,6 +40,10 @@ public class MainScript : MonoBehaviour
 
         // this.CreateFakeData();
         CreateExampleMaze();
+
+        // Dijkstra test
+        ModifiedDijkstraAlgorithm dijkstra = new ModifiedDijkstraAlgorithm(AllNodes[18], AllNodes[58]);
+        dijkstra.CalculateModifiedDijkstraAlgorithm();
 
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
