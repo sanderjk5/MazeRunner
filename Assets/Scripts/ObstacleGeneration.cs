@@ -6,10 +6,7 @@ using Random = UnityEngine.Random;
 
 public class ObstacleGeneration : MonoBehaviour
 {
-    public void Initialize()
-    {
-
-    }
+    public GameObject modifiedDijkstraAlgorithmPrefab;
 
     public void insertObstacle(int numberOfObstacles)
     {
@@ -18,36 +15,53 @@ public class ObstacleGeneration : MonoBehaviour
             while(true)
             {
                 int obstacleLocation = Random.Range(0, 2);
-                ModifiedDijkstraAlgorithm algorithm;
+                GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+                ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
                 if(obstacleLocation == 0)
                 {
-                    algorithm = new ModifiedDijkstraAlgorithm();
+                    algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes-1]);
                 } else
                 {
-                    algorithm = new ModifiedDijkstraAlgorithm();
+                    algorithm.Initialize(MainScript.AllNodes[(MainScript.Width-1)*MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
                 }
-                //TODO: Calculate shortest path
-                //TODO: Calculate random node on path
-                //TODO: Get nodes and edge
-                //TODO: Transform edge
+                algorithm.CalculateModifiedDijkstraAlgorithm();
+                List<NodeController> shortestPath = algorithm.ShortestPath;
+                int randomNumber = Random.Range((int) Math.Floor((double)shortestPath.Count / 4), (int) (shortestPath.Count - Math.Floor((double)shortestPath.Count / 10)));
+                NodeController startNode = shortestPath[randomNumber];
+                NodeController targetNode = shortestPath[randomNumber + 1];
+                EdgeController edge = startNode.GetEdgeToNode(targetNode);
+                if (edge.Obstacle != -1) continue;
+                transformEdge(edge, i);
 
+                GameObject algorithmObject1 = Instantiate(modifiedDijkstraAlgorithmPrefab);
+                ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
                 if (obstacleLocation == 0)
                 {
-                    algorithm = new ModifiedDijkstraAlgorithm();
+                    algorithm1.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
                 }
                 else
                 {
-                    algorithm = new ModifiedDijkstraAlgorithm();
+                    algorithm1.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
                 }
-                //TODO: Calculate new distance
-
-                //TODO: insert button and break or reset edge
-                break;
+                algorithm1.CalculateModifiedDijkstraAlgorithm();
+                int shortestDistanceWithObstacle = algorithm1.ShortestDistance;
+                
+                if (insertButton(shortestDistanceWithObstacle, startNode, shortestPath, i, obstacleLocation))
+                {
+                    Destroy(algorithmObject);
+                    Destroy(algorithmObject1);
+                    break;
+                } else
+                {
+                    Destroy(algorithmObject);
+                    Destroy(algorithmObject1);
+                    resetEdge(edge);
+                }
             }
         }
     }
 
-    public bool insertButton(int shortestDistance, NodeController nodeAtObstacle, List<NodeController> optimalPathWithoutObstacle, int buttonId, int obstacleLocation)
+    private bool insertButton(int shortestDistance, NodeController nodeAtObstacle, List<NodeController> optimalPathWithoutObstacle, int buttonId, int obstacleLocation)
     {
         int counter = 0;
         while(true)
@@ -58,23 +72,33 @@ public class ObstacleGeneration : MonoBehaviour
             node.Button = buttonId;
             node.States = setStates(MainScript.NumberofButtons, buttonId);
 
-            ModifiedDijkstraAlgorithm algorithm;
+            GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
             if (obstacleLocation == 0)
             {
-                algorithm = new ModifiedDijkstraAlgorithm();
+                algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
             }
             else
             {
-                algorithm = new ModifiedDijkstraAlgorithm();
+                algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
             }
-            //TODO: Get new shortest distance.
+            algorithm.CalculateModifiedDijkstraAlgorithm();
+            int newShortestDistance = algorithm.ShortestDistance;
 
-            ModifiedDijkstraAlgorithm algorithm2 = new ModifiedDijkstraAlgorithm();
-            //TODO: Get distance between button and obstacle
+            GameObject algorithmObject1 = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
+            algorithm1.Initialize(node, nodeAtObstacle);
+            algorithm1.CalculateModifiedDijkstraAlgorithm();
+            int distanceBetweenButtonAndObstacle = algorithm1.ShortestDistance;
 
-            //TODO: If all constraints are valid break
             //TODO: Place button and change colour of edge
-            break;
+            if(newShortestDistance < shortestDistance && distanceBetweenButtonAndObstacle > (shortestDistance / 10)){
+                Destroy(algorithmObject);
+                Destroy(algorithmObject1);
+                break;
+            }
+            Destroy(algorithmObject);
+            Destroy(algorithmObject1);
             node.Button = -1;
             node.States = null;
             counter++;
