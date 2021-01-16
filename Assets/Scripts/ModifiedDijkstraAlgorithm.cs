@@ -12,8 +12,8 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     private int[,] allDistances;
 
     // Properties
-    private int ShortestDistance { get; }
-    private List<NodeController> ShortestPath { get; }
+    public int ShortestDistance { get; private set; }
+    public ArrayList ShortestPath { get; private set; }
 
     // Constructor which needs a start node and an end node for Dijkstra's algorithm
     public ModifiedDijkstraAlgorithm(NodeController node0, NodeController node1)
@@ -22,8 +22,6 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
         endNode = node1;
         prioQueue = new SimplePriorityQueue<HelperNodeController>();
         InitializeAllDistances();
-        ShortestDistance = 0;
-        ShortestPath = new List<NodeController>();
     }
 
     // Initialize all distances of the nodes
@@ -91,6 +89,13 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
                 if (DecideToAddNewNode(newNode)) prioQueue.Enqueue(newNode, newDistance);
             }
         }
+
+        // Calculate the distance and path of the result
+        if(endHelperNode != null)
+        {
+            ShortestDistance = endHelperNode.Distance;
+            CalculatePathBetweenStartAndEndNode(endHelperNode);
+        }
     }
 
     // Checks whether to add the node to the queue or not
@@ -103,5 +108,24 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    // Calculates the path between start and target
+    private void CalculatePathBetweenStartAndEndNode(HelperNodeController endHelperNode)
+    {
+        ShortestPath = new ArrayList();
+        ArrayList pathHelperList = new ArrayList();
+        HelperNodeController currentHelperNode = endHelperNode;
+
+        while(currentHelperNode != null)
+        {
+            pathHelperList.Add(MainScript.AllNodes[currentHelperNode.Id]);
+            currentHelperNode = currentHelperNode.Predecessor;
+        }
+
+        for(int i = pathHelperList.Count - 1; i >= 0; i--)
+        {
+            ShortestPath.Add(pathHelperList[i]);
+        }
     }
 }
