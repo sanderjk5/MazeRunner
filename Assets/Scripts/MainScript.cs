@@ -20,6 +20,7 @@ public class MainScript : MonoBehaviour
     public static Dictionary<int, NodeController> AllNodes { get; set; }
     //Contains all edges of the maze.
     public static List<EdgeController> AllEdges { get; set; }
+    public static List<Color> Colors { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -39,7 +40,12 @@ public class MainScript : MonoBehaviour
         NumberofStates = 0;
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
-
+        Colors = new List<Color>
+        {
+            new Color(255, 0, 0),
+            new Color(0, 255, 0),
+            new Color(0, 0, 255)
+        };
         // this.CreateFakeData();
         CreateExampleMaze();
 
@@ -168,6 +174,7 @@ public class MainScript : MonoBehaviour
         AllNodes[3].OutgoingEdges.Add(edge04);
         AllNodes[9].OutgoingEdges.Add(edge04);
         AllEdges.Add(edge04);
+        edge04.ChangeColorOfObstacle(0);
 
         EdgeController edge05 = Instantiate(edgePrefab, new Vector3(-4.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
         edge05.Initialize(AllNodes[4], AllNodes[5], null, -1);
