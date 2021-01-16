@@ -15,7 +15,7 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
 
     // Properties
     public int ShortestDistance { get; private set; }
-    public ArrayList ShortestPath { get; private set; }
+    public List<NodeController> ShortestPath { get; private set; }
 
     // Initializer which needs a start node and an end node for Dijkstra's algorithm
     public void Initialize(NodeController node0, NodeController node1)
@@ -127,8 +127,8 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     // Calculates the path between start and target
     private void CalculatePathBetweenStartAndEndNode(HelperNodeController endHelperNode)
     {
-        ShortestPath = new ArrayList();
-        ArrayList pathHelperList = new ArrayList();
+        ShortestPath = new List<NodeController>();
+        List<NodeController> pathHelperList = new List<NodeController>();
         HelperNodeController currentHelperNode = endHelperNode;
 
         while(currentHelperNode != null)
