@@ -49,3 +49,5 @@ MonoBehaviour:
     type: 3}
   edgePrefab: {fileID: 7490493649719249067, guid: 935231388ca6b3648aef41543e7357e8,
     type: 3}
+  modifiedDijkstraAlgorithmPrefab: {fileID: 1202349375428123282, guid: a7322eb07db28cf4da85e93eb11fd884,
+    type: 3}
