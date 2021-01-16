@@ -30,6 +30,8 @@ public class MainScript : MonoBehaviour
     public GameObject edgePrefab;
     //The prefab of dijkstra.
     public GameObject modifiedDijkstraAlgorithmPrefab;
+    //The prefab of button.
+    public GameObject buttonPrefab;
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
@@ -143,6 +145,8 @@ public class MainScript : MonoBehaviour
             x++;
         }
 
+        
+
         // Create all edges
         EdgeController edge0 = Instantiate(edgePrefab, new Vector3(-4.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
         edge0.Initialize(AllNodes[0], AllNodes[1], null, -1);
@@ -175,6 +179,7 @@ public class MainScript : MonoBehaviour
         AllNodes[9].OutgoingEdges.Add(edge04);
         AllEdges.Add(edge04);
         edge04.ChangeColorOfObstacle(0);
+        Instantiate(buttonPrefab, new Vector3(2.5f, 2.5f, 0), Quaternion.identity).GetComponent<ButtonController>().Initialize(edge04, MainScript.AllNodes[42], 0);
 
         EdgeController edge05 = Instantiate(edgePrefab, new Vector3(-4.5f, 2f, -1), Quaternion.identity).GetComponent<EdgeController>();
         edge05.Initialize(AllNodes[4], AllNodes[5], null, -1);

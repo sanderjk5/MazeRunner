@@ -45,3 +45,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modifiedDijkstraAlgorithmPrefab: {fileID: 1202349375428123282, guid: a7322eb07db28cf4da85e93eb11fd884,
     type: 3}
+  buttonPrefab: {fileID: 5156460298850128360, guid: 42c5293ae164cc144825d9dfbfbf56b1,
+    type: 3}

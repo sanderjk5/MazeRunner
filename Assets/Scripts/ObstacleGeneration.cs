@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class ObstacleGeneration : MonoBehaviour
 {
     public GameObject modifiedDijkstraAlgorithmPrefab;
+    public GameObject buttonPrefab;
 
     public void insertObstacle(int numberOfObstacles)
     {
@@ -46,10 +47,11 @@ public class ObstacleGeneration : MonoBehaviour
                 algorithm1.CalculateModifiedDijkstraAlgorithm();
                 int shortestDistanceWithObstacle = algorithm1.ShortestDistance;
                 
-                if (insertButton(shortestDistanceWithObstacle, startNode, shortestPath, i, obstacleLocation))
+                if (insertButton(shortestDistanceWithObstacle, startNode, shortestPath, i, obstacleLocation, edge))
                 {
                     Destroy(algorithmObject);
                     Destroy(algorithmObject1);
+                    edge.ChangeColorOfObstacle(0);
                     break;
                 } else
                 {
@@ -61,7 +63,7 @@ public class ObstacleGeneration : MonoBehaviour
         }
     }
 
-    private bool insertButton(int shortestDistance, NodeController nodeAtObstacle, List<NodeController> optimalPathWithoutObstacle, int buttonId, int obstacleLocation)
+    private bool insertButton(int shortestDistance, NodeController nodeAtObstacle, List<NodeController> optimalPathWithoutObstacle, int buttonId, int obstacleLocation, EdgeController obstacle)
     {
         int counter = 0;
         while(true)
@@ -95,6 +97,7 @@ public class ObstacleGeneration : MonoBehaviour
             if(newShortestDistance < shortestDistance && distanceBetweenButtonAndObstacle > (shortestDistance / 10)){
                 Destroy(algorithmObject);
                 Destroy(algorithmObject1);
+                Instantiate(buttonPrefab, node.transform.position, Quaternion.identity).GetComponent<ButtonController>().Initialize(obstacle, node, buttonId);
                 break;
             }
             Destroy(algorithmObject);
