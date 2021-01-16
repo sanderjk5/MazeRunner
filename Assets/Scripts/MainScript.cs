@@ -27,6 +27,8 @@ public class MainScript : MonoBehaviour
     public GameObject nodePrefab;
     //The prefab of the edges.
     public GameObject edgePrefab;
+    //The prefab of dijkstra.
+    public GameObject modifiedDijkstraAlgorithmPrefab;
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
@@ -42,7 +44,8 @@ public class MainScript : MonoBehaviour
         CreateExampleMaze();
 
         // Dijkstra test
-        ModifiedDijkstraAlgorithm dijkstra = new ModifiedDijkstraAlgorithm(AllNodes[18], AllNodes[58]);
+        ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
+        dijkstra.Initialize(AllNodes[18], AllNodes[58]);
         dijkstra.CalculateModifiedDijkstraAlgorithm();
 
         //Creates all walls of the maze.

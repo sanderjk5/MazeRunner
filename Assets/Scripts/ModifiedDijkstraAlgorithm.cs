@@ -10,13 +10,15 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     private NodeController endNode;
     private SimplePriorityQueue<HelperNodeController> prioQueue;
     private int[,] allDistances;
+    public GameObject helperNodePrefab;
+    private ArrayList garbage = new ArrayList();
 
     // Properties
     public int ShortestDistance { get; private set; }
     public ArrayList ShortestPath { get; private set; }
 
-    // Constructor which needs a start node and an end node for Dijkstra's algorithm
-    public ModifiedDijkstraAlgorithm(NodeController node0, NodeController node1)
+    // Initializer which needs a start node and an end node for Dijkstra's algorithm
+    public void Initialize(NodeController node0, NodeController node1)
     {
         startNode = node0;
         endNode = node1;
@@ -43,9 +45,11 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
         HelperNodeController endHelperNode = null;
 
         // Add the start node with state = 0 and distance = 0 to the SimplePriorityQueue
-        HelperNodeController help = new HelperNodeController();
+        GameObject helpObject = Instantiate(helperNodePrefab);
+        HelperNodeController help = helpObject.GetComponent<HelperNodeController>();
         help.Initialize(startNode.Id, 0, 0, null);
         prioQueue.Enqueue(help, 0);
+        garbage.Add(helpObject);
         allDistances[startNode.Id, 0] = 0;
 
         while(prioQueue.Count != 0)
@@ -75,9 +79,12 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
                 int newDistance = currentHelperNode.Distance + edge.GetCostForState(newState);
 
                 // Create the new node and add it if allowed
-                HelperNodeController newNode = new HelperNodeController();
-                // edge.Node1.Id ungleich currentNode.Id ansonsten edge.Node0.Id
-                if(edge.Node1.Id != currentNode.Id)
+                GameObject newNodeObject = Instantiate(helperNodePrefab);
+                HelperNodeController newNode = newNodeObject.GetComponent<HelperNodeController>();
+                garbage.Add(newNodeObject);
+
+                // Check which node is the target node
+                if (edge.Node1.Id != currentNode.Id)
                 {
                     newNode.Initialize(edge.Node1.Id, newState, newDistance, currentHelperNode);
                 }
@@ -86,6 +93,7 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
                     newNode.Initialize(edge.Node0.Id, newState, newDistance, currentHelperNode);
 
                 }
+
                 if (DecideToAddNewNode(newNode)) prioQueue.Enqueue(newNode, newDistance);
             }
         }
@@ -95,6 +103,12 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
         {
             ShortestDistance = endHelperNode.Distance;
             CalculatePathBetweenStartAndEndNode(endHelperNode);
+        }
+
+        // Destroy garbage
+        foreach(GameObject obj in garbage)
+        {
+            Destroy(obj);
         }
     }
 
