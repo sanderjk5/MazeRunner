@@ -44,9 +44,9 @@ public class MainScript : MonoBehaviour
 
         //this.CreateFakeData();
         //Creates all walls of the maze.
-        //GameObject createWallsObject = Instantiate(createWallsPrefab);
-        //CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
-        //createWallsScript.CreateAllWalls();
+        GameObject createWallsObject = Instantiate(createWallsPrefab);
+        CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
+        createWallsScript.CreateAllWalls();
     }
 
     /**

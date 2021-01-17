@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using static System.Random;
+using Random = UnityEngine.Random;
 using UnityEngine;
 
 public class AldousBroderAlgorithm : MonoBehaviour
@@ -121,7 +121,7 @@ public class AldousBroderAlgorithm : MonoBehaviour
     private NodeController getRandomStartNode()
     {
         System.Random rnd = new System.Random();
-        int randomNumber = rnd.Next(0, MainScript.NumberOfNodes);
+        int randomNumber = Random.Range(0, MainScript.NumberOfNodes);
         return MainScript.AllNodes[randomNumber];
     }
 
@@ -133,8 +133,7 @@ public class AldousBroderAlgorithm : MonoBehaviour
     private NodeController getRandomNeighbour(NodeController node)
     {
         List<NodeController> neighbours = node.Neighbours;
-        System.Random rnd = new System.Random();
-        int randomNumber = rnd.Next(0, neighbours.Count);
+        int randomNumber = Random.Range(0, neighbours.Count);
         return neighbours[randomNumber];
     }
 
