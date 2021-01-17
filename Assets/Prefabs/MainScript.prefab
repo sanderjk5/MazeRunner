@@ -49,3 +49,5 @@ MonoBehaviour:
     type: 3}
   edgePrefab: {fileID: 7490493649719249067, guid: 935231388ca6b3648aef41543e7357e8,
     type: 3}
+  aldousBroderAlgorithmPrefab: {fileID: 4302044536870975430, guid: f78ed06a5bb9926489738b7819f17f13,
+    type: 3}
