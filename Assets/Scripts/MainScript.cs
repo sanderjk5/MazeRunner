@@ -115,9 +115,9 @@ public class MainScript : MonoBehaviour
     {
         // Set the variables
         NumberOfNodes = 60;
-        NumberofEdges = 118;
-        NumberofStates = 2;
-        NumberofButtons = 1;
+        NumberOfEdges = 118;
+        NumberOfStates = 2;
+        NumberOfButtons = 1;
         Width = 10;
         Height = 6;
 
