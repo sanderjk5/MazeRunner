@@ -15,27 +15,6 @@ public class AldousBroderAlgorithm : MonoBehaviour
     * @param size of the maze (number of nodes = size^2)
     * @param numberOfObstacles of the maze
     */
-    //public AldousBroderAlgorithm(int size, int numberOfObstacles)
-    //{
-    //Compute the values of each static variable of the main class.
-    //Main.numberOfStates = (int)Math.pow(2, numberOfObstacles);
-    //Main.numberOfButtons = numberOfObstacles;
-    //Main.width = size;
-    //Main.height = size;
-    //Main.numberOfNodes = Main.width * Main.height;
-    //visitedNodes = new boolean[Main.numberOfNodes];
-    //numberOfVisitedNodes = 0;
-    //Initializes the array and creates all nodes.
-    //initializeVisitedNodesArray();
-    //generateNodes();
-    //Calls the actual Aldous Broder Algorithm.
-    //generateMaze();
-    //Main.numberOfEdges = Main.allEdges.size();
-    //Generates a specific number of obstacles and buttons.
-    //GenerateObstacles obstacleGenerator = new GenerateObstacles(numberOfObstacles);
-    //Console.writeLine("hello");
-    //}
-
     public void Initialize(int Width, int Height, int NumberOfObstacles)
     {
         // test
