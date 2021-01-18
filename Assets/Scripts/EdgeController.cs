@@ -35,6 +35,9 @@ public class EdgeController : MonoBehaviour
         if(Obstacle != -1 && Costs[newState] != 1)
         {
             gameObject.GetComponent<SpriteRenderer>().color = MainScript.Colors[Obstacle];
+        } else
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         }
     }
 }

@@ -55,3 +55,5 @@ MonoBehaviour:
     type: 3}
   buttonPrefab: {fileID: 5156460298850128360, guid: 42c5293ae164cc144825d9dfbfbf56b1,
     type: 3}
+  obstacleGenerationPrefab: {fileID: 6842682651385515482, guid: 0441c95c2627bbb4380ac1dcf8c5de8f,
+    type: 3}

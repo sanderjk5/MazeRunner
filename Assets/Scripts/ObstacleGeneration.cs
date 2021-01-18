@@ -9,7 +9,7 @@ public class ObstacleGeneration : MonoBehaviour
     public GameObject modifiedDijkstraAlgorithmPrefab;
     public GameObject buttonPrefab;
 
-    public void insertObstacle(int numberOfObstacles)
+    public void InsertObstacle(int numberOfObstacles)
     {
         for(int i = 0; i < numberOfObstacles; i++)
         {
@@ -72,7 +72,7 @@ public class ObstacleGeneration : MonoBehaviour
             NodeController node = getRandomNode();
             if (optimalPathWithoutObstacle.Contains(node) || node.Button != -1) continue;
             node.Button = buttonId;
-            node.States = setStates(MainScript.NumberofButtons, buttonId);
+            node.States = setStates(MainScript.NumberOfButtons, buttonId);
 
             GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
             ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
@@ -120,7 +120,7 @@ public class ObstacleGeneration : MonoBehaviour
         int[] costs = new int[(int)Math.Pow(2, numberOfObstacles)];
         int counter = 0;
         bool obstacleLength = true;
-        while(counter < MainScript.NumberofStates)
+        while(counter < MainScript.NumberOfStates)
         {
             for(int i = 0; i < Math.Pow(2, buttonId); i++)
             {
@@ -143,7 +143,7 @@ public class ObstacleGeneration : MonoBehaviour
         int[] states = new int[(int)Math.Pow(2, numberOfObstacles)];
         int counter = 0;
         bool removeObstacle = true;
-        while(counter != MainScript.NumberofStates)
+        while(counter != MainScript.NumberOfStates)
         {
             for(int i = 0; i < Math.Pow(2, buttonId); i++)
             {
@@ -169,7 +169,7 @@ public class ObstacleGeneration : MonoBehaviour
     private void transformEdge(EdgeController edge, int buttonId)
     {
         edge.Obstacle = buttonId;
-        edge.Costs = setCosts(MainScript.NumberofButtons, buttonId, getLengthOfObstacle());
+        edge.Costs = setCosts(MainScript.NumberOfButtons, buttonId, getLengthOfObstacle());
     }
 
     private void resetEdge(EdgeController edge)

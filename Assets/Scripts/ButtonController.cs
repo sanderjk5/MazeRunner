@@ -16,6 +16,7 @@ public class ButtonController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-
+        MainScript.CurrentState = CorrespondingNode.ChangeState(MainScript.CurrentState);
+        CorrespondingEdge.ChangeColorOfObstacle(MainScript.CurrentState);
     }
 }
