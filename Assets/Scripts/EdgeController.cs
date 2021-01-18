@@ -44,6 +44,6 @@ public class EdgeController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         MainScript.CurrentStepCount += GetCostForState(MainScript.CurrentState);
-        Debug.Log("Steps: " + MainScript.CurrentStepCount);
+        MainScript.UpdateStepCounter();
     }
 }
