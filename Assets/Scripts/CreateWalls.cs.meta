@@ -3,7 +3,9 @@ guid: b235798836b54a44f80553863d1bbe2e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - wallPrefab: {fileID: 3850315862332356911, guid: b965709af8e396248bc6c23a3b5fa22a,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

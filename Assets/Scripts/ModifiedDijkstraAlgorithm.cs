@@ -29,10 +29,10 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     // Initialize all distances of the nodes
     private void InitializeAllDistances()
     {
-        allDistances = new int[MainScript.NumberOfNodes, MainScript.NumberofStates];
+        allDistances = new int[MainScript.NumberOfNodes, MainScript.NumberOfStates];
         for(int i = 0; i < MainScript.AllNodes.Count; i++)
         {
-            for(int j = 0; j < MainScript.NumberofStates; j++)
+            for(int j = 0; j < MainScript.NumberOfStates; j++)
             {
                 allDistances[i, j] = int.MaxValue;
             }
