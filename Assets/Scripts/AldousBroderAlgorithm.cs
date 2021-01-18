@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using UnityEngine;
+using System;
 
 public class AldousBroderAlgorithm : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class AldousBroderAlgorithm : MonoBehaviour
         // test
 
         //main part
-        MainScript.NumberOfStates = 5;
+        MainScript.NumberOfStates = (int) Math.Pow(2, NumberOfObstacles);
         MainScript.NumberOfButtons = NumberOfObstacles;
         MainScript.Width = Width;
         MainScript.Height = Height;
