@@ -40,4 +40,10 @@ public class EdgeController : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
         }
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        MainScript.CurrentStepCount += GetCostForState(MainScript.CurrentState);
+        Debug.Log("Steps: " + MainScript.CurrentStepCount);
+    }
 }

@@ -22,6 +22,7 @@ public class MainScript : MonoBehaviour
     public static List<EdgeController> AllEdges { get; set; }
     public static List<Color> Colors { get; set; }
     public static int CurrentState { get; set; }
+    public static int CurrentStepCount { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -42,8 +43,10 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
-        
+
         //Initializes the static variables of the game.
+        CurrentState = 0;
+        CurrentStepCount = 0;
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
         Colors = new List<Color>
@@ -70,7 +73,7 @@ public class MainScript : MonoBehaviour
         dijkstra1.Initialize(AllNodes[0], AllNodes[179]);
         dijkstra1.CalculateModifiedDijkstraAlgorithm();
         Debug.Log("Distance after inserting obstacles: " + dijkstra1.ShortestDistance);
-
+        
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
