@@ -11,11 +11,11 @@ public class MainScript : MonoBehaviour
     //The number of nodes of the maze (width * height).
     public static int NumberOfNodes { get; set; }
     //The number of edges of the maze.
-    public static int NumberofEdges { get; set; }
+    public static int NumberOfEdges { get; set; }
     //The number of states.
-    public static int NumberofStates { get; set; }
+    public static int NumberOfStates { get; set; }
     //The number of buttons.
-    public static int NumberofButtons { get; set; }
+    public static int NumberOfButtons { get; set; }
     //Contains all nodes of the maze.
     public static Dictionary<int, NodeController> AllNodes { get; set; }
     //Contains all edges of the maze.
@@ -27,27 +27,34 @@ public class MainScript : MonoBehaviour
     public GameObject nodePrefab;
     //The prefab of the edges.
     public GameObject edgePrefab;
+    //The prefab of the Aldous Broder Algorithm
+    public GameObject aldousBroderAlgorithmPrefab;
     //The prefab of dijkstra.
     public GameObject modifiedDijkstraAlgorithmPrefab;
+
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        
         //Initializes the static variables of the game.
         NumberOfNodes = 0;
-        NumberofEdges = 0;
-        NumberofStates = 0;
+        NumberOfEdges = 0;
+        NumberOfStates = 0;
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
 
+        AldousBroderAlgorithm a = Instantiate(aldousBroderAlgorithmPrefab).GetComponent<AldousBroderAlgorithm>();
+        a.Initialize(18, 10, 0);
         // this.CreateFakeData();
-        CreateExampleMaze();
+        //CreateExampleMaze();
 
         // Dijkstra test
         ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
         dijkstra.Initialize(AllNodes[18], AllNodes[58]);
         dijkstra.CalculateModifiedDijkstraAlgorithm();
 
+        //this.CreateFakeData();
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
@@ -61,9 +68,9 @@ public class MainScript : MonoBehaviour
     {
         //Sets the variables.
         NumberOfNodes = 4;
-        NumberofEdges = 3;
-        NumberofStates = 1;
-        NumberofButtons = 0;
+        NumberOfEdges = 3;
+        NumberOfStates = 1;
+        NumberOfButtons = 0;
         Width = 2;
         Height = 2;
 
@@ -108,9 +115,9 @@ public class MainScript : MonoBehaviour
     {
         // Set the variables
         NumberOfNodes = 60;
-        NumberofEdges = 118;
-        NumberofStates = 2;
-        NumberofButtons = 1;
+        NumberOfEdges = 118;
+        NumberOfStates = 2;
+        NumberOfButtons = 1;
         Width = 10;
         Height = 6;
 
