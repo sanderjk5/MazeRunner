@@ -12,8 +12,8 @@ public class RubyController : MonoBehaviour
     void Start()
     {
         //Variante 1 + 4 (ansonsten die beiden zeilen auskommentieren):
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        //QualitySettings.vSyncCount = 0;
+        //Application.targetFrameRate = 60;
 
         //Kann in jeder Variante so stehen gelassen werden:
         rigidbody2d = GetComponent<Rigidbody2D>();
@@ -27,10 +27,10 @@ public class RubyController : MonoBehaviour
         vertical = Input.GetAxis("Vertical");
 
         //Variante 1:
-        Vector2 position = transform.position;
-        position.x += 0.05f * horizontal;
-        position.y += 0.05f * vertical;
-        transform.position = position;
+        //Vector2 position = transform.position;
+        //position.x += 0.05f * horizontal;
+        //position.y += 0.05f * vertical;
+        //transform.position = position;
 
         //Variante 2:
         //Vector2 position = transform.position;
@@ -49,9 +49,9 @@ public class RubyController : MonoBehaviour
         //rigidbody2d.MovePosition(position);
 
         //Variante 5:
-        //Vector2 position = rigidbody2d.position;
-        //position.x += 3.5f * horizontal * Time.deltaTime;
-        //position.y += 3.5f * vertical * Time.deltaTime;
-        //rigidbody2d.MovePosition(position);
+        Vector2 position = rigidbody2d.position;
+        position.x += 3.5f * horizontal * Time.deltaTime;
+        position.y += 3.5f * vertical * Time.deltaTime;
+        rigidbody2d.MovePosition(position);
     }
 }
