@@ -25,8 +25,8 @@ public class RubyController : MonoBehaviour
     {
         //Moves the player if the user triggers the arrow keys.
         Vector2 position = rigidbody2d.position;
-        position.x += 3.5f * horizontal * Time.deltaTime;
-        position.y += 3.5f * vertical * Time.deltaTime;
+        position.x += 0.065f * horizontal;
+        position.y += 0.065f * vertical;
         rigidbody2d.MovePosition(position);
     }
 }
