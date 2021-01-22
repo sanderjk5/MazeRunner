@@ -136,7 +136,9 @@ public class ObstacleGeneration : MonoBehaviour
                 Destroy(algorithmObject);
                 Destroy(algorithmObject1);
                 //Adds the button at the choosen node.
-                Instantiate(buttonPrefab, node.transform.position, Quaternion.identity).GetComponent<ButtonController>().Initialize(obstacle, node, buttonId);
+                ButtonController button = Instantiate(buttonPrefab, node.transform.position, Quaternion.identity).GetComponent<ButtonController>();
+                button.Initialize(obstacle, node, buttonId);
+                button.gameObject.transform.localScale = new Vector3(0.25f * MainScript.ScaleMazeSize, 0.25f * MainScript.ScaleMazeSize);
                 break;
             }
             //Resets the values and checks another node.
@@ -223,7 +225,14 @@ public class ObstacleGeneration : MonoBehaviour
      */
     private int GetLengthOfObstacle()
     {
-        return 25;
+        if(MainScript.ScaleMazeSize == 0.5f)
+        {
+            return 45;
+        } else
+        {
+            return 25;
+        }
+        
     }
 
     /**

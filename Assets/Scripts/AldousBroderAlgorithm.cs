@@ -48,7 +48,14 @@ public class AldousBroderAlgorithm : MonoBehaviour
             //because we start in the top left and iterate over each column from top to bottom we have to negate j
             for(int j = 0; j > -MainScript.Height; j--)
             {
-                node = Instantiate(nodePrefab, new Vector3(i - 8.5f, j + 4.5f, 0), Quaternion.identity).GetComponent<NodeController>();
+                if(MainScript.ScaleMazeSize == 0.5f)
+                {
+                    node = Instantiate(nodePrefab, new Vector3((i * MainScript.ScaleMazeSize) - 8.75f, (j * MainScript.ScaleMazeSize) + 4.75f, 0), Quaternion.identity).GetComponent<NodeController>();
+                    node.gameObject.transform.localScale = new Vector3(0.985f * MainScript.ScaleMazeSize, 0.97f * MainScript.ScaleMazeSize);
+                } else
+                {
+                    node = Instantiate(nodePrefab, new Vector3(i - 8.5f, j + 4.5f, 0), Quaternion.identity).GetComponent<NodeController>();
+                }
                 node.Initialize(nodecounter, null, -1);
                 MainScript.AllNodes.Add(nodecounter, node);
                 nodecounter++;
@@ -185,6 +192,10 @@ public class AldousBroderAlgorithm : MonoBehaviour
                 else // edge has to be horizontal
                 {
                     edge = Instantiate(edgePrefab, coordsPair.Key, Quaternion.identity).GetComponent<EdgeController>();
+                }
+                if(MainScript.ScaleMazeSize == 0.5f)
+                {
+                    edge.gameObject.transform.localScale = new Vector3(0.985f * MainScript.ScaleMazeSize, 0.01f);
                 }
                 //Initialize the edge between the nodes
                 edge.Initialize(currentNode, nextNode, null, -1);
