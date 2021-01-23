@@ -15,10 +15,10 @@ public class ObstacleGeneration : MonoBehaviour
      * Inserts all Obstacles of the maze.
      * <param name="numberOfObstacles">The number of generated obstacles.</param>
      */
-    public void InsertObstacles(int numberOfObstacles)
+    public void InsertObstacles()
     {
         //Inserts each obstacle.
-        for(int i = 0; i < numberOfObstacles; i++)
+        for (int i = 0; i < MainScript.NumberOfButtons; i++)
         {
             while(true)
             {
@@ -108,7 +108,7 @@ public class ObstacleGeneration : MonoBehaviour
             if (optimalPathWithoutObstacle.Contains(node) || node.Button != -1) continue;
             //Sets the values of the new button.
             node.Button = buttonId;
-            node.States = SetStates(MainScript.NumberOfButtons, buttonId);
+            node.States = SetStates(buttonId);
 
             //Calculates the shortest distance after adding the button.
             GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
@@ -168,9 +168,9 @@ public class ObstacleGeneration : MonoBehaviour
      * <param name="lengthOfObstacle">The length of the obstacle if it is activated.</param>
      * <returns>The costs array.</returns>
      */
-    private int[] SetCosts(int numberOfObstacles, int buttonId, int lengthOfObstacle)
+    private int[] SetCosts(int buttonId, int lengthOfObstacle)
     {
-        int[] costs = new int[(int)Math.Pow(2, numberOfObstacles)];
+        int[] costs = new int[(int)Math.Pow(2, MainScript.NumberOfButtons)];
         int counter = 0;
         bool obstacleLength = true;
         while(counter < MainScript.NumberOfStates)
@@ -197,9 +197,9 @@ public class ObstacleGeneration : MonoBehaviour
      * <param name="buttonId">The id of the current obstacle.</param>
      * <returns>The states array.</returns>
      */
-    private int[] SetStates(int numberOfObstacles, int buttonId)
+    private int[] SetStates(int buttonId)
     {
-        int[] states = new int[(int)Math.Pow(2, numberOfObstacles)];
+        int[] states = new int[(int)Math.Pow(2, MainScript.NumberOfButtons)];
         int counter = 0;
         bool removeObstacle = true;
         while(counter != MainScript.NumberOfStates)
@@ -243,7 +243,7 @@ public class ObstacleGeneration : MonoBehaviour
     private void TransformEdge(EdgeController edge, int buttonId)
     {
         edge.Obstacle = buttonId;
-        edge.Costs = SetCosts(MainScript.NumberOfButtons, buttonId, GetLengthOfObstacle());
+        edge.Costs = SetCosts(buttonId, GetLengthOfObstacle());
     }
 
     /**

@@ -26,8 +26,8 @@ public class RubyController : MonoBehaviour
         Vector2 position = rigidbody2d.position;
         if(MainScript.ScaleMazeSize == 0.5f)
         {
-            position.x += 1.5f * horizontal * Time.deltaTime;
-            position.y += 1.5f * vertical * Time.deltaTime;
+            position.x += 1.25f * horizontal * Time.deltaTime;
+            position.y += 1.25f * vertical * Time.deltaTime;
         } else
         {
             position.x += 2.5f * horizontal * Time.deltaTime;

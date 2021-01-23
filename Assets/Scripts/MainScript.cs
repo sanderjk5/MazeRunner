@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using Random = UnityEngine.Random;
 
 public class MainScript : MonoBehaviour
 {
@@ -62,12 +63,14 @@ public class MainScript : MonoBehaviour
             new Color(255, 0, 0),
         };
 
-        MainScript.ScaleMazeSize = 0.5f;
+        //Initializes number of obstacles/buttons and the scale of the maze.
+        InitializeRandomScaleAndDifficulty();
+        NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
         //Generates the labyrinth
         AldousBroderAlgorithm a = Instantiate(aldousBroderAlgorithmPrefab).GetComponent<AldousBroderAlgorithm>();
-        a.Initialize((int) Math.Floor(1/ScaleMazeSize * 18), (int) Math.Floor(1 / ScaleMazeSize * 10), 3);
+        a.Initialize((int) Math.Floor(1/ScaleMazeSize * 18), (int) Math.Floor(1 / ScaleMazeSize * 10));
 
         // Dijkstra test
         ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
@@ -80,11 +83,10 @@ public class MainScript : MonoBehaviour
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         Debug.Log("Distance before inserting obstacles: " + dijkstra.ShortestDistance);
-        Debug.Log(MainScript.NumberOfNodes);
-        Debug.Log(MainScript.AllNodes.Values.Count);
+
         //Generates all obstacles
         ObstacleGeneration obstacleGeneration = Instantiate(obstacleGenerationPrefab).GetComponent<ObstacleGeneration>();
-        obstacleGeneration.InsertObstacles(3);
+        obstacleGeneration.InsertObstacles();
 
         // Dijkstra test
         ModifiedDijkstraAlgorithm dijkstra1 = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
@@ -115,5 +117,17 @@ public class MainScript : MonoBehaviour
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
+    }
+
+    public static void InitializeRandomScaleAndDifficulty()
+    {
+        NumberOfButtons = Random.Range(0, 4);
+        int randomScale = Random.Range(0, 2);
+        if(randomScale == 0) {
+            ScaleMazeSize = 1;
+        } else
+        {
+            ScaleMazeSize = 0.5f;
+        }
     }
 }

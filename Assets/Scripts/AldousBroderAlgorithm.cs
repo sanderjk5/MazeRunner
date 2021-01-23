@@ -16,13 +16,8 @@ public class AldousBroderAlgorithm : MonoBehaviour
     * @param size of the maze (number of nodes = size^2)
     * @param numberOfObstacles of the maze
     */
-    public void Initialize(int Width, int Height, int NumberOfObstacles)
+    public void Initialize(int Width, int Height)
     {
-        // test
-
-        //main part
-        MainScript.NumberOfStates = (int) Math.Pow(2, NumberOfObstacles);
-        MainScript.NumberOfButtons = NumberOfObstacles;
         MainScript.Width = Width;
         MainScript.Height = Height;
         MainScript.NumberOfNodes = Width * Height;
@@ -32,7 +27,6 @@ public class AldousBroderAlgorithm : MonoBehaviour
 
         generateMaze();
         MainScript.NumberOfEdges = MainScript.AllEdges.Count;
-        //TODO:: Add obstacle generation
     }
 
     /**
