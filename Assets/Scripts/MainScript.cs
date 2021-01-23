@@ -29,6 +29,8 @@ public class MainScript : MonoBehaviour
     //The current number of steps of the player.
     public static int CurrentStepCount { get; set; }
     public static float ScaleMazeSize { get; set; }
+    public static int CurrentLevelCount { get; set; }
+    public static List<GameObject> GarbageCollectorGameObjects { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -49,7 +51,16 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        if (gameObject.scene.name.Equals("LevelGameScene"))
+        {
+            CurrentLevelCount = 1;
+            GarbageCollectorGameObjects = new List<GameObject>();
+        }
+        InitializeGame();
+    }
 
+    public void InitializeGame()
+    {
         //Initializes the static variables of the game.
         CurrentState = 0;
         CurrentStepCount = 0;
@@ -70,19 +81,7 @@ public class MainScript : MonoBehaviour
 
         //Generates the labyrinth
         AldousBroderAlgorithm a = Instantiate(aldousBroderAlgorithmPrefab).GetComponent<AldousBroderAlgorithm>();
-        a.Initialize((int) Math.Floor(1/ScaleMazeSize * 18), (int) Math.Floor(1 / ScaleMazeSize * 10));
-
-        // Dijkstra test
-        ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
-        if(ScaleMazeSize == 0.5f)
-        {
-            dijkstra.Initialize(AllNodes[0], AllNodes[719]);
-        } else
-        {
-            dijkstra.Initialize(AllNodes[0], AllNodes[179]);
-        }
-        dijkstra.CalculateModifiedDijkstraAlgorithm();
-        Debug.Log("Distance before inserting obstacles: " + dijkstra.ShortestDistance);
+        a.Initialize((int)Math.Floor(1 / ScaleMazeSize * 18), (int)Math.Floor(1 / ScaleMazeSize * 10));
 
         //Generates all obstacles
         ObstacleGeneration obstacleGeneration = Instantiate(obstacleGenerationPrefab).GetComponent<ObstacleGeneration>();
@@ -107,6 +106,16 @@ public class MainScript : MonoBehaviour
         GameObject createWallsObject = Instantiate(createWallsPrefab);
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
+    }
+
+    public void LoadNextLevel()
+    {
+        CurrentLevelCount++;
+        foreach(GameObject gameObject in GarbageCollectorGameObjects)
+        {
+            Destroy(gameObject);
+        }
+        InitializeGame();
     }
 
     /**
