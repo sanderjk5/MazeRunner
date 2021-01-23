@@ -73,14 +73,15 @@ public class MainScript : MonoBehaviour
         ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
         if(ScaleMazeSize == 0.5f)
         {
-            dijkstra.Initialize(AllNodes[0], AllNodes[639]);
+            dijkstra.Initialize(AllNodes[0], AllNodes[719]);
         } else
         {
             dijkstra.Initialize(AllNodes[0], AllNodes[179]);
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         Debug.Log("Distance before inserting obstacles: " + dijkstra.ShortestDistance);
-
+        Debug.Log(MainScript.NumberOfNodes);
+        Debug.Log(MainScript.AllNodes.Values.Count);
         //Generates all obstacles
         ObstacleGeneration obstacleGeneration = Instantiate(obstacleGenerationPrefab).GetComponent<ObstacleGeneration>();
         obstacleGeneration.InsertObstacles(3);
@@ -89,7 +90,7 @@ public class MainScript : MonoBehaviour
         ModifiedDijkstraAlgorithm dijkstra1 = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
         if (ScaleMazeSize == 0.5f)
         {
-            dijkstra1.Initialize(AllNodes[0], AllNodes[639]);
+            dijkstra1.Initialize(AllNodes[0], AllNodes[719]);
         }
         else
         {
