@@ -32,6 +32,7 @@ public class MainScript : MonoBehaviour
     public static int CurrentLevelCount { get; set; }
     public static List<GameObject> GarbageCollectorGameObjects { get; set; }
     public static int OptimalStepCount { get; set; }
+    public static bool enableUserInput { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -52,6 +53,7 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        enableUserInput = false;
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
             CurrentLevelCount = 0;
@@ -129,6 +131,7 @@ public class MainScript : MonoBehaviour
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
+        enableUserInput = true;
     }
 
     public void LoadNextLevel()

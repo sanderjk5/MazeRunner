@@ -38,7 +38,7 @@ public class EndLevelGameController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         timerIsRunning = false;
-        timeRemaining -= 2 * Math.Max(0, MainScript.CurrentStepCount - MainScript.OptimalStepCount);
+        timeRemaining -= Math.Max(0, MainScript.CurrentStepCount - MainScript.OptimalStepCount);
         DisplayTime(timeRemaining);
         if(timeRemaining <= 0)
         {
@@ -47,6 +47,7 @@ public class EndLevelGameController : MonoBehaviour
         if(MainScript.CurrentLevelCount < 7)
         {
             GameObject.Find("MainScript").GetComponent<MainScript>().LoadNextLevel();
+            MainScript.enableUserInput = true;
             timerIsRunning = true;
         } else
         {
