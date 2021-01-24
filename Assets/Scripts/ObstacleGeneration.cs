@@ -27,6 +27,7 @@ public class ObstacleGeneration : MonoBehaviour
 
                 //Calculates the shortest distance before adding the obstacle.
                 GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+                if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject);
                 ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
                 if(obstacleLocation == 0)
                 {
@@ -52,6 +53,7 @@ public class ObstacleGeneration : MonoBehaviour
 
                 //Calculates the shortest distance after adding the obstacle.
                 GameObject algorithmObject1 = Instantiate(modifiedDijkstraAlgorithmPrefab);
+                if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject1);
                 ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
                 if (obstacleLocation == 0)
                 {
@@ -112,6 +114,7 @@ public class ObstacleGeneration : MonoBehaviour
 
             //Calculates the shortest distance after adding the button.
             GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject);
             ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
             if (obstacleLocation == 0)
             {
@@ -126,6 +129,7 @@ public class ObstacleGeneration : MonoBehaviour
 
             //Calculates the distance between button and obstacle.
             GameObject algorithmObject1 = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject1);
             ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
             algorithm1.Initialize(node, nodeAtObstacle);
             algorithm1.CalculateModifiedDijkstraAlgorithm();
@@ -136,9 +140,11 @@ public class ObstacleGeneration : MonoBehaviour
                 Destroy(algorithmObject);
                 Destroy(algorithmObject1);
                 //Adds the button at the choosen node.
-                ButtonController button = Instantiate(buttonPrefab, node.transform.position, Quaternion.identity).GetComponent<ButtonController>();
+                GameObject gameObject = Instantiate(buttonPrefab, node.transform.position, Quaternion.identity);
+                ButtonController button = gameObject.GetComponent<ButtonController>();
                 button.Initialize(obstacle, node, buttonId);
                 button.gameObject.transform.localScale = new Vector3(0.25f * MainScript.ScaleMazeSize, 0.25f * MainScript.ScaleMazeSize);
+                if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
                 break;
             }
             //Resets the values and checks another node.

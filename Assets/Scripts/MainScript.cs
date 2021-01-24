@@ -31,6 +31,7 @@ public class MainScript : MonoBehaviour
     public static float ScaleMazeSize { get; set; }
     public static int CurrentLevelCount { get; set; }
     public static List<GameObject> GarbageCollectorGameObjects { get; set; }
+    public static int OptimalStepCount { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -53,13 +54,26 @@ public class MainScript : MonoBehaviour
     {
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
-            CurrentLevelCount = 1;
+            CurrentLevelCount = 0;
             GarbageCollectorGameObjects = new List<GameObject>();
+            InitializeGame(0, 1);
         }
-        InitializeGame();
+        else
+        {
+            CurrentLevelCount = -1;
+            int numberOfButtons = Random.Range(0, 4);
+            int randomScale = Random.Range(0, 2);
+            float scaleMazeSize = 1;
+            if (randomScale == 0)
+            {
+                scaleMazeSize = 0.5f;
+            }
+            InitializeGame(numberOfButtons, scaleMazeSize);
+        }
+        
     }
 
-    public void InitializeGame()
+    public void InitializeGame(int numberOfButtons, float scaleMazeSize)
     {
         //Initializes the static variables of the game.
         CurrentState = 0;
@@ -75,20 +89,26 @@ public class MainScript : MonoBehaviour
         };
 
         //Initializes number of obstacles/buttons and the scale of the maze.
-        InitializeRandomScaleAndDifficulty();
+        NumberOfButtons = numberOfButtons;
+        ScaleMazeSize = scaleMazeSize;
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
         //Generates the labyrinth
-        AldousBroderAlgorithm a = Instantiate(aldousBroderAlgorithmPrefab).GetComponent<AldousBroderAlgorithm>();
+        GameObject gameObject = Instantiate(aldousBroderAlgorithmPrefab);
+        AldousBroderAlgorithm a = gameObject.GetComponent<AldousBroderAlgorithm>();
         a.Initialize((int)Math.Floor(1 / ScaleMazeSize * 18), (int)Math.Floor(1 / ScaleMazeSize * 10));
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Generates all obstacles
-        ObstacleGeneration obstacleGeneration = Instantiate(obstacleGenerationPrefab).GetComponent<ObstacleGeneration>();
+        gameObject = Instantiate(obstacleGenerationPrefab);
+        ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
         obstacleGeneration.InsertObstacles();
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         // Dijkstra test
-        ModifiedDijkstraAlgorithm dijkstra1 = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
+        gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+        ModifiedDijkstraAlgorithm dijkstra1 = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
         if (ScaleMazeSize == 0.5f)
         {
             dijkstra1.Initialize(AllNodes[0], AllNodes[719]);
@@ -100,22 +120,34 @@ public class MainScript : MonoBehaviour
         dijkstra1.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra1.ShortestDistance;
+        MainScript.OptimalStepCount = dijkstra1.ShortestDistance;
         Debug.Log("Distance after inserting obstacles: " + dijkstra1.ShortestDistance);
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
     }
 
     public void LoadNextLevel()
     {
         CurrentLevelCount++;
-        foreach(GameObject gameObject in GarbageCollectorGameObjects)
+        GameObject levelCounterText = GameObject.Find("LevelCounter");
+        levelCounterText.GetComponent<UnityEngine.UI.Text>().text = "Level : " + CurrentLevelCount;
+        foreach (GameObject gameObject in GarbageCollectorGameObjects)
         {
             Destroy(gameObject);
         }
-        InitializeGame();
+        if(CurrentLevelCount < 4)
+        {
+            InitializeGame(CurrentLevelCount, 1);
+        } else
+        {
+            InitializeGame(CurrentLevelCount - 4, 0.5f);
+        }
+        
     }
 
     /**
@@ -126,17 +158,5 @@ public class MainScript : MonoBehaviour
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
-    }
-
-    public static void InitializeRandomScaleAndDifficulty()
-    {
-        NumberOfButtons = Random.Range(0, 4);
-        int randomScale = Random.Range(0, 2);
-        if(randomScale == 0) {
-            ScaleMazeSize = 1;
-        } else
-        {
-            ScaleMazeSize = 0.5f;
-        }
     }
 }
