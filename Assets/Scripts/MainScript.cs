@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 public class MainScript : MonoBehaviour
 {
     //The width of the maze.
@@ -42,11 +43,10 @@ public class MainScript : MonoBehaviour
     //The prefab of generating the obstacles
     public GameObject obstacleGenerationPrefab;
 
-
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
-
+        LoadMaze();
         //Initializes the static variables of the game.
         CurrentState = 0;
         CurrentStepCount = 0;
@@ -96,5 +96,14 @@ public class MainScript : MonoBehaviour
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
+    }
+
+    public void LoadMaze()
+    {
+        if(SliderText.difficultyValue != 1)
+        {
+            Debug.Log("Application Quit");
+            Application.Quit();
+        }
     }
 }
