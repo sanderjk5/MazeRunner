@@ -17,6 +17,7 @@ public class EndGameController : MonoBehaviour
     }
 
     void OnTriggerEnter2D(Collider2D other){
-        Application.Quit();
+        Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
+        ruby.constraints = RigidbodyConstraints2D.FreezeAll;
     }
 }
