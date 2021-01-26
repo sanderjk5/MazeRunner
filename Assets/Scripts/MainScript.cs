@@ -30,6 +30,8 @@ public class MainScript : MonoBehaviour
     public static int CurrentStepCount { get; set; }
     //The optimal distance between start and end
     public static int ShortestDistance { get; private set; }
+    //The optimal path between start and end
+    public static List<NodeController> ShortestPath { get; private set; }
 
     public static float ScaleMazeSize { get; set; }
 
@@ -107,6 +109,7 @@ public class MainScript : MonoBehaviour
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra1.ShortestDistance;
         ShortestDistance = dijkstra1.ShortestDistance;
+        ShortestPath = dijkstra1.ShortestPath;
         Debug.Log("Distance after inserting obstacles: " + dijkstra1.ShortestDistance);
 
         //Creates all walls of the maze.
