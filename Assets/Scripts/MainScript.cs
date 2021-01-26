@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using Random = UnityEngine.Random;
+
 public class MainScript : MonoBehaviour
 {
     //The width of the maze.
@@ -27,6 +30,7 @@ public class MainScript : MonoBehaviour
     public static int CurrentState { get; set; }
     //The current number of steps of the player.
     public static int CurrentStepCount { get; set; }
+    public static float ScaleMazeSize { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -60,23 +64,43 @@ public class MainScript : MonoBehaviour
             new Color(255, 0, 0),
         };
 
+        //Initializes number of obstacles/buttons and the scale of the maze.
+        NumberOfButtons = 3;
+        //ScaleMazeSize = 0.5f: 36X20 Maze, ScaleMazeSize = 1f: 18X10 Maze
+        ScaleMazeSize = 0.5f;
+        NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
+        GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
+
         //Generates the labyrinth
         AldousBroderAlgorithm a = Instantiate(aldousBroderAlgorithmPrefab).GetComponent<AldousBroderAlgorithm>();
-        a.Initialize(18, 10, 3);
+        a.Initialize((int) Math.Floor(1/ScaleMazeSize * 18), (int) Math.Floor(1 / ScaleMazeSize * 10));
 
         // Dijkstra test
         ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
-        dijkstra.Initialize(AllNodes[0], AllNodes[179]);
+        if(ScaleMazeSize == 0.5f)
+        {
+            dijkstra.Initialize(AllNodes[0], AllNodes[719]);
+        } else
+        {
+            dijkstra.Initialize(AllNodes[0], AllNodes[179]);
+        }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         Debug.Log("Distance before inserting obstacles: " + dijkstra.ShortestDistance);
 
         //Generates all obstacles
         ObstacleGeneration obstacleGeneration = Instantiate(obstacleGenerationPrefab).GetComponent<ObstacleGeneration>();
-        obstacleGeneration.InsertObstacles(3);
+        obstacleGeneration.InsertObstacles();
 
         // Dijkstra test
         ModifiedDijkstraAlgorithm dijkstra1 = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
-        dijkstra1.Initialize(AllNodes[0], AllNodes[179]);
+        if (ScaleMazeSize == 0.5f)
+        {
+            dijkstra1.Initialize(AllNodes[0], AllNodes[719]);
+        }
+        else
+        {
+            dijkstra1.Initialize(AllNodes[0], AllNodes[179]);
+        }
         dijkstra1.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra1.ShortestDistance;
