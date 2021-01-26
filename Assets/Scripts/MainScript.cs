@@ -26,6 +26,8 @@ public class MainScript : MonoBehaviour
     public static int CurrentState { get; set; }
     //The current number of steps of the player.
     public static int CurrentStepCount { get; set; }
+    //The optimal distance between start and end
+    public static int ShortestDistance { get; private set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -80,6 +82,7 @@ public class MainScript : MonoBehaviour
         dijkstra1.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra1.ShortestDistance;
+        ShortestDistance = dijkstra1.ShortestDistance;
         Debug.Log("Distance after inserting obstacles: " + dijkstra1.ShortestDistance);
 
         //Creates all walls of the maze.
