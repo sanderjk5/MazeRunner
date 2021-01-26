@@ -58,17 +58,22 @@ public class EndGameController : MonoBehaviour
     // Show the optimal path in the game scene
     void ShowOptimalPath(List<NodeController> optimalPath)
     {
+        // Get all buttons
+        ButtonController[] buttons = FindObjectsOfType<ButtonController>();
+
+        // Compute eacch x and y value of the optimal path edges
         for (int i = 0; i < optimalPath.Count - 1; i++)
         {
-            float thisX = optimalPath[i].GetComponent<NodeController>().transform.position.x;
-            float thisY = optimalPath[i].GetComponent<NodeController>().transform.position.y;
+            float thisX = optimalPath[i].gameObject.transform.position.x;
+            float thisY = optimalPath[i].gameObject.transform.position.y;
 
-            float nextX = optimalPath[i + 1].GetComponent<NodeController>().transform.position.x;
-            float nextY = optimalPath[i + 1].GetComponent<NodeController>().transform.position.y;
+            float nextX = optimalPath[i + 1].gameObject.transform.position.x;
+            float nextY = optimalPath[i + 1].gameObject.transform.position.y;
 
             float pathX = (nextX + thisX) / 2;
             float pathY = (nextY + thisY) / 2;
 
+            // Create path with correct orientation
             if (pathY == nextY)
             {
                 Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.identity);
@@ -76,6 +81,22 @@ public class EndGameController : MonoBehaviour
             else if (pathX == nextX)
             {
                 Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.Euler(0, 0, 90));
+            }
+
+            // If a node is a button, search the correct obstacle and decrease the transparency
+            if (optimalPath[i].Button != -1)
+            {
+                foreach (ButtonController button in buttons)
+                {
+                    int pos = System.Array.IndexOf(buttons, button);
+                    if (button.CorrespondingNode.Id == optimalPath[i].Id)
+                    {
+                        EdgeController edge = button.CorrespondingEdge;
+                        edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1, 0.03f);
+                        Color edgeColor = MainScript.Colors[button.CorrespondingNode.Button];
+                        edge.gameObject.GetComponent<SpriteRenderer>().color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.3f);
+                    }
+                }
             }
         }
     }
