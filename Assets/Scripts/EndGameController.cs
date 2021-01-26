@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EndGameController : MonoBehaviour
 {
+    public GameObject optimalPathPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,9 @@ public class EndGameController : MonoBehaviour
         GameObject scoreObject = FindInActiveObject("Score");
         scoreObject.SetActive(true);
         scoreObject.GetComponent<UnityEngine.UI.Text>().text = "Score : " + score;
+
+        // Show the optimal path
+        ShowOptimalPath(MainScript.ShortestPath);
     }
 
     // Find an inactive GameObject by name
@@ -48,5 +53,30 @@ public class EndGameController : MonoBehaviour
             }
         }
         return null;
+    }
+
+    // Show the optimal path in the game scene
+    void ShowOptimalPath(List<NodeController> optimalPath)
+    {
+        for (int i = 0; i < optimalPath.Count - 1; i++)
+        {
+            float thisX = optimalPath[i].GetComponent<NodeController>().transform.position.x;
+            float thisY = optimalPath[i].GetComponent<NodeController>().transform.position.y;
+
+            float nextX = optimalPath[i + 1].GetComponent<NodeController>().transform.position.x;
+            float nextY = optimalPath[i + 1].GetComponent<NodeController>().transform.position.y;
+
+            float pathX = (nextX + thisX) / 2;
+            float pathY = (nextY + thisY) / 2;
+
+            if (pathY == nextY)
+            {
+                Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.identity);
+            }
+            else if (pathX == nextX)
+            {
+                Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.Euler(0, 0, 90));
+            }
+        }
     }
 }
