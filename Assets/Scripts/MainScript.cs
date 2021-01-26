@@ -64,7 +64,9 @@ public class MainScript : MonoBehaviour
         };
 
         //Initializes number of obstacles/buttons and the scale of the maze.
-        InitializeRandomScaleAndDifficulty();
+        NumberOfButtons = 3;
+        //ScaleMazeSize = 0.5f: 36X20 Maze, ScaleMazeSize = 1f: 18X10 Maze
+        ScaleMazeSize = 0.5f;
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
@@ -117,17 +119,5 @@ public class MainScript : MonoBehaviour
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
-    }
-
-    public static void InitializeRandomScaleAndDifficulty()
-    {
-        NumberOfButtons = Random.Range(0, 4);
-        int randomScale = Random.Range(0, 2);
-        if(randomScale == 0) {
-            ScaleMazeSize = 1;
-        } else
-        {
-            ScaleMazeSize = 0.5f;
-        }
     }
 }
