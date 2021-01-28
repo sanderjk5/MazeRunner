@@ -38,9 +38,10 @@ public class EndLevelGameController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         timerIsRunning = false;
-        timeRemaining -= Math.Max(0, MainScript.CurrentStepCount - MainScript.OptimalStepCount);
+        timeRemaining -= 1.5f * Math.Max(0, MainScript.CurrentStepCount - MainScript.OptimalStepCount);
+        if (timeRemaining < 0) timeRemaining = 0;
         DisplayTime(timeRemaining);
-        if(timeRemaining <= 0)
+        if(timeRemaining == 0)
         {
             Application.Quit();
         }

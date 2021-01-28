@@ -83,9 +83,10 @@ public class MainScript : MonoBehaviour
         //Set all possible colors (at least as many as NumberOfObstacles)
         Colors = new List<Color>
         {
-            new Color(0, 255, 0),
-            new Color(0, 0, 255),
-            new Color(255, 0, 0),
+            new Color(0, 1, 0),
+            new Color(0, 0, 1),
+            new Color(1, 0, 0),
+            new Color(1, 1, 0)
         };
 
         //Initializes number of obstacles/buttons and the scale of the maze.
@@ -146,7 +147,7 @@ public class MainScript : MonoBehaviour
             InitializeGame();
         } else
         {
-            NumberOfButtons = CurrentLevelCount - 4;
+            NumberOfButtons = CurrentLevelCount - 3;
             ScaleMazeSize = 0.5f;
             InitializeGame();
         }
@@ -188,19 +189,19 @@ public class MainScript : MonoBehaviour
                 break;
             case 5:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 0;
+                NumberOfButtons = 1;
                 break;
             case 6:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 1;
+                NumberOfButtons = 2;
                 break;
             case 7:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 2;
+                NumberOfButtons = 3;
                 break;
             case 8:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 3;
+                NumberOfButtons = 4;
                 break;
             default:
                Debug.Log("No Valid Difficulty Found");
