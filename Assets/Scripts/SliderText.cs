@@ -5,7 +5,7 @@ using TMPro;
 public class SliderText : MonoBehaviour
 {
     [SerializeField]
-    [Tooltip("The text shown will be formatted using this string.  {0} is replaced with the actual value")]
+    [Tooltip("The text shown will be formatted using this string.")]
     private string formatText = "";
 
     private TextMeshProUGUI tmproText;
