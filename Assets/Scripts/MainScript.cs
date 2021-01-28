@@ -56,10 +56,24 @@ public class MainScript : MonoBehaviour
     {
         //LoadMaze();
         //if (SliderText.DifficultyValue == 0) return;
-        
+        enableUserInput = false;
+        if (gameObject.scene.name.Equals("LevelGameScene"))
+        {
+            CurrentLevelCount = 0;
+            GarbageCollectorGameObjects = new List<GameObject>();
+            NumberOfButtons = 0;
+            ScaleMazeSize = 1;
+            InitializeGame();
+        }
+        else
+        {
+            CurrentLevelCount = -1;
+            ApplyDifficulty();
+            InitializeGame();
+        }
     }
 
-    public void InitializeGame(int numberOfButtons, float scaleMazeSize)
+    public void InitializeGame()
     {
         //Initializes the static variables of the game.
         CurrentState = 0;
@@ -75,7 +89,6 @@ public class MainScript : MonoBehaviour
         };
 
         //Initializes number of obstacles/buttons and the scale of the maze.
-        ApplyDifficulty();
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
@@ -128,10 +141,14 @@ public class MainScript : MonoBehaviour
         }
         if(CurrentLevelCount < 4)
         {
-            InitializeGame(CurrentLevelCount, 1);
+            NumberOfButtons = CurrentLevelCount;
+            ScaleMazeSize = 1;
+            InitializeGame();
         } else
         {
-            InitializeGame(CurrentLevelCount - 4, 0.5f);
+            NumberOfButtons = CurrentLevelCount - 4;
+            ScaleMazeSize = 0.5f;
+            InitializeGame();
         }
         
     }
