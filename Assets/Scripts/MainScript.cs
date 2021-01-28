@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System;
 using Random = UnityEngine.Random;
 
@@ -50,10 +52,11 @@ public class MainScript : MonoBehaviour
     //The prefab of generating the obstacles
     public GameObject obstacleGenerationPrefab;
 
-
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        //LoadMaze();
+        //if (SliderText.DifficultyValue == 0) return;
 
         //Initializes the static variables of the game.
         CurrentState = 0;
@@ -69,9 +72,7 @@ public class MainScript : MonoBehaviour
         };
 
         //Initializes number of obstacles/buttons and the scale of the maze.
-        NumberOfButtons = 3;
-        //ScaleMazeSize = 0.5f: 36X20 Maze, ScaleMazeSize = 1f: 18X10 Maze
-        ScaleMazeSize = 0.5f;
+        ApplyDifficulty();
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
@@ -126,5 +127,50 @@ public class MainScript : MonoBehaviour
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
+    }
+
+    /**
+     * Adjusts scale and number of buttons of the maze to the difficulty selected in main menu.
+     */
+    public void ApplyDifficulty()
+    {
+        switch (SliderText.DifficultyValue)
+        {
+            case 1:
+                ScaleMazeSize = 1f;
+                NumberOfButtons = 0;
+                break;
+            case 2:
+                ScaleMazeSize = 1f;
+                NumberOfButtons = 1;
+                break;
+            case 3:
+                ScaleMazeSize = 1f;
+                NumberOfButtons = 2;
+                break;
+            case 4:
+                ScaleMazeSize = 1f;
+                NumberOfButtons = 3;
+                break;
+            case 5:
+                ScaleMazeSize = 0.5f;
+                NumberOfButtons = 0;
+                break;
+            case 6:
+                ScaleMazeSize = 0.5f;
+                NumberOfButtons = 1;
+                break;
+            case 7:
+                ScaleMazeSize = 0.5f;
+                NumberOfButtons = 2;
+                break;
+            case 8:
+                ScaleMazeSize = 0.5f;
+                NumberOfButtons = 3;
+                break;
+            default:
+               Debug.Log("No Valid Difficulty Found");
+                break;
+        }
     }
 }
