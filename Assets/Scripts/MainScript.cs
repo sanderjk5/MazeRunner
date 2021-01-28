@@ -50,7 +50,9 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
-        LoadMaze();
+        //LoadMaze();
+        //if (SliderText.DifficultyValue == 0) return;
+
         //Initializes the static variables of the game.
         CurrentState = 0;
         CurrentStepCount = 0;
@@ -124,7 +126,7 @@ public class MainScript : MonoBehaviour
 
     public void LoadMaze()
     {
-        if(SliderText.difficultyValue != 1)
+        if(SliderText.DifficultyValue != 1)
         {
             Debug.Log("Application Quit");
             Application.Quit();

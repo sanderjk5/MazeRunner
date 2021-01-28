@@ -9,13 +9,13 @@ public class SliderText : MonoBehaviour
     private string formatText = "";
 
     private TextMeshProUGUI tmproText;
-    public static float difficultyValue;
+    public static float DifficultyValue { get; set; }
 
     private void Start()
     {
         tmproText = GetComponent<TextMeshProUGUI>();
         tmproText.text = "Beginner";
-        difficultyValue = 1;
+        DifficultyValue = 1;
         GetComponentInParent<Slider>().onValueChanged.AddListener(HandleValueChanged);
     }
 
@@ -50,6 +50,6 @@ public class SliderText : MonoBehaviour
                 break;
         }
 
-        difficultyValue = value;
+        DifficultyValue = value;
     }
 }
