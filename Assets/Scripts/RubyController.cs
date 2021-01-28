@@ -17,7 +17,7 @@ public class RubyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MainScript.enableUserInput)
+        if (MainScript.EnableUserInput)
         {
             horizontal = Input.GetAxis("Horizontal");
             vertical = Input.GetAxis("Vertical");

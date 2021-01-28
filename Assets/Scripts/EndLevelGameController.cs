@@ -48,7 +48,7 @@ public class EndLevelGameController : MonoBehaviour
         if(MainScript.CurrentLevelCount < 7)
         {
             GameObject.Find("MainScript").GetComponent<MainScript>().LoadNextLevel();
-            MainScript.enableUserInput = true;
+            MainScript.EnableUserInput = true;
             timerIsRunning = true;
         } else
         {

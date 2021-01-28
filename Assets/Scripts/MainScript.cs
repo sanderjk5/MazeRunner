@@ -34,7 +34,7 @@ public class MainScript : MonoBehaviour
     public static int CurrentLevelCount { get; set; }
     public static List<GameObject> GarbageCollectorGameObjects { get; set; }
     public static int OptimalStepCount { get; set; }
-    public static bool enableUserInput { get; set; }
+    public static bool EnableUserInput { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -56,7 +56,7 @@ public class MainScript : MonoBehaviour
     {
         //LoadMaze();
         //if (SliderText.DifficultyValue == 0) return;
-        enableUserInput = false;
+        EnableUserInput = false;
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
             CurrentLevelCount = 0;
@@ -78,6 +78,7 @@ public class MainScript : MonoBehaviour
         //Initializes the static variables of the game.
         CurrentState = 0;
         CurrentStepCount = 0;
+        UpdateStepCounter();
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
         //Set all possible colors (at least as many as NumberOfObstacles)
@@ -128,7 +129,7 @@ public class MainScript : MonoBehaviour
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
-        enableUserInput = true;
+        EnableUserInput = true;
     }
 
     public void LoadNextLevel()
