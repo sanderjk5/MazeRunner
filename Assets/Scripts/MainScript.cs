@@ -56,6 +56,8 @@ public class MainScript : MonoBehaviour
     {
         //LoadMaze();
         //if (SliderText.DifficultyValue == 0) return;
+        
+    }
 
     public void InitializeGame(int numberOfButtons, float scaleMazeSize)
     {
