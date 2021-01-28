@@ -233,7 +233,7 @@ public class ObstacleGeneration : MonoBehaviour
     {
         if(MainScript.ScaleMazeSize == 0.5f)
         {
-            return 45;
+            return 50;
         } else
         {
             return 25;

@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
-using Random = UnityEngine.Random;
 
 public class MainScript : MonoBehaviour
 {
@@ -30,10 +26,15 @@ public class MainScript : MonoBehaviour
     public static int CurrentState { get; set; }
     //The current number of steps of the player.
     public static int CurrentStepCount { get; set; }
+    //Scales the maze (1: 18X10, 0.5f: 36X20)
     public static float ScaleMazeSize { get; set; }
+    //The current level of the level game modus.
     public static int CurrentLevelCount { get; set; }
+    //Contains all gameobjects. Deletes them after every level.
     public static List<GameObject> GarbageCollectorGameObjects { get; set; }
+    //The optimal amount of steps to exit of the maze.
     public static int OptimalStepCount { get; set; }
+    //Enables/Disables the user input.
     public static bool EnableUserInput { get; set; }
 
     //The prefab of the walls.
@@ -57,8 +58,11 @@ public class MainScript : MonoBehaviour
         //LoadMaze();
         //if (SliderText.DifficultyValue == 0) return;
         EnableUserInput = false;
+
+        //Initializes the NumberOfButtons and the ScaleMazeSize
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
+            //Level game modus
             CurrentLevelCount = 0;
             GarbageCollectorGameObjects = new List<GameObject>();
             NumberOfButtons = 0;
@@ -67,12 +71,16 @@ public class MainScript : MonoBehaviour
         }
         else
         {
+            //Normal game modus
             CurrentLevelCount = -1;
             ApplyDifficulty();
             InitializeGame();
         }
     }
 
+    /**
+     * <summary>Initalizes the game. Creates the maze and adds the obstacles.</summary>
+     */
     public void InitializeGame()
     {
         //Initializes the static variables of the game.
@@ -90,8 +98,9 @@ public class MainScript : MonoBehaviour
             new Color(1, 1, 0)
         };
 
-        //Initializes number of obstacles/buttons and the scale of the maze.
+        //Initializes the number of states.
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
+        //Moves the player to the start point.
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
         //Generates the labyrinth
@@ -106,22 +115,22 @@ public class MainScript : MonoBehaviour
         obstacleGeneration.InsertObstacles();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
-        // Dijkstra test
+        //Calculates the optimal path and distance.
         gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
-        ModifiedDijkstraAlgorithm dijkstra1 = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+        ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
         if (ScaleMazeSize == 0.5f)
         {
-            dijkstra1.Initialize(AllNodes[0], AllNodes[719]);
+            dijkstra.Initialize(AllNodes[0], AllNodes[719]);
         }
         else
         {
-            dijkstra1.Initialize(AllNodes[0], AllNodes[179]);
+            dijkstra.Initialize(AllNodes[0], AllNodes[179]);
         }
-        dijkstra1.CalculateModifiedDijkstraAlgorithm();
+        dijkstra.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
-        stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra1.ShortestDistance;
-        MainScript.OptimalStepCount = dijkstra1.ShortestDistance;
-        Debug.Log("Distance after inserting obstacles: " + dijkstra1.ShortestDistance);
+        stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra.ShortestDistance;
+        OptimalStepCount = dijkstra.ShortestDistance;
+        Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Creates all walls of the maze.
@@ -129,18 +138,28 @@ public class MainScript : MonoBehaviour
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
+
+        //Enables the user input.
         EnableUserInput = true;
     }
 
+    /**
+     * <summary>Loads the next level of the level game modus.</summary>
+     */
     public void LoadNextLevel()
     {
+        //Increases the level count.
         CurrentLevelCount++;
         GameObject levelCounterText = GameObject.Find("LevelCounter");
         levelCounterText.GetComponent<UnityEngine.UI.Text>().text = "Level : " + CurrentLevelCount;
+
+        //Destroys all gameobjects of the previous level.
         foreach (GameObject gameObject in GarbageCollectorGameObjects)
         {
             Destroy(gameObject);
         }
+
+        //Sets the new number of buttons and the scale of the maze.
         if(CurrentLevelCount < 4)
         {
             NumberOfButtons = CurrentLevelCount;
