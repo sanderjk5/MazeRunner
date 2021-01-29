@@ -76,11 +76,13 @@ public class EndGameController : MonoBehaviour
             // Create path with correct orientation
             if (pathY == nextY)
             {
-                Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.identity);
+                GameObject path = Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.identity);
+                path.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.1f * MainScript.ScaleMazeSize);
             }
             else if (pathX == nextX)
             {
-                Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.Euler(0, 0, 90));
+                GameObject path = Instantiate(optimalPathPrefab, new Vector3(pathX, pathY), Quaternion.Euler(0, 0, 90));
+                path.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.1f * MainScript.ScaleMazeSize);
             }
 
             // If a node is a button, search the correct obstacle and decrease the transparency
@@ -92,7 +94,8 @@ public class EndGameController : MonoBehaviour
                     if (button.CorrespondingNode.Id == optimalPath[i].Id)
                     {
                         EdgeController edge = button.CorrespondingEdge;
-                        edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1, 0.03f);
+                        //edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1, 0.03f);
+                        edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.03f * MainScript.ScaleMazeSize);
                         Color edgeColor = MainScript.Colors[button.CorrespondingNode.Button];
                         edge.gameObject.GetComponent<SpriteRenderer>().color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.3f);
                     }
