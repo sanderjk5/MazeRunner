@@ -170,7 +170,6 @@ GameObject:
   - component: {fileID: 88963860}
   - component: {fileID: 88963859}
   - component: {fileID: 88963858}
-  - component: {fileID: 88963861}
   m_Layer: 5
   m_Name: DifficultyValueText
   m_TagString: Untagged
@@ -306,29 +305,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 88963856}
   m_CullTransparentMesh: 0
---- !u!114 &88963861
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 88963856}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 876189f6a44add843b2010901d7933cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  createWallsPrefab: {fileID: 3996216593411326060, guid: ed80751fca8c1fc42bb3da13d9ce24d3,
-    type: 3}
-  nodePrefab: {fileID: 7492467521080932995, guid: a9d74920ff9b4d743b3c277a3501034f,
-    type: 3}
-  edgePrefab: {fileID: 7490493649719249067, guid: 935231388ca6b3648aef41543e7357e8,
-    type: 3}
-  aldousBroderAlgorithmPrefab: {fileID: 4302044536870975430, guid: f78ed06a5bb9926489738b7819f17f13,
-    type: 3}
-  modifiedDijkstraAlgorithmPrefab: {fileID: 0}
-  buttonPrefab: {fileID: 0}
-  obstacleGenerationPrefab: {fileID: 0}
 --- !u!1 &104785431
 GameObject:
   m_ObjectHideFlags: 0
