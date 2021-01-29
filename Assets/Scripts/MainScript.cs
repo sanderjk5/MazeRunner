@@ -1,10 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
-using Random = UnityEngine.Random;
 
 public class MainScript : MonoBehaviour
 {
@@ -30,7 +26,16 @@ public class MainScript : MonoBehaviour
     public static int CurrentState { get; set; }
     //The current number of steps of the player.
     public static int CurrentStepCount { get; set; }
+    //Scales the maze (1: 18X10, 0.5f: 36X20)
     public static float ScaleMazeSize { get; set; }
+    //The current level of the level game modus.
+    public static int CurrentLevelCount { get; set; }
+    //Contains all gameobjects. Deletes them after every level.
+    public static List<GameObject> GarbageCollectorGameObjects { get; set; }
+    //The optimal amount of steps to exit of the maze.
+    public static int OptimalStepCount { get; set; }
+    //Enables/Disables the user input.
+    public static bool EnableUserInput { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -52,64 +57,121 @@ public class MainScript : MonoBehaviour
     {
         //LoadMaze();
         //if (SliderText.DifficultyValue == 0) return;
+        EnableUserInput = false;
 
+        //Initializes the NumberOfButtons and the ScaleMazeSize
+        if (gameObject.scene.name.Equals("LevelGameScene"))
+        {
+            //Level game modus
+            CurrentLevelCount = 0;
+            GarbageCollectorGameObjects = new List<GameObject>();
+            NumberOfButtons = 0;
+            ScaleMazeSize = 1;
+            InitializeGame();
+        }
+        else
+        {
+            //Normal game modus
+            CurrentLevelCount = -1;
+            ApplyDifficulty();
+            InitializeGame();
+        }
+    }
+
+    /**
+     * <summary>Initalizes the game. Creates the maze and adds the obstacles.</summary>
+     */
+    public void InitializeGame()
+    {
         //Initializes the static variables of the game.
         CurrentState = 0;
         CurrentStepCount = 0;
+        UpdateStepCounter();
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
         //Set all possible colors (at least as many as NumberOfObstacles)
         Colors = new List<Color>
         {
-            new Color(0, 255, 0),
-            new Color(0, 0, 255),
-            new Color(255, 0, 0),
+            new Color(0, 1, 0),
+            new Color(0, 0, 1),
+            new Color(1, 0, 0),
+            new Color(1, 1, 0)
         };
 
-        //Initializes number of obstacles/buttons and the scale of the maze.
-        ApplyDifficulty();
+        //Initializes the number of states.
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
+        //Moves the player to the start point.
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
 
         //Generates the labyrinth
-        AldousBroderAlgorithm a = Instantiate(aldousBroderAlgorithmPrefab).GetComponent<AldousBroderAlgorithm>();
-        a.Initialize((int) Math.Floor(1/ScaleMazeSize * 18), (int) Math.Floor(1 / ScaleMazeSize * 10));
+        GameObject gameObject = Instantiate(aldousBroderAlgorithmPrefab);
+        AldousBroderAlgorithm a = gameObject.GetComponent<AldousBroderAlgorithm>();
+        a.Initialize((int)Math.Floor(1 / ScaleMazeSize * 18), (int)Math.Floor(1 / ScaleMazeSize * 10));
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
-        // Dijkstra test
-        ModifiedDijkstraAlgorithm dijkstra = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
-        if(ScaleMazeSize == 0.5f)
+        //Generates all obstacles
+        gameObject = Instantiate(obstacleGenerationPrefab);
+        ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
+        obstacleGeneration.InsertObstacles();
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
+
+        //Calculates the optimal path and distance.
+        gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+        ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+        if (ScaleMazeSize == 0.5f)
         {
             dijkstra.Initialize(AllNodes[0], AllNodes[719]);
-        } else
+        }
+        else
         {
             dijkstra.Initialize(AllNodes[0], AllNodes[179]);
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
-        Debug.Log("Distance before inserting obstacles: " + dijkstra.ShortestDistance);
-
-        //Generates all obstacles
-        ObstacleGeneration obstacleGeneration = Instantiate(obstacleGenerationPrefab).GetComponent<ObstacleGeneration>();
-        obstacleGeneration.InsertObstacles();
-
-        // Dijkstra test
-        ModifiedDijkstraAlgorithm dijkstra1 = Instantiate(modifiedDijkstraAlgorithmPrefab).GetComponent<ModifiedDijkstraAlgorithm>();
-        if (ScaleMazeSize == 0.5f)
-        {
-            dijkstra1.Initialize(AllNodes[0], AllNodes[719]);
-        }
-        else
-        {
-            dijkstra1.Initialize(AllNodes[0], AllNodes[179]);
-        }
-        dijkstra1.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
-        stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra1.ShortestDistance;
-        Debug.Log("Distance after inserting obstacles: " + dijkstra1.ShortestDistance);
+        stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra.ShortestDistance;
+        OptimalStepCount = dijkstra.ShortestDistance;
+        Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
         CreateWalls createWallsScript = createWallsObject.GetComponent<CreateWalls>();
         createWallsScript.CreateAllWalls();
+        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
+
+        //Enables the user input.
+        EnableUserInput = true;
+    }
+
+    /**
+     * <summary>Loads the next level of the level game modus.</summary>
+     */
+    public void LoadNextLevel()
+    {
+        //Increases the level count.
+        CurrentLevelCount++;
+        GameObject levelCounterText = GameObject.Find("LevelCounter");
+        levelCounterText.GetComponent<UnityEngine.UI.Text>().text = "Level : " + CurrentLevelCount;
+
+        //Destroys all gameobjects of the previous level.
+        foreach (GameObject gameObject in GarbageCollectorGameObjects)
+        {
+            Destroy(gameObject);
+        }
+
+        //Sets the new number of buttons and the scale of the maze.
+        if(CurrentLevelCount < 4)
+        {
+            NumberOfButtons = CurrentLevelCount;
+            ScaleMazeSize = 1;
+            InitializeGame();
+        } else
+        {
+            NumberOfButtons = CurrentLevelCount - 3;
+            ScaleMazeSize = 0.5f;
+            InitializeGame();
+        }
+        
     }
 
     /**
@@ -147,19 +209,19 @@ public class MainScript : MonoBehaviour
                 break;
             case 5:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 0;
+                NumberOfButtons = 1;
                 break;
             case 6:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 1;
+                NumberOfButtons = 2;
                 break;
             case 7:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 2;
+                NumberOfButtons = 3;
                 break;
             case 8:
                 ScaleMazeSize = 0.5f;
-                NumberOfButtons = 3;
+                NumberOfButtons = 4;
                 break;
             default:
                Debug.Log("No Valid Difficulty Found");
