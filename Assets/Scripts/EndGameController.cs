@@ -24,7 +24,7 @@ public class EndGameController : MonoBehaviour
         ruby.constraints = RigidbodyConstraints2D.FreezeAll;
 
         // Compute and show score
-        int optimalSteps = MainScript.ShortestDistance;
+        int optimalSteps = MainScript.OptimalStepCount;
         int stepsUsed = MainScript.CurrentStepCount;
         int score = 100 - (stepsUsed - optimalSteps);
 
