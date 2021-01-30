@@ -31,7 +31,7 @@ public class EndGameMenu : MonoBehaviour
         int score = ComputePlayerScore();
 
         // Show the score of the player
-        endGameMenuUI.GetComponent<TextMeshProUGUI>().text = "Your Score:\n" + score.ToString();
+        GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = "Your Score:\n" + score.ToString();
     }
 
     // Compute the score of a player
