@@ -17,8 +17,11 @@ public class RubyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontal = Input.GetAxis("Horizontal");
-        vertical = Input.GetAxis("Vertical");
+        if (MainScript.EnableUserInput)
+        {
+            horizontal = Input.GetAxis("Horizontal");
+            vertical = Input.GetAxis("Vertical");
+        }
     }
 
     void FixedUpdate()
@@ -43,6 +46,10 @@ public class RubyController : MonoBehaviour
         {
             gameObject.transform.position = new Vector3(-8.75f, 4.75f);
             gameObject.transform.localScale = new Vector3(0.25f, 0.25f);
+        } else
+        {
+            gameObject.transform.position = new Vector3(-8.5f, 4.5f);
+            gameObject.transform.localScale = new Vector3(0.5f, 0.5f);
         }
         
     }

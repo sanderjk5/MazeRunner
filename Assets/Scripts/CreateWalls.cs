@@ -25,14 +25,25 @@ public class CreateWalls : MonoBehaviour
         //Upper and lower bound of the labyrinth.
         for (int i = -MainScript.Width / 2; i < MainScript.Width / 2; i++)
         {
-            Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, MainScript.Height / 2 * MainScript.ScaleMazeSize, 0), Quaternion.identity).transform.localScale = newScale;
-            if(i != (MainScript.Width / 2) - 1) Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, -MainScript.Height / 2 * MainScript.ScaleMazeSize, 0), Quaternion.identity).transform.localScale = newScale;
+            GameObject gameObject = Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, MainScript.Height / 2 * MainScript.ScaleMazeSize, 0), Quaternion.identity);
+            gameObject.transform.localScale = newScale;
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
+            if (i != (MainScript.Width / 2) - 1)
+            {
+                gameObject = Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, -MainScript.Height / 2 * MainScript.ScaleMazeSize, 0), Quaternion.identity);
+                gameObject.transform.localScale = newScale;
+                if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
+            }
         }
         //Right and left bound of the labyrinth.
         for (int i = -MainScript.Height / 2; i < MainScript.Height / 2; i++)
         {
-            Instantiate(wallPrefab, new Vector3(-MainScript.Width / 2 * MainScript.ScaleMazeSize, (i + 0.5f) * MainScript.ScaleMazeSize, 0), Quaternion.Euler(0, 0, 90)).transform.localScale = newScale;
-            Instantiate(wallPrefab, new Vector3(MainScript.Width / 2 * MainScript.ScaleMazeSize, (i + 0.5f) * MainScript.ScaleMazeSize, 0), Quaternion.Euler(0, 0, 90)).transform.localScale = newScale;
+            GameObject gameObject = Instantiate(wallPrefab, new Vector3(-MainScript.Width / 2 * MainScript.ScaleMazeSize, (i + 0.5f) * MainScript.ScaleMazeSize, 0), Quaternion.Euler(0, 0, 90));
+            gameObject.transform.localScale = newScale;
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
+            gameObject = Instantiate(wallPrefab, new Vector3(MainScript.Width / 2 * MainScript.ScaleMazeSize, (i + 0.5f) * MainScript.ScaleMazeSize, 0), Quaternion.Euler(0, 0, 90));
+            gameObject.transform.localScale = newScale;
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
         }
 
         //All horizontal walls.
@@ -43,7 +54,12 @@ public class CreateWalls : MonoBehaviour
             for (int j = MainScript.Height / 2 - 1; j > -MainScript.Height / 2; j--)
             {
                 //Checks if a edge exits between these nodes.
-                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, j * MainScript.ScaleMazeSize, 0), Quaternion.identity).transform.localScale = newScale;
+                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null)
+                {
+                    GameObject gameObject = Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, j * MainScript.ScaleMazeSize, 0), Quaternion.identity);
+                    gameObject.transform.localScale = newScale;
+                    if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
+                }
                 lastNode = currentNode;
                 currentNode += 1;
             }
@@ -56,7 +72,12 @@ public class CreateWalls : MonoBehaviour
             for (int i = -MainScript.Width / 2 + 1; i < MainScript.Width / 2; i++)
             {
                 //Checks if a edge exits between these nodes.
-                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null) Instantiate(wallPrefab, new Vector3(i * MainScript.ScaleMazeSize, (j - 0.5f) * MainScript.ScaleMazeSize, 0), Quaternion.Euler(0, 0, 90)).transform.localScale = newScale;
+                if (MainScript.AllNodes[lastNode].GetEdgeToNode(MainScript.AllNodes[currentNode]) == null)
+                {
+                    GameObject gameObject = Instantiate(wallPrefab, new Vector3(i * MainScript.ScaleMazeSize, (j - 0.5f) * MainScript.ScaleMazeSize, 0), Quaternion.Euler(0, 0, 90));
+                    gameObject.transform.localScale = newScale;
+                    if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
+                }
                 lastNode = currentNode;
                 currentNode += MainScript.Height;
             }
