@@ -34,7 +34,6 @@ public class EndLevelGameController : MonoBehaviour
             {
                 timeRemaining = 0;
                 timerIsRunning = false;
-                //DisplayTime(timeRemaining);
                 //The game ends when the timer is expired.
                 EndGame();
             }
@@ -91,6 +90,7 @@ public class EndLevelGameController : MonoBehaviour
 
     private void EndGame()
     {
+        MainScript.EnableUserInput = false;
         Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
         ruby.constraints = RigidbodyConstraints2D.FreezeAll;
         EndLevelGameMenu.LevelGameIsFinished = true;

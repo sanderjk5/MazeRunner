@@ -131,16 +131,7 @@ public class MainScript : MonoBehaviour
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
-
-        if (stepCounterText.scene.name.Equals("LevelGameScene"))
-        {
-            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal : " + dijkstra.ShortestDistance;
-        }
-        else
-        {
-            stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra.ShortestDistance;
-        }
-
+        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal : " + dijkstra.ShortestDistance;
         OptimalStepCount = dijkstra.ShortestDistance;
         ShortestPath = dijkstra.ShortestPath;
         Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
@@ -194,15 +185,7 @@ public class MainScript : MonoBehaviour
     {
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
-        if (stepCounterText.scene.name.Equals("LevelGameScene"))
-        {
-            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps : " + CurrentStepCount;
-        }
-        else
-        {
-            stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
-        }
-        
+        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps : " + CurrentStepCount;
     }
 
     /**

@@ -9,11 +9,15 @@ public class GameMenu : MonoBehaviour
     public GameObject gameMenuUI;
 
     // Start is called before the first frame update
+    private void Start()
+    {
+        gameMenuIsActivated = false;
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && MainScript.EnableUserInput)
         {
             if (gameMenuIsActivated)
             {
