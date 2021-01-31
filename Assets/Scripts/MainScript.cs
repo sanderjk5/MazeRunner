@@ -131,7 +131,7 @@ public class MainScript : MonoBehaviour
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
-        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal : " + dijkstra.ShortestDistance;
+        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
         OptimalStepCount = dijkstra.ShortestDistance;
         ShortestPath = dijkstra.ShortestPath;
         Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
@@ -155,7 +155,7 @@ public class MainScript : MonoBehaviour
         //Increases the level count.
         CurrentLevelCount++;
         GameObject levelCounterText = GameObject.Find("LevelCounter");
-        levelCounterText.GetComponent<TextMeshProUGUI>().text = "Level " + (CurrentLevelCount + 1);
+        levelCounterText.GetComponent<TextMeshProUGUI>().text = "Level: " + (CurrentLevelCount + 1);
 
         //Destroys all gameobjects of the previous level.
         foreach (GameObject gameObject in GarbageCollectorGameObjects)
@@ -185,7 +185,7 @@ public class MainScript : MonoBehaviour
     {
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
-        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps : " + CurrentStepCount;
+        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps: " + CurrentStepCount;
     }
 
     /**

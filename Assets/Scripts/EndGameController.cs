@@ -35,7 +35,7 @@ public class EndGameController : MonoBehaviour
 
         //Prints the timer.
         GameObject remainingTimeText = GameObject.Find("DisplayTime");
-        remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Time : " + string.Format("{0:00}:{1:00}", minutes, seconds);
+        remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Time: " + string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     void OnTriggerEnter2D(Collider2D other){

@@ -11,6 +11,7 @@ public class EndGameMenu : MonoBehaviour
     public static bool EndGotReached = false;
     public GameObject endGameMenuUI;
     public GameObject optimalPathPrefab;
+    public GameObject endGameController;
 
     // Update is called once per frame
     void Update()
@@ -56,9 +57,22 @@ public class EndGameMenu : MonoBehaviour
     {
         int optimalSteps = MainScript.OptimalStepCount;
         int stepsUsed = MainScript.CurrentStepCount;
-        int score = 100 - (stepsUsed - optimalSteps);
+        float floatDifference = Mathf.Max(0, stepsUsed - optimalSteps);
+        floatDifference = Mathf.FloorToInt((floatDifference / optimalSteps) * 50);
 
-        if (score < 0) score = 0;
+        float time = endGameController.GetComponent<EndGameController>().timer;
+        int surplusTime;
+        if(MainScript.ScaleMazeSize == 0.5f)
+        {
+            time = Mathf.Max(time - 80, 0);
+            surplusTime = Mathf.FloorToInt(time / 8);
+        }
+        else
+        {
+            time = Mathf.Max(time - 20, 0);
+            surplusTime = Mathf.FloorToInt(time / 2);
+        }
+        int score = Mathf.Max(0, 100 - surplusTime - (int) floatDifference);
 
         return score;
     }

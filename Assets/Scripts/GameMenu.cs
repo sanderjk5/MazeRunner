@@ -30,7 +30,7 @@ public class GameMenu : MonoBehaviour
         }
     }
 
-    private void Resume()
+    public void Resume()
     {
         Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
         ruby.constraints = RigidbodyConstraints2D.FreezeRotation;

@@ -85,7 +85,7 @@ public class EndLevelGameController : MonoBehaviour
 
         //Prints the timer.
         GameObject remainingTimeText = GameObject.Find("DisplayTime");
-        remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Remaining Time : " + string.Format("{0:00}:{1:00}", minutes, seconds);
+        remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Remaining Time: " + string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
     private void EndGame()
