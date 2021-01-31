@@ -67,6 +67,7 @@ public class EndGameMenu : MonoBehaviour
     {
         // Remove end game menu
         endGameMenuUI.SetActive(false);
+        menuIsActive = false;
 
         // Get the path from the maze
         List<NodeController> optimalPath = MainScript.ShortestPath;
