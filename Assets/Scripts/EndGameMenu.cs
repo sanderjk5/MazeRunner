@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndGameMenu : MonoBehaviour
 {
@@ -122,5 +123,11 @@ public class EndGameMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    // Go back to start menu
+    public void GoBackToMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
