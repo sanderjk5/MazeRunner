@@ -2,27 +2,44 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndGameMenu : MonoBehaviour
 {
-    public static bool GameIsFinished = false;
+    private bool menuIsActive = false;
+    private bool firstEndReached = true;
+    public static bool EndGotReached = false;
     public GameObject endGameMenuUI;
-    private TextMeshProUGUI textMeshScore;
     public GameObject optimalPathPrefab;
 
     // Update is called once per frame
     void Update()
     {
-        if (GameIsFinished)
+        if (EndGotReached && firstEndReached)
         {
+            firstEndReached = false;
             EnableEndGameMenu();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (EndGotReached && menuIsActive)
+            {
+                endGameMenuUI.SetActive(false);
+                menuIsActive = false;
+            }
+            else if (EndGotReached && !menuIsActive)
+            {
+                endGameMenuUI.SetActive(true);
+                menuIsActive = true;
+            }
         }
     }
 
     // Enable the end game menu with score of the player
     private void EnableEndGameMenu()
     {
-        GameIsFinished = false;
+        menuIsActive = true;
 
         // Activate the end game menu
         endGameMenuUI.SetActive(true);
@@ -49,6 +66,10 @@ public class EndGameMenu : MonoBehaviour
     // Show the optimal path in the game scene
     public void ShowOptimalPath()
     {
+        // Remove end game menu
+        endGameMenuUI.SetActive(false);
+        menuIsActive = false;
+
         // Get the path from the maze
         List<NodeController> optimalPath = MainScript.ShortestPath;
 
@@ -102,5 +123,12 @@ public class EndGameMenu : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    // Go back to start menu
+    public void GoBackToMenu()
+    {
+        EndGotReached = false;
+        SceneManager.LoadScene(0);
     }
 }
