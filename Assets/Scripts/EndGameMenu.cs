@@ -128,6 +128,7 @@ public class EndGameMenu : MonoBehaviour
     // Go back to start menu
     public void GoBackToMenu()
     {
+        EndGotReached = false;
         SceneManager.LoadScene(0);
     }
 }
