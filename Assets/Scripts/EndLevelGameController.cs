@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class EndLevelGameController : MonoBehaviour
 {
@@ -33,9 +34,9 @@ public class EndLevelGameController : MonoBehaviour
             {
                 timeRemaining = 0;
                 timerIsRunning = false;
-                DisplayTime(timeRemaining);
+                //DisplayTime(timeRemaining);
                 //The game ends when the timer is expired.
-                Application.Quit();
+                EndGame();
             }
         }
     }
@@ -55,7 +56,8 @@ public class EndLevelGameController : MonoBehaviour
         //Exists the game when the timer is expired.
         if(timeRemaining == 0)
         {
-            Application.Quit();
+            EndGame();
+            return;
         }
         //Checks if there are levels left.
         if(MainScript.CurrentLevelCount < 7)
@@ -63,28 +65,34 @@ public class EndLevelGameController : MonoBehaviour
             //Loads the next level.
             GameObject.Find("MainScript").GetComponent<MainScript>().LoadNextLevel();
             //Enables the user input and starts the timer.
-            MainScript.EnableUserInput = true;
             timerIsRunning = true;
         } else
         {
-            Application.Quit();
+            EndGame();
         }
     }
 
     /**
      * <summary>Displays the timer (minutes and seconds)</summary>
-     * <param name="remainingTime">the remaining time of the timer</param>
+     * <param name="timeToDisplay">the remaining time of the timer</param>
     */
-    private void DisplayTime(float remainingTime)
+    private void DisplayTime(float timeToDisplay)
     {
-        remainingTime += 1;
+        if(timeToDisplay != 0) timeToDisplay += 1;
 
         //Calculates the minutes and seconds.
-        float minutes = Mathf.FloorToInt(remainingTime / 60);
-        float seconds = Mathf.FloorToInt(remainingTime % 60);
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
 
         //Prints the timer.
         GameObject remainingTimeText = GameObject.Find("DisplayTime");
-        remainingTimeText.GetComponent<UnityEngine.UI.Text>().text = "Remaining Time : " + string.Format("{0:00}:{1:00}", minutes, seconds);
+        remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Remaining Time : " + string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    private void EndGame()
+    {
+        Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
+        ruby.constraints = RigidbodyConstraints2D.FreezeAll;
+        EndLevelGameMenu.LevelGameIsFinished = true;
     }
 }
