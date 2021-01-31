@@ -10,6 +10,6 @@ public class EndGameController : MonoBehaviour
         ruby.constraints = RigidbodyConstraints2D.FreezeAll;
 
         // Set the end game variable to true
-        EndGameMenu.GameIsFinished = true;
+        EndGameMenu.EndGotReached = true;
     }
 }
