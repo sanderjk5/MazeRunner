@@ -26,6 +26,8 @@ public class MainScript : MonoBehaviour
     public static int CurrentState { get; set; }
     //The current number of steps of the player.
     public static int CurrentStepCount { get; set; }
+    //The optimal path between start and end
+    public static List<NodeController> ShortestPath { get; private set; }
     //Scales the maze (1: 18X10, 0.5f: 36X20)
     public static float ScaleMazeSize { get; set; }
     //The current level of the level game modus.
@@ -128,8 +130,10 @@ public class MainScript : MonoBehaviour
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
+
         stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra.ShortestDistance;
         OptimalStepCount = dijkstra.ShortestDistance;
+        ShortestPath = dijkstra.ShortestPath;
         Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 

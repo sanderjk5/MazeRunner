@@ -4,19 +4,12 @@ using UnityEngine;
 
 public class EndGameController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void OnTriggerEnter2D(Collider2D other){
-        Application.Quit();
+        // Freeze the character
+        Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
+        ruby.constraints = RigidbodyConstraints2D.FreezeAll;
+
+        // Set the end game variable to true
+        EndGameMenu.EndGotReached = true;
     }
 }
