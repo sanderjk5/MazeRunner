@@ -7,7 +7,6 @@ public class EndGameMenu : MonoBehaviour
 {
     public static bool GameIsFinished = false;
     public GameObject endGameMenuUI;
-    private TextMeshProUGUI textMeshScore;
     public GameObject optimalPathPrefab;
 
     // Update is called once per frame
