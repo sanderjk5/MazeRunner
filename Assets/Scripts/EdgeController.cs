@@ -30,11 +30,16 @@ public class EdgeController : MonoBehaviour
         return 1;
     }
 
+    /**
+     * <summary>Changes the color of the obstacle. Sets the transparency to zero if the player deactivates it (by activating the button).</summary>
+     * <param name="newState">The current state of the game.</param>
+     */
     public void ChangeColorOfObstacle(int newState)
     {
         if(Obstacle != -1 && Costs[newState] != 1)
         {
             gameObject.GetComponent<SpriteRenderer>().color = MainScript.Colors[Obstacle];
+            //Changes the width of the edge/obstacle.
             if (MainScript.ScaleMazeSize == 0.5)
             {
                 gameObject.GetComponent<Transform>().localScale = new Vector3(MainScript.ScaleMazeSize, 0.025f);
@@ -46,11 +51,17 @@ public class EdgeController : MonoBehaviour
             
         } else
         {
+            //Sets the transparency to zero and changes the width of the obstacle.
             gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0, 0);
             gameObject.GetComponent<Transform>().localScale = new Vector3(0.97f * MainScript.ScaleMazeSize, 0.01f);
         }
     }
 
+    /**
+     * <summary>Updates the step counter of the game if the player collides the edge.</summary>
+     * <param name="collision">The collision which results in the update of the step counter.</param>
+     * 
+     */
     private void OnTriggerExit2D(Collider2D collision)
     {
         MainScript.CurrentStepCount += GetCostForState(MainScript.CurrentState);

@@ -58,9 +58,6 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
-        //LoadMaze();
-        //if (SliderText.DifficultyValue == 0) return;
-
         //Initializes the NumberOfButtons and the ScaleMazeSize
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {

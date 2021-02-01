@@ -27,6 +27,10 @@ public class EndGameController : MonoBehaviour
         }
     }
 
+    /**
+     * <summary>Displays the timer at the bottom of the game scene.</summary>
+     * <param name="timeToDisplay">The current timer.</param>
+     */
     private void DisplayTime(float timeToDisplay)
     {
         //Calculates the minutes and seconds.
@@ -38,6 +42,10 @@ public class EndGameController : MonoBehaviour
         remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Time: " + string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
+    /**
+     * <summary>Triggers the end game menu when the player exits the maze.</summary>
+     * <param name="other">The collision of the player with the end game object.</param>
+     */
     void OnTriggerEnter2D(Collider2D other){
         MainScript.EnableUserInput = false;
         timerIsRunning = false;

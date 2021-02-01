@@ -88,6 +88,9 @@ public class EndLevelGameController : MonoBehaviour
         remainingTimeText.GetComponent<TextMeshProUGUI>().text = "Remaining Time: " + string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
+    /**
+     * <summary>Freezes the player and initializes the end game menu.</summary>
+     */
     private void EndGame()
     {
         MainScript.EnableUserInput = false;
