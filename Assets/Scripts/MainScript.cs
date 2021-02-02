@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class MainScript : MonoBehaviour
 {
@@ -57,10 +58,6 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
-        //LoadMaze();
-        //if (SliderText.DifficultyValue == 0) return;
-        EnableUserInput = false;
-
         //Initializes the NumberOfButtons and the ScaleMazeSize
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
@@ -85,6 +82,7 @@ public class MainScript : MonoBehaviour
      */
     public void InitializeGame()
     {
+        EnableUserInput = false;
         //Initializes the static variables of the game.
         CurrentState = 0;
         CurrentStepCount = 0;
@@ -130,8 +128,7 @@ public class MainScript : MonoBehaviour
         }
         dijkstra.CalculateModifiedDijkstraAlgorithm();
         GameObject stepCounterText = GameObject.Find("OptimalSteps");
-
-        stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Optimal : " + dijkstra.ShortestDistance;
+        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
         OptimalStepCount = dijkstra.ShortestDistance;
         ShortestPath = dijkstra.ShortestPath;
         Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
@@ -155,7 +152,7 @@ public class MainScript : MonoBehaviour
         //Increases the level count.
         CurrentLevelCount++;
         GameObject levelCounterText = GameObject.Find("LevelCounter");
-        levelCounterText.GetComponent<UnityEngine.UI.Text>().text = "Level : " + CurrentLevelCount;
+        levelCounterText.GetComponent<TextMeshProUGUI>().text = "Level: " + (CurrentLevelCount + 1);
 
         //Destroys all gameobjects of the previous level.
         foreach (GameObject gameObject in GarbageCollectorGameObjects)
@@ -185,7 +182,7 @@ public class MainScript : MonoBehaviour
     {
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
-        stepCounterText.GetComponent<UnityEngine.UI.Text>().text = "Steps : " + CurrentStepCount;
+        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps: " + CurrentStepCount;
     }
 
     /**
