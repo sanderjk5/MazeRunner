@@ -18,4 +18,4 @@ Das Spiel kann auf folgende unterschiedliche Arten ausgeführt werden:
     File --> Build Settings (gewünschte Plattform auswählen) --> Build and Run (dabei einen Ordner mit dem Namen "Build" erstellen und auswählen)
    Anschließend wird das Spiel gebaut und automatisch ausgeführt. In dem Ordner "Build" befindet sich zudem die ausführbare Datei, die ab sofort zum Spielstart verwendet werden kann.
 
-2. Die Zip-Datei "WindowsBuild2101" oder "WebGLBuild2101" im Ordner "Releases" entpacken und die darin enthaltene "MazeRunner.exe" bzw. "index.html" Datei ausführen. Durch das Ausführen dieser wird auch das Spiel gestartet, da diese Ordner alle Dateien eines Builds enthalten. 
+2. Die Zip-Datei "WindowsBuild0302" oder "WebGLBuild0302" im Ordner "Releases/1_0302" entpacken und die darin enthaltene "MazeRunner.exe" bzw. "index.html" Datei ausführen. Durch das Ausführen dieser wird auch das Spiel gestartet, da diese Ordner alle Dateien eines Builds enthalten. 
