@@ -19,9 +19,9 @@ public class EndLevelGameController : MonoBehaviour
     void Start()
     {
         //Initializes the timer
-        timeRemaining = 40;
+        timeRemaining = 35;
         timerIsRunning = true;
-        optimalBonusTimes = new float[7] { 40, 50, 60, 80, 100, 120, 150};
+        optimalBonusTimes = new float[7] { 40, 45, 50, 90, 110, 130, 150};
     }
 
     // Update is called once per frame
