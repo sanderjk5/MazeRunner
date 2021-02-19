@@ -10,17 +10,19 @@ public class EndLevelGameController : MonoBehaviour
     public float timeRemaining;
     //Flag is true when the timer is active.
     public bool timerIsRunning;
-
+    //The optimal bonus times which the could receive.
     public float[] optimalBonusTimes;
-
+    //The canvas object of the scene.
     public GameObject canvas;
 
     // Start is called before the first frame update
     void Start()
     {
         //Initializes the timer
-        timeRemaining = 35;
         timerIsRunning = true;
+
+        //Initializes the bonus times.
+        timeRemaining = 35;
         optimalBonusTimes = new float[7] { 40, 45, 50, 90, 110, 130, 150};
     }
 
@@ -100,6 +102,9 @@ public class EndLevelGameController : MonoBehaviour
         EndLevelGameMenu.LevelGameIsFinished = true;
     }
 
+    /**
+     * <summary>Calculates the time bonus of the current level.</summary>
+     */
     private float CalculateTimeBonus()
     {
         float timeBonus;
@@ -107,8 +112,12 @@ public class EndLevelGameController : MonoBehaviour
         return timeBonus;
     }
 
+    /**
+     * <summary>Prints the time bonus of the current level.</summary>
+     */
     private void PrintTimeBonusText(float timeBonus)
     {
+        //Calculates the rating of the player.
         float ratingValue = timeBonus / optimalBonusTimes[MainScript.CurrentLevelCount];
         string rating;
         if(ratingValue < 0.2f)

@@ -17,6 +17,7 @@ public class SliderText : MonoBehaviour
     private void Start()
     {
         tmproText = GameObject.Find("DifficultyValueText").GetComponent<TextMeshProUGUI>();
+        //Displays the highscore of the player.
         highscoreText = GameObject.Find("HighscoreText").GetComponent<TextMeshProUGUI>();
         DifficultyText = "Beginner";
         tmproText.text = "Beginner";
@@ -57,6 +58,7 @@ public class SliderText : MonoBehaviour
         }
 
         DifficultyText = tmproText.text;
+        //Updates the highscore text.
         highscoreText.text = "Highscore: " + PlayerPrefs.GetInt(DifficultyText, 0).ToString();
         DifficultyValue = value;
     }
