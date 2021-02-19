@@ -8,6 +8,27 @@ public class ButtonController : MonoBehaviour
     public EdgeController CorrespondingEdge { get; private set; }
     //The node on which the button is placed.
     public NodeController CorrespondingNode { get; private set; }
+    private int buttonId;
+    private bool _isActivated;
+
+    public bool IsActivated
+    {
+        get => _isActivated;
+        set
+        {
+            if(!value)
+            {
+                Color color = gameObject.GetComponent<SpriteRenderer>().color;
+                color.a = 0.5f;
+                gameObject.GetComponent<SpriteRenderer>().color = color;
+            }
+            else
+            {
+                gameObject.GetComponent<SpriteRenderer>().color = MainScript.Colors[buttonId];
+            }
+            _isActivated = value;
+        }
+    }
 
     /**
      * <summary>Initializes the button.</summary>
@@ -19,8 +40,11 @@ public class ButtonController : MonoBehaviour
     {
         CorrespondingEdge = correspondingEdge;
         CorrespondingNode = correspondingNode;
+        this.buttonId = buttonId;
+
         //Sets the color of the button (equal to the color of the corresponding obstacle.
         gameObject.GetComponent<SpriteRenderer>().color = MainScript.Colors[buttonId];
+        IsActivated = true;
     }
 
     /**
@@ -29,7 +53,11 @@ public class ButtonController : MonoBehaviour
      */
     void OnTriggerEnter2D(Collider2D other)
     {
-        MainScript.CurrentState = CorrespondingNode.ChangeState(MainScript.CurrentState);
-        CorrespondingEdge.ChangeColorOfObstacle(MainScript.CurrentState);
+        if (IsActivated)
+        {
+            MainScript.CurrentState = CorrespondingNode.ChangeState(MainScript.CurrentState);
+            CorrespondingEdge.ChangeColorOfObstacle(MainScript.CurrentState);
+            IsActivated = false;
+        }
     }
 }

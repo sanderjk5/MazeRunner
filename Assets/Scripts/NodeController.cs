@@ -47,4 +47,12 @@ public class NodeController : MonoBehaviour
         }
         return null;
     }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(Button != -1)
+        {
+            MainScript.AllButtons[Button].IsActivated = true;
+        }
+    }
 }

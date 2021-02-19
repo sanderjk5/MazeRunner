@@ -143,6 +143,7 @@ public class ObstacleGeneration : MonoBehaviour
                 GameObject gameObject = Instantiate(buttonPrefab, node.transform.position, Quaternion.identity);
                 ButtonController button = gameObject.GetComponent<ButtonController>();
                 button.Initialize(obstacle, node, buttonId);
+                MainScript.AllButtons.Add(button);
                 button.gameObject.transform.localScale = new Vector3(0.25f * MainScript.ScaleMazeSize, 0.25f * MainScript.ScaleMazeSize);
                 if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
                 break;
