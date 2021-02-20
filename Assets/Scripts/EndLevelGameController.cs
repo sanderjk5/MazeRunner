@@ -30,7 +30,7 @@ public class EndLevelGameController : MonoBehaviour
     void Update()
     {
         //Updates the timer by subtracting the elapsed time.
-        if (timerIsRunning)
+        if (timerIsRunning && CountdownController.GameStarted)
         {
             if(timeRemaining > 0)
             {

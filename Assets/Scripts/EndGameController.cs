@@ -20,7 +20,7 @@ public class EndGameController : MonoBehaviour
     void Update()
     {
         //Updates the timer by subtracting the elapsed time.
-        if (timerIsRunning)
+        if (timerIsRunning && CountdownController.GameStarted)
         {
             timer += Time.deltaTime;
             DisplayTime(timer);
