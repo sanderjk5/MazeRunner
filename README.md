@@ -6,9 +6,9 @@ Dementsprechend wird das Labyrinth in zwei Größen inklusive einer beliebigen A
 
 Das Spiel beinhält zwei Spielmodi:
 1. Im normalen Modus, der über "Play" gestartet werden kann, muss der Spieler seine gewünschte Schwierigkeit über den Slider auswählen. Anschließend kann er das Spiel über "Start" starten. Die Schwierigkeitsstufen skalieren über die Anzahl der Buttons und der Größe des Labyrinths. Sobald der Spieler das Labyrinth verlassen hat, kann er sich mit dem Button "Show optimal path" den Optimalen Pfad anzeigen lassen. Um daraufhin zu dem Endmenü zurück kehren zu können, muss er "ESC" drücken.
-Dem Spieler wird während dem Spielen zusätzlich seine benötigte Zeit angezeigt, da sich seine Punktzahl (zwischen 0 und 100) nach der benötigten Zeit und der Abweichung der Schritte ableitet.
+Dem Spieler wird während dem Spielen zusätzlich seine benötigte Zeit angezeigt, da sich seine Punktzahl (zwischen 0 und 100) nach der benötigten Zeit und der Abweichung der Schritte ableitet. Für jede Schwierigkeitsstufe existiert ein Highscore, der die höchste Punktzahl des Spielers in dieser anzeigt.
 
-2. Im Level Modus, den der Spieler über "Level" im Hauptmenü auswählen kann, ist es das Ziel in 15 Minuten alle 8 Level des normalen Spielmodus in der Reihenfolge ihrer Schwierigkeit zu absolvieren. Dementsprechend wird der Spieler nach dem Verlassen eines Labyrinths direkt in das nächste Labyrinth gesetzt. Zusätzlich wird bei dem Verlassen eines Labyrinths seine Schrittdifferenz von der verbleibenden Zeit abgezogen.
+2. Im Level Modus, den der Spieler über "Level" im Hauptmenü auswählen kann, ist es das Ziel in einer bestimmten Zeit alle 8 Level des normalen Spielmodus in der Reihenfolge ihrer Schwierigkeit zu absolvieren. Dementsprechend wird der Spieler nach dem Verlassen eines Labyrinths direkt in das nächste Labyrinth gesetzt. Nach dem Verlassen eines Levels erhält der Spieler einen Zeitbonus, der sich nach der Abweichung der Schrittzahl von der optimalen des vorangegangenen Levels richtet. Die Leistung des Spielers wird als Schriftzug angezeigt.
 
 In beiden Modi kann der Spieler während dem Spielen über das Betätigen des "ESC" Buttons ein Spielmenü aufrufen. Über dieses kann er zum Hauptmenü zurückkehren, das Spiel beenden oder das Spiel fortsetzen.
 
