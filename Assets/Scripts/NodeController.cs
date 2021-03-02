@@ -47,4 +47,15 @@ public class NodeController : MonoBehaviour
         }
         return null;
     }
+
+    /**
+     * <summary>Activates the button again if the player leaves the corresponding node.</summary>
+     */
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(Button != -1)
+        {
+            MainScript.AllButtons[Button].IsActivated = true;
+        }
+    }
 }

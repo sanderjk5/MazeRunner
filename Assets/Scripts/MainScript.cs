@@ -21,6 +21,8 @@ public class MainScript : MonoBehaviour
     public static Dictionary<int, NodeController> AllNodes { get; set; }
     //Contains all edges of the maze.
     public static List<EdgeController> AllEdges { get; set; }
+    //Contains all buttons of the maze.
+    public static List<ButtonController> AllButtons { get; private set; }
     //The colors of the obstacles and corresponding buttons.
     public static List<Color> Colors { get; set; }
     //The current state of the game.
@@ -89,6 +91,8 @@ public class MainScript : MonoBehaviour
         UpdateStepCounter();
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
+        AllButtons = new List<ButtonController>();
+
         //Set all possible colors (at least as many as NumberOfObstacles)
         Colors = new List<Color>
         {

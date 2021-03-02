@@ -8,9 +8,13 @@ public class EndLevelGameMenu : MonoBehaviour
 {
     //Flag if the game is finished.
     public static bool LevelGameIsFinished = false;
+    //The ui element.
     public GameObject endLevelGameMenuUI;
+    //The controller of the level game end.
     public GameObject endLevelGameController;
+    //The normal game menu ui.
     public GameObject gameMenuUI;
+    //The game values.
     public GameObject gameValuesUI;
 
     // Update is called once per frame

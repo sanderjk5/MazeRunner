@@ -47,9 +47,15 @@ public class EndGameMenu : MonoBehaviour
 
         // Compute the score of the player
         int score = ComputePlayerScore();
+        
+        if(score > PlayerPrefs.GetInt(SliderText.DifficultyText, 0))
+        {
+            PlayerPrefs.SetInt(SliderText.DifficultyText, score);
+        }
 
         // Show the score of the player
         GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = "Your Score:\n" + score.ToString();
+        GameObject.Find("HighscoreText").GetComponent<TextMeshProUGUI>().text = "Highscore:\n" + PlayerPrefs.GetInt(SliderText.DifficultyText, 0).ToString();
     }
 
     // Compute the score of a player
