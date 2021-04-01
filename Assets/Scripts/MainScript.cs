@@ -135,7 +135,6 @@ public class MainScript : MonoBehaviour
         stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
         OptimalStepCount = dijkstra.ShortestDistance;
         ShortestPath = dijkstra.ShortestPath;
-        Debug.Log("Distance after inserting obstacles: " + dijkstra.ShortestDistance);
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Creates all walls of the maze.
@@ -229,7 +228,6 @@ public class MainScript : MonoBehaviour
                 NumberOfButtons = 4;
                 break;
             default:
-               Debug.Log("No Valid Difficulty Found");
                 break;
         }
     }
