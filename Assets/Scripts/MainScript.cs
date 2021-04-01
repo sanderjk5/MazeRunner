@@ -42,6 +42,8 @@ public class MainScript : MonoBehaviour
     //Enables/Disables the user input.
     public static bool EnableUserInput { get; set; }
 
+    public static bool IsBattleGameMode { get; set; }
+
     //The prefab of the walls.
     public GameObject createWallsPrefab;
     //The prefab of the nodes.
@@ -68,13 +70,23 @@ public class MainScript : MonoBehaviour
             GarbageCollectorGameObjects = new List<GameObject>();
             NumberOfButtons = 0;
             ScaleMazeSize = 1;
+            IsBattleGameMode = false;
             InitializeGame();
         }
-        else
+        else if(gameObject.scene.name.Equals("GameScene"))
         {
             //Normal game modus
             CurrentLevelCount = -1;
             ApplyDifficulty();
+            IsBattleGameMode = false;
+            InitializeGame();
+        }
+        else if (gameObject.scene.name.Equals("BattleGameScene"))
+        {
+            CurrentLevelCount = -1;
+            NumberOfButtons = 4;
+            ScaleMazeSize = 0.5f;
+            IsBattleGameMode = true;
             InitializeGame();
         }
     }
@@ -104,8 +116,13 @@ public class MainScript : MonoBehaviour
 
         //Initializes the number of states.
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
+
         //Moves the player to the start point.
-        GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
+        if (!IsBattleGameMode)
+        {
+            GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
+        }
+        
 
         //Generates the labyrinth
         GameObject gameObject = Instantiate(aldousBroderAlgorithmPrefab);
@@ -122,7 +139,11 @@ public class MainScript : MonoBehaviour
         //Calculates the optimal path and distance.
         gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
         ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
-        if (ScaleMazeSize == 0.5f)
+        if (IsBattleGameMode)
+        {
+            dijkstra.Initialize(AllNodes[8], AllNodes[719]);
+        }
+        else if (ScaleMazeSize == 0.5f)
         {
             dijkstra.Initialize(AllNodes[0], AllNodes[719]);
         }
@@ -143,6 +164,10 @@ public class MainScript : MonoBehaviour
         createWallsScript.CreateAllWalls();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
 
+        if (IsBattleGameMode)
+        {
+            GameObject.Find("Opponent").GetComponent<OpponentController>().InitializeOpponent();
+        }
         //Enables the user input.
         EnableUserInput = true;
     }

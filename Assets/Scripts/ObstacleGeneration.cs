@@ -32,11 +32,26 @@ public class ObstacleGeneration : MonoBehaviour
                 if(obstacleLocation == 0)
                 {
                     //path between start and target node
-                    algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes-1]);
+                    if (MainScript.IsBattleGameMode)
+                    {
+                        algorithm.Initialize(MainScript.AllNodes[8], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    }
+                    else
+                    {
+                        algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    }
+                    
                 } else
                 {
                     //path between the node in the upper right corner and the node in the lower left corner
-                    algorithm.Initialize(MainScript.AllNodes[(MainScript.Width-1)*MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                    if (MainScript.IsBattleGameMode)
+                    {
+                        algorithm.Initialize(MainScript.AllNodes[160], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    }
+                    else
+                    {
+                        algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                    }
                 }
                 algorithm.CalculateModifiedDijkstraAlgorithm();
                 List<NodeController> shortestPath = algorithm.ShortestPath;
@@ -57,11 +72,25 @@ public class ObstacleGeneration : MonoBehaviour
                 ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
                 if (obstacleLocation == 0)
                 {
-                    algorithm1.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    if (MainScript.IsBattleGameMode)
+                    {
+                        algorithm1.Initialize(MainScript.AllNodes[8], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    }
+                    else
+                    {
+                        algorithm1.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    }
                 }
                 else
                 {
-                    algorithm1.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                    if (MainScript.IsBattleGameMode)
+                    {
+                        algorithm1.Initialize(MainScript.AllNodes[160], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                    }
+                    else
+                    {
+                        algorithm1.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                    }
                 }
                 algorithm1.CalculateModifiedDijkstraAlgorithm();
                 int shortestDistanceWithObstacle = algorithm1.ShortestDistance;
@@ -118,11 +147,25 @@ public class ObstacleGeneration : MonoBehaviour
             ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
             if (obstacleLocation == 0)
             {
-                algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                if (MainScript.IsBattleGameMode)
+                {
+                    algorithm.Initialize(MainScript.AllNodes[8], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                }
+                else
+                {
+                    algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                }
             }
             else
             {
-                algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                if (MainScript.IsBattleGameMode)
+                {
+                    algorithm.Initialize(MainScript.AllNodes[160], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                }
+                else
+                {
+                    algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                }
             }
             algorithm.CalculateModifiedDijkstraAlgorithm();
             int newShortestDistance = algorithm.ShortestDistance;

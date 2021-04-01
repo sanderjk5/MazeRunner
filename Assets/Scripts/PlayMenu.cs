@@ -13,4 +13,9 @@ public class PlayMenu : MonoBehaviour
     {
         SceneManager.LoadScene(2);
     }
+
+    public void BattleButtonAction()
+    {
+        SceneManager.LoadScene(3);
+    }
 }
