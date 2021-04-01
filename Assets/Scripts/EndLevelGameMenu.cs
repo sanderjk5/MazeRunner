@@ -41,19 +41,32 @@ public class EndLevelGameMenu : MonoBehaviour
         
         //The remaining time of the player.
         float remainingTime = endLevelGameController.GetComponent<EndLevelGameController>().timeRemaining;
+        remainingTime -= Mathf.Max(MainScript.CurrentStepCount - MainScript.OptimalStepCount, 0);
         if(remainingTime > 0)
         {
+            if(remainingTime > PlayerPrefs.GetFloat("LevelModusBestTime", 0))
+            {
+                PlayerPrefs.SetFloat("LevelModusBestTime", remainingTime);
+            }
             //Prints the remaining time.
             remainingTime += 1;
             float minutes = Mathf.FloorToInt(remainingTime / 60);
             float seconds = Mathf.FloorToInt(remainingTime % 60);
+            float minutesBestTime = Mathf.FloorToInt(PlayerPrefs.GetFloat("LevelModusBestTime", 0) / 60);
+            float secondsBestTime = Mathf.FloorToInt(PlayerPrefs.GetFloat("LevelModusBestTime", 0) % 60);
             GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "Remaining Time:\n" + string.Format("{0:00}:{1:00}", minutes, seconds);
+            GameObject.Find("LevelHighscoreText").GetComponent<TextMeshProUGUI>().text = "Best Time:\n" + string.Format("{0:00}:{1:00}", minutesBestTime, secondsBestTime);
         }
         else
         {
+            if (MainScript.CurrentLevelCount + 1 > PlayerPrefs.GetInt("LevelModusHighestLevel", 0))
+            {
+                PlayerPrefs.SetInt("LevelModusHighestLevel", MainScript.CurrentLevelCount + 1);
+            }
             //Prints the texts if the player failed.
             GameObject.Find("EndGameInfoText").GetComponent<TextMeshProUGUI>().text = "Game Over";
             GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "Remaining Time:\n" + string.Format("{0:00}:{1:00}", 0, 0);
+            GameObject.Find("LevelHighscoreText").GetComponent<TextMeshProUGUI>().text = "Highest Level:\n" + PlayerPrefs.GetInt("LevelModusHighestLevel", 0);
         }
         
     }
