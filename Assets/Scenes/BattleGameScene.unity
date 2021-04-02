@@ -6044,7 +6044,7 @@ GameObject:
   - component: {fileID: 644352483}
   - component: {fileID: 644352482}
   m_Layer: 8
-  m_Name: OpponentsScoreText
+  m_Name: OpponenntsScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
