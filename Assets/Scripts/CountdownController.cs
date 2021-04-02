@@ -12,7 +12,7 @@ public class CountdownController : MonoBehaviour
     public GameObject countdownUI;
     private Rigidbody2D playerRigidbody;
 
-    public static bool GameStarted { get; private set; }
+    public static bool GameStarted { get; set; }
 
     // Start is called before the first frame update
     void Start()

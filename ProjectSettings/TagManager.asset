@@ -14,8 +14,8 @@ TagManager:
   - 
   - 
   - EndGameLayer
-  - 
-  - 
+  - OpponentLayer
+  - EdgeLayer
   - 
   - 
   - 

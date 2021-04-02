@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class OpponentController : MonoBehaviour
 {
     //The prefab of the modified dijkstra algorithm.
     public GameObject modifiedDijkstraAlgorithmPrefab;
-
+    public GameObject endBattleGameController;
+    private float intermediateSteps;
+    private float stepDuration;
+    
+    public float OpponnentsTime { get; private set; }
+    public int StepCounter { get; set; }
     public int ShortestDistance { get; set; }
     public List<NodeController> ShortestPath { get; set; }
 
@@ -18,13 +24,15 @@ public class OpponentController : MonoBehaviour
     {
         GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
         ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
-        algorithm.Initialize(MainScript.AllNodes[160], MainScript.AllNodes[719]);
+        algorithm.Initialize(MainScript.AllNodes[700], MainScript.AllNodes[19]);
         algorithm.CalculateModifiedDijkstraAlgorithm();
         ShortestDistance = algorithm.ShortestDistance;
         ShortestPath = algorithm.ShortestPath;
-        CurrentNodePosition = MainScript.AllNodes[160];
+        CurrentNodePosition = MainScript.AllNodes[700];
         CurrentPositionInShortestPath = 0;
         Destroy(algorithmObject);
+        intermediateSteps = 60;
+        stepDuration = 0.25f;
         StartCoroutine(MoveOpponent());
     }
 
@@ -32,17 +40,54 @@ public class OpponentController : MonoBehaviour
     {
         while (!CountdownController.GameStarted)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(stepDuration);
         }
 
-        while(CurrentNodePosition.Id != 719)
+        while(CurrentNodePosition.Id != 19)
         {
             CurrentPositionInShortestPath++;
             CurrentNodePosition = ShortestPath[CurrentPositionInShortestPath];
-            gameObject.transform.position = CurrentNodePosition.gameObject.transform.position;
-            yield return new WaitForSeconds(0.5f);
+            bool moveHorizontal;
+            float fixedPositionValue;
+            float differenceBetweenVariablePositionValues;
+            float variablePositionValueLastNode;
+            if (gameObject.transform.position.y == CurrentNodePosition.gameObject.transform.position.y)
+            {
+                moveHorizontal = true;
+                fixedPositionValue = gameObject.transform.position.y;
+                variablePositionValueLastNode = gameObject.transform.position.x;
+                differenceBetweenVariablePositionValues = CurrentNodePosition.gameObject.transform.position.x - variablePositionValueLastNode;
+            } 
+            else
+            {
+                moveHorizontal = false;
+                fixedPositionValue = gameObject.transform.position.x;
+                variablePositionValueLastNode = gameObject.transform.position.y;
+                differenceBetweenVariablePositionValues = CurrentNodePosition.gameObject.transform.position.y - variablePositionValueLastNode;
+            }
+            for(float i = 1; i <= intermediateSteps; i++)
+            {
+                float newValue = variablePositionValueLastNode + (i / intermediateSteps * differenceBetweenVariablePositionValues);
+                if (moveHorizontal)
+                {
+                    gameObject.transform.position = new Vector3(newValue, fixedPositionValue);
+                }
+                else
+                {
+                    gameObject.transform.position = new Vector3(fixedPositionValue, newValue);
+                }
+                yield return new WaitForSeconds(1/intermediateSteps * stepDuration);
+            }
+            StepCounter++;
+            GameObject.Find("OpponnentStepCounter").GetComponent<TextMeshProUGUI>().text = "Opponnents Steps: " + StepCounter;
         }
-        gameObject.transform.position = new Vector3(8.75f, -5.25f);
-        Debug.Log("Finished");
+        for (float i = 1; i <= intermediateSteps; i++)
+        {
+            float newValue = -4.75f + (i / intermediateSteps * -0.5f);
+            gameObject.transform.position = new Vector3(-8.75f, newValue);
+            yield return new WaitForSeconds(1 / intermediateSteps * stepDuration);
+        }
+        EndBattleGameMenu.OpponnentFinished = true;
+        OpponnentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
     }
 }

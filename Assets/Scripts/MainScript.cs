@@ -62,6 +62,7 @@ public class MainScript : MonoBehaviour
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        CountdownController.GameStarted = false;
         //Initializes the NumberOfButtons and the ScaleMazeSize
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
@@ -70,7 +71,7 @@ public class MainScript : MonoBehaviour
             GarbageCollectorGameObjects = new List<GameObject>();
             NumberOfButtons = 0;
             ScaleMazeSize = 1;
-            IsBattleGameMode = false;
+            IsBattleGameMode = false;          
             InitializeGame();
         }
         else if(gameObject.scene.name.Equals("GameScene"))
@@ -136,27 +137,28 @@ public class MainScript : MonoBehaviour
         obstacleGeneration.InsertObstacles();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
-        //Calculates the optimal path and distance.
-        gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
-        ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
-        if (IsBattleGameMode)
+
+        if (!IsBattleGameMode)
         {
-            dijkstra.Initialize(AllNodes[8], AllNodes[719]);
+            //Calculates the optimal path and distance.
+            gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+            if (ScaleMazeSize == 0.5f)
+            {
+                dijkstra.Initialize(AllNodes[0], AllNodes[719]);
+            }
+            else
+            {
+                dijkstra.Initialize(AllNodes[0], AllNodes[179]);
+            }
+            dijkstra.CalculateModifiedDijkstraAlgorithm();
+            GameObject stepCounterText = GameObject.Find("OptimalSteps");
+            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
+            OptimalStepCount = dijkstra.ShortestDistance;
+            ShortestPath = dijkstra.ShortestPath;
+
+            if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
         }
-        else if (ScaleMazeSize == 0.5f)
-        {
-            dijkstra.Initialize(AllNodes[0], AllNodes[719]);
-        }
-        else
-        {
-            dijkstra.Initialize(AllNodes[0], AllNodes[179]);
-        }
-        dijkstra.CalculateModifiedDijkstraAlgorithm();
-        GameObject stepCounterText = GameObject.Find("OptimalSteps");
-        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
-        OptimalStepCount = dijkstra.ShortestDistance;
-        ShortestPath = dijkstra.ShortestPath;
-        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
@@ -210,7 +212,14 @@ public class MainScript : MonoBehaviour
     {
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
-        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps: " + CurrentStepCount;
+        if (IsBattleGameMode)
+        {
+            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Your Steps: " + CurrentStepCount;
+        }
+        else {
+            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps: " + CurrentStepCount;
+        }
+            
     }
 
     /**
