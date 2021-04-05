@@ -47,8 +47,6 @@ public class EndBattleGameController : MonoBehaviour
  */
     void OnTriggerEnter2D(Collider2D other)
     {
-        MainScript.EnableUserInput = false;
-        timerIsRunning = false;
         // Freeze the character
         Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
         ruby.constraints = RigidbodyConstraints2D.FreezeAll;

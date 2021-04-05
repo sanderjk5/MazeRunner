@@ -8676,7 +8676,7 @@ PrefabInstance:
     - target: {fileID: 1510265282736528376, guid: 5146dd06ad336e842854b890dc14ef43,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -5.5
+      value: -5.749
       objectReference: {fileID: 0}
     - target: {fileID: 1510265282736528376, guid: 5146dd06ad336e842854b890dc14ef43,
         type: 3}
@@ -8722,6 +8722,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: EndBattleGameSpace
+      objectReference: {fileID: 0}
+    - target: {fileID: 3759793971976787235, guid: 5146dd06ad336e842854b890dc14ef43,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7659817807511521284, guid: 5146dd06ad336e842854b890dc14ef43,
         type: 3}

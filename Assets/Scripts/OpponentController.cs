@@ -31,7 +31,7 @@ public class OpponentController : MonoBehaviour
         CurrentNodePosition = MainScript.AllNodes[700];
         CurrentPositionInShortestPath = 0;
         Destroy(algorithmObject);
-        intermediateSteps = 60;
+        intermediateSteps = 45;
         stepDuration = 0.25f;
         StartCoroutine(MoveOpponent());
     }
