@@ -449,7 +449,7 @@ MonoBehaviour:
   endBattleGameMenuUI: {fileID: 589592271}
   endBattleGameController: {fileID: 1510265282565365707}
   gameMenuUI: {fileID: 1787466646}
-  opponnent: {fileID: 1808997410}
+  opponent: {fileID: 1808997410}
 --- !u!114 &268612222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6044,7 +6044,7 @@ GameObject:
   - component: {fileID: 644352483}
   - component: {fileID: 644352482}
   m_Layer: 8
-  m_Name: OpponenntsScoreText
+  m_Name: OpponentsScoreText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6222,7 +6222,7 @@ GameObject:
   - component: {fileID: 883823836}
   - component: {fileID: 883823835}
   m_Layer: 5
-  m_Name: OpponnentStepCounter
+  m_Name: OpponentStepCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6266,7 +6266,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Opponnents Steps: 0'
+  m_text: 'Opponents Steps: 0'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
   m_sharedMaterial: {fileID: 2140032, guid: dc36b3fdc14f47ebb36fd484a67e268a, type: 2}
@@ -8338,6 +8338,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1202349375428123282, guid: a7322eb07db28cf4da85e93eb11fd884,
         type: 3}
+    - target: {fileID: 3284490578841694249, guid: cfbd0d4f7b05d624a9acdc3a24a022d0,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6176087179332539623, guid: cfbd0d4f7b05d624a9acdc3a24a022d0,
         type: 3}
       propertyPath: m_RootOrder
@@ -8397,6 +8402,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Opponent
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169169287655942476, guid: cfbd0d4f7b05d624a9acdc3a24a022d0,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfbd0d4f7b05d624a9acdc3a24a022d0, type: 3}

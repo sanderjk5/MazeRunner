@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modifiedDijkstraAlgorithmPrefab: {fileID: 1202349375428123282, guid: a7322eb07db28cf4da85e93eb11fd884,
     type: 3}
+  endBattleGameController: {fileID: 0}
 --- !u!61 &3284490578841694249
 BoxCollider2D:
   m_ObjectHideFlags: 0

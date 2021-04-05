@@ -11,7 +11,7 @@ public class OpponentController : MonoBehaviour
     private float intermediateSteps;
     private float stepDuration;
     
-    public float OpponnentsTime { get; private set; }
+    public float OpponentsTime { get; private set; }
     public int StepCounter { get; set; }
     public int ShortestDistance { get; set; }
     public List<NodeController> ShortestPath { get; set; }
@@ -78,8 +78,8 @@ public class OpponentController : MonoBehaviour
                 }
                 yield return new WaitForSeconds(1/intermediateSteps * stepDuration);
             }
-            StepCounter++;
-            GameObject.Find("OpponnentStepCounter").GetComponent<TextMeshProUGUI>().text = "Opponnents Steps: " + StepCounter;
+            //StepCounter++;
+            //GameObject.Find("OpponnentStepCounter").GetComponent<TextMeshProUGUI>().text = "Opponnents Steps: " + StepCounter;
         }
         for (float i = 1; i <= intermediateSteps; i++)
         {
@@ -87,7 +87,12 @@ public class OpponentController : MonoBehaviour
             gameObject.transform.position = new Vector3(-8.75f, newValue);
             yield return new WaitForSeconds(1 / intermediateSteps * stepDuration);
         }
-        EndBattleGameMenu.OpponnentFinished = true;
-        OpponnentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
+        EndBattleGameMenu.OpponentFinished = true;
+        OpponentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
+    }
+
+    public void UpdateStepCounter()
+    {
+        GameObject.Find("OpponentStepCounter").GetComponent<TextMeshProUGUI>().text = "Opponents Steps: " + StepCounter;
     }
 }

@@ -7,18 +7,18 @@ using UnityEngine.SceneManagement;
 public class EndBattleGameMenu : MonoBehaviour
 {
     public static bool PlayerFinished = false;
-    public static bool OpponnentFinished = false;
+    public static bool OpponentFinished = false;
     public GameObject endBattleGameMenuUI;
     public GameObject endBattleGameController;
     //The normal game menu ui.
     public GameObject gameMenuUI;
-    public GameObject opponnent;
+    public GameObject opponent;
 
     // Update is called once per frame
     void Update()
     {
         //Enables the menu if the game is finished.
-        if (PlayerFinished && OpponnentFinished)
+        if (PlayerFinished && OpponentFinished)
         {
             EnableEndBattleGameMenu();
         }
@@ -30,19 +30,19 @@ public class EndBattleGameMenu : MonoBehaviour
     public void EnableEndBattleGameMenu()
     {
         PlayerFinished = false;
-        OpponnentFinished = false;
+        OpponentFinished = false;
         //Deactivates the other menus and the bar at the bottom of the game scene.
         gameMenuUI.SetActive(false);
         //Activates the end game menu.
         endBattleGameMenuUI.SetActive(true);
 
-        float playersScore = MainScript.CurrentStepCount + endBattleGameController.GetComponent<EndBattleGameController>().PlayersTime;
-        float opponnentsScore = opponnent.GetComponent<OpponentController>().StepCounter + opponnent.GetComponent<OpponentController>().OpponnentsTime;
+        float playersScore = MainScript.CurrentStepCount + Mathf.FloorToInt(endBattleGameController.GetComponent<EndBattleGameController>().PlayersTime / 2);
+        float opponentsScore = opponent.GetComponent<OpponentController>().StepCounter + Mathf.FloorToInt(opponent.GetComponent<OpponentController>().OpponentsTime / 2);
         GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = "Your Score:\n" + playersScore;
-        GameObject.Find("OpponnentsScoreText").GetComponent<TextMeshProUGUI>().text = "Opponnents Score:\n" + opponnentsScore;
-        if(opponnentsScore >= playersScore)
+        GameObject.Find("OpponentsScoreText").GetComponent<TextMeshProUGUI>().text = "Opponents Score:\n" + opponentsScore;
+        if(opponentsScore <= playersScore)
         {
-            GameObject.Find("EndGameInfoText").GetComponent<TextMeshProUGUI>().text = "Oh no!\n Your opponnent beats you!";
+            GameObject.Find("EndGameInfoText").GetComponent<TextMeshProUGUI>().text = "Oh no!\n Your opponent beats you!";
         }
     }
 
