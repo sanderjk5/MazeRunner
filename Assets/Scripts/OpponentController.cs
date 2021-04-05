@@ -78,8 +78,6 @@ public class OpponentController : MonoBehaviour
                 }
                 yield return new WaitForSeconds(1/intermediateSteps * stepDuration);
             }
-            //StepCounter++;
-            //GameObject.Find("OpponnentStepCounter").GetComponent<TextMeshProUGUI>().text = "Opponnents Steps: " + StepCounter;
         }
         for (float i = 1; i <= intermediateSteps; i++)
         {
