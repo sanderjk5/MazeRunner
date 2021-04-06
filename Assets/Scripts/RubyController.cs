@@ -45,11 +45,11 @@ public class RubyController : MonoBehaviour
         if(MainScript.ScaleMazeSize == 0.5f)
         {
             gameObject.transform.position = new Vector3(-8.75f, 4.75f);
-            gameObject.transform.localScale = new Vector3(0.25f, 0.25f);
+            gameObject.transform.localScale = new Vector3(0.175f, 0.175f);
         } else
         {
             gameObject.transform.position = new Vector3(-8.5f, 4.5f);
-            gameObject.transform.localScale = new Vector3(0.5f, 0.5f);
+            gameObject.transform.localScale = new Vector3(0.35f, 0.35f);
         }
         
     }
