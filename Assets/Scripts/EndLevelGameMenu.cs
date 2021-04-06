@@ -41,21 +41,37 @@ public class EndLevelGameMenu : MonoBehaviour
         
         //The remaining time of the player.
         float remainingTime = endLevelGameController.GetComponent<EndLevelGameController>().timeRemaining;
-        if(remainingTime > 0)
+        remainingTime -= Mathf.Max(MainScript.CurrentStepCount - MainScript.OptimalStepCount, 0);
+
+        if (MainScript.CurrentLevelCount + 1 > PlayerPrefs.GetInt("LevelModusHighestLevel", 0))
         {
-            //Prints the remaining time.
+            PlayerPrefs.SetInt("LevelModusHighestLevel", MainScript.CurrentLevelCount + 1);
+        }
+
+        if (remainingTime > 0)
+        {
             remainingTime += 1;
+            if (remainingTime > PlayerPrefs.GetFloat("LevelModusBestTime", 0))
+            {
+                PlayerPrefs.SetFloat("LevelModusBestTime", remainingTime);
+            }
+            //Prints the remaining time.
             float minutes = Mathf.FloorToInt(remainingTime / 60);
             float seconds = Mathf.FloorToInt(remainingTime % 60);
-            GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "Remaining Time:\n" + string.Format("{0:00}:{1:00}", minutes, seconds);
+            GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "Remaining\n Time:\n" + string.Format("{0:00}:{1:00}", minutes, seconds);
         }
         else
         {
             //Prints the texts if the player failed.
             GameObject.Find("EndGameInfoText").GetComponent<TextMeshProUGUI>().text = "Game Over";
-            GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "Remaining Time:\n" + string.Format("{0:00}:{1:00}", 0, 0);
+            GameObject.Find("TimeText").GetComponent<TextMeshProUGUI>().text = "Remaining\n Time:\n" + string.Format("{0:00}:{1:00}", 0, 0);
+            
         }
-        
+
+        float minutesBestTime = Mathf.FloorToInt(PlayerPrefs.GetFloat("LevelModusBestTime", 0) / 60);
+        float secondsBestTime = Mathf.FloorToInt(PlayerPrefs.GetFloat("LevelModusBestTime", 0) % 60);
+        GameObject.Find("BestTimeText").GetComponent<TextMeshProUGUI>().text = "Best\n Time:\n" + string.Format("{0:00}:{1:00}", minutesBestTime, secondsBestTime);
+        GameObject.Find("LevelHighscoreText").GetComponent<TextMeshProUGUI>().text = "Highest\n Level:\n" + PlayerPrefs.GetInt("LevelModusHighestLevel", 0);
     }
 
     /**

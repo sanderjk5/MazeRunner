@@ -132,7 +132,7 @@ public class EndGameMenu : MonoBehaviour
                         //edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1, 0.03f);
                         edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.03f * MainScript.ScaleMazeSize);
                         Color edgeColor = MainScript.Colors[button.CorrespondingNode.Button];
-                        edge.gameObject.GetComponent<SpriteRenderer>().color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.3f);
+                        edge.gameObject.GetComponent<SpriteRenderer>().color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.5f);
                     }
                 }
             }
