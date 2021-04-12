@@ -49,6 +49,14 @@ public class NodeController : MonoBehaviour
     }
 
     /**
+     * Store the node if the player stepped on it.
+     */
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        MainScript.PlayerPath.Add(this);
+    }
+
+    /**
      * <summary>Activates the button again if the player leaves the corresponding node.</summary>
      */
     private void OnTriggerExit2D(Collider2D collision)
