@@ -57,22 +57,60 @@ public class NodeController : MonoBehaviour
         if (MainScript.PlayerPath.Count != 0)
         {
             NodeController preNode = MainScript.PlayerPath[MainScript.PlayerPath.Count - 1];
+            IEnumerable<EdgeController> edgeIntersect = this.OutgoingEdges.Intersect(preNode.OutgoingEdges);
             NodeController addedNode = null;
             if (!this.Neighbours.Contains(preNode))
             {
                 IEnumerable<NodeController> intersect = preNode.Neighbours.Intersect(this.Neighbours);
                 foreach (NodeController i in intersect)
                 {
-                    IEnumerable<EdgeController> edgeIntersect = i.OutgoingEdges.Intersect(preNode.OutgoingEdges);
-                    if (edgeIntersect.Count() != 0)
+                    IEnumerable<EdgeController> edgeIntersectPreNode = i.OutgoingEdges.Intersect(preNode.OutgoingEdges);
+                    IEnumerable<EdgeController> edgeIntersectCurrentNode = i.OutgoingEdges.Intersect(this.OutgoingEdges);
+                    if (edgeIntersectPreNode.Count() != 0 && edgeIntersectCurrentNode.Count() != 0)
                     {
                         addedNode = i;
                     }
                 }
-                MainScript.PlayerPath.Add(addedNode);
+                if (addedNode != null)
+                {
+                    MainScript.PlayerPath.Add(addedNode);
+                    MainScript.PlayerPath.Add(this);
+                }
+            }
+            else if(edgeIntersect.Count() == 0)
+            {
+                foreach(NodeController neighbourOfPreNode in preNode.Neighbours)
+                {
+                    IEnumerable<NodeController> intersectsOfNeighbourOfPreNode = neighbourOfPreNode.Neighbours.Intersect(this.Neighbours);
+                    foreach (NodeController i in intersectsOfNeighbourOfPreNode)
+                    {
+                        IEnumerable<EdgeController> edgeIntersectPreNode = preNode.OutgoingEdges.Intersect(neighbourOfPreNode.OutgoingEdges);
+                        IEnumerable<EdgeController> edgeIntersectNeighbourOfPreNode= neighbourOfPreNode.OutgoingEdges.Intersect(i.OutgoingEdges);
+                        IEnumerable<EdgeController> edgeIntersectCurrentNode = this.OutgoingEdges.Intersect(i.OutgoingEdges);
+                        if (edgeIntersectPreNode.Count() != 0 && edgeIntersectNeighbourOfPreNode.Count() != 0 && edgeIntersectCurrentNode.Count() != 0)
+                        {
+                            addedNode = i;
+                        }
+                    }
+                    if (addedNode != null)
+                    {
+                        MainScript.PlayerPath.Add(neighbourOfPreNode);
+                        MainScript.PlayerPath.Add(addedNode);
+                        MainScript.PlayerPath.Add(this);
+                        break;
+                    }
+                }
+            }
+            else {
+                MainScript.PlayerPath.Add(this);
             }
         }
-        MainScript.PlayerPath.Add(this);
+        else
+        {
+            MainScript.PlayerPath.Add(this);
+        }
+        
+        
     }
 
     /**
