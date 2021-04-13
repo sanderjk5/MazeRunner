@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NodeController : MonoBehaviour
@@ -53,6 +54,24 @@ public class NodeController : MonoBehaviour
      */
     void OnTriggerEnter2D(Collider2D other)
     {
+        if (MainScript.PlayerPath.Count != 0)
+        {
+            NodeController preNode = MainScript.PlayerPath[MainScript.PlayerPath.Count - 1];
+            NodeController addedNode = null;
+            if (!this.Neighbours.Contains(preNode))
+            {
+                IEnumerable<NodeController> intersect = preNode.Neighbours.Intersect(this.Neighbours);
+                foreach (NodeController i in intersect)
+                {
+                    IEnumerable<EdgeController> edgeIntersect = i.OutgoingEdges.Intersect(preNode.OutgoingEdges);
+                    if (edgeIntersect.Count() != 0)
+                    {
+                        addedNode = i;
+                    }
+                }
+                MainScript.PlayerPath.Add(addedNode);
+            }
+        }
         MainScript.PlayerPath.Add(this);
     }
 
