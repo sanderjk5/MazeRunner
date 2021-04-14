@@ -47,7 +47,7 @@ public class AldousBroderAlgorithm : MonoBehaviour
                 {
                     gameObject = Instantiate(nodePrefab, new Vector3((i * MainScript.ScaleMazeSize) - 8.75f, (j * MainScript.ScaleMazeSize) + 4.75f, 0), Quaternion.identity);
                     node = gameObject.GetComponent<NodeController>();
-                    node.gameObject.transform.localScale = new Vector3(0.985f * MainScript.ScaleMazeSize, 0.97f * MainScript.ScaleMazeSize);
+                    node.gameObject.transform.localScale = new Vector3(0.475f, 0.475f);
                 } else
                 {
                     gameObject = Instantiate(nodePrefab, new Vector3(i - 8.5f, j + 4.5f, 0), Quaternion.identity);

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class NodeController : MonoBehaviour
@@ -46,6 +47,68 @@ public class NodeController : MonoBehaviour
             if(edge.Node0.Id == targetNode.Id || edge.Node1.Id == targetNode.Id) return edge;
         }
         return null;
+    }
+
+    /**
+     * Store the node if the player stepped on it.
+     */
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (MainScript.PlayerPath.Count != 0)
+        {
+            NodeController preNode = MainScript.PlayerPath[MainScript.PlayerPath.Count - 1];
+            IEnumerable<EdgeController> edgeIntersect = this.OutgoingEdges.Intersect(preNode.OutgoingEdges);
+            if (!this.Neighbours.Contains(preNode))
+            {
+                IEnumerable<NodeController> intersect = preNode.Neighbours.Intersect(this.Neighbours);
+
+                foreach (NodeController i in intersect)
+                {
+                    IEnumerable<EdgeController> edgeIntersectPreNode = i.OutgoingEdges.Intersect(preNode.OutgoingEdges);
+                    IEnumerable<EdgeController> edgeIntersectCurrentNode = i.OutgoingEdges.Intersect(this.OutgoingEdges);
+                    if (edgeIntersectPreNode.Count() != 0 && edgeIntersectCurrentNode.Count() != 0)
+                    {
+                        MainScript.CurrentStepCount += edgeIntersectPreNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                        MainScript.PlayerPath.Add(i);
+                        MainScript.CurrentStepCount += edgeIntersectCurrentNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                        MainScript.PlayerPath.Add(this);
+                        break;
+                    }
+                }
+            }
+            else if(edgeIntersect.Count() == 0)
+            {
+                foreach(NodeController neighbourOfPreNode in preNode.Neighbours)
+                {
+                    IEnumerable<NodeController> intersectsOfNeighbourOfPreNode = neighbourOfPreNode.Neighbours.Intersect(this.Neighbours);
+                    foreach (NodeController i in intersectsOfNeighbourOfPreNode)
+                    {
+                        IEnumerable<EdgeController> edgeIntersectPreNode = preNode.OutgoingEdges.Intersect(neighbourOfPreNode.OutgoingEdges);
+                        IEnumerable<EdgeController> edgeIntersectNeighbourOfPreNode= neighbourOfPreNode.OutgoingEdges.Intersect(i.OutgoingEdges);
+                        IEnumerable<EdgeController> edgeIntersectCurrentNode = this.OutgoingEdges.Intersect(i.OutgoingEdges);
+                        if (edgeIntersectPreNode.Count() != 0 && edgeIntersectNeighbourOfPreNode.Count() != 0 && edgeIntersectCurrentNode.Count() != 0)
+                        {
+                            MainScript.CurrentStepCount += edgeIntersectPreNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                            MainScript.PlayerPath.Add(neighbourOfPreNode);
+                            MainScript.CurrentStepCount += edgeIntersectNeighbourOfPreNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                            MainScript.PlayerPath.Add(i);
+                            MainScript.CurrentStepCount += edgeIntersectCurrentNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                            MainScript.PlayerPath.Add(this);
+                            break;
+                        }
+                    }
+                }
+            }
+            else {
+                MainScript.CurrentStepCount += edgeIntersect.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                MainScript.PlayerPath.Add(this);
+            }
+        }
+        else
+        {
+            MainScript.PlayerPath.Add(this);
+        }
+        MainScript.UpdateStepCounter();
     }
 
     /**

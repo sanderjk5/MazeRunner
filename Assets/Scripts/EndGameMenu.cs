@@ -11,6 +11,7 @@ public class EndGameMenu : MonoBehaviour
     public static bool EndGotReached = false;
     public GameObject endGameMenuUI;
     public GameObject optimalPathPrefab;
+    public GameObject playerPathPrefab;
     public GameObject endGameController;
 
     // Update is called once per frame
@@ -56,6 +57,8 @@ public class EndGameMenu : MonoBehaviour
         // Show the score of the player
         GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = "Your Score:\n" + score.ToString();
         GameObject.Find("HighscoreText").GetComponent<TextMeshProUGUI>().text = "Highscore:\n" + PlayerPrefs.GetInt(SliderText.DifficultyText, 0).ToString();
+
+        List<NodeController> test = MainScript.PlayerPath;
     }
 
     // Compute the score of a player
@@ -96,7 +99,7 @@ public class EndGameMenu : MonoBehaviour
         // Get all buttons
         ButtonController[] buttons = FindObjectsOfType<ButtonController>();
 
-        // Compute eacch x and y value of the optimal path edges
+        // Compute each x and y value of the optimal path edges
         for (int i = 0; i < optimalPath.Count - 1; i++)
         {
             float thisX = optimalPath[i].gameObject.transform.position.x;
@@ -127,6 +130,62 @@ public class EndGameMenu : MonoBehaviour
                 {
                     int pos = System.Array.IndexOf(buttons, button);
                     if (button.CorrespondingNode.Id == optimalPath[i].Id)
+                    {
+                        EdgeController edge = button.CorrespondingEdge;
+                        //edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1, 0.03f);
+                        edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.03f * MainScript.ScaleMazeSize);
+                        Color edgeColor = MainScript.Colors[button.CorrespondingNode.Button];
+                        edge.gameObject.GetComponent<SpriteRenderer>().color = new Color(edgeColor.r, edgeColor.g, edgeColor.b, 0.5f);
+                    }
+                }
+            }
+        }
+    }
+
+    // Show the path which the player took
+    public void ShowPlayerPath()
+    {
+        // Remove end game menu
+        endGameMenuUI.SetActive(false);
+        menuIsActive = false;
+
+        // Get the path from the maze
+        List<NodeController> playerPath = MainScript.PlayerPath;
+
+        // Get all buttons
+        ButtonController[] buttons = FindObjectsOfType<ButtonController>();
+
+        // Compute each x and y value of the player path edges
+        for (int i = 0; i < playerPath.Count - 1; i++)
+        {
+            float thisX = playerPath[i].gameObject.transform.position.x;
+            float thisY = playerPath[i].gameObject.transform.position.y;
+
+            float nextX = playerPath[i + 1].gameObject.transform.position.x;
+            float nextY = playerPath[i + 1].gameObject.transform.position.y;
+
+            float pathX = (nextX + thisX) / 2;
+            float pathY = (nextY + thisY) / 2;
+
+            // Create path with correct orientation
+            if (pathY == nextY)
+            {
+                GameObject path = Instantiate(playerPathPrefab, new Vector3(pathX, pathY), Quaternion.identity);
+                path.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.1f * MainScript.ScaleMazeSize);
+            }
+            else if (pathX == nextX)
+            {
+                GameObject path = Instantiate(playerPathPrefab, new Vector3(pathX, pathY), Quaternion.Euler(0, 0, 90));
+                path.GetComponent<Transform>().localScale = new Vector3(1 * MainScript.ScaleMazeSize, 0.1f * MainScript.ScaleMazeSize);
+            }
+
+            // If a node is a button, search the correct obstacle and decrease the transparency
+            if (playerPath[i].Button != -1)
+            {
+                foreach (ButtonController button in buttons)
+                {
+                    int pos = System.Array.IndexOf(buttons, button);
+                    if (button.CorrespondingNode.Id == playerPath[i].Id)
                     {
                         EdgeController edge = button.CorrespondingEdge;
                         //edge.gameObject.GetComponent<Transform>().localScale = new Vector3(1, 0.03f);
