@@ -58,23 +58,22 @@ public class NodeController : MonoBehaviour
         {
             NodeController preNode = MainScript.PlayerPath[MainScript.PlayerPath.Count - 1];
             IEnumerable<EdgeController> edgeIntersect = this.OutgoingEdges.Intersect(preNode.OutgoingEdges);
-            NodeController addedNode = null;
             if (!this.Neighbours.Contains(preNode))
             {
                 IEnumerable<NodeController> intersect = preNode.Neighbours.Intersect(this.Neighbours);
+
                 foreach (NodeController i in intersect)
                 {
                     IEnumerable<EdgeController> edgeIntersectPreNode = i.OutgoingEdges.Intersect(preNode.OutgoingEdges);
                     IEnumerable<EdgeController> edgeIntersectCurrentNode = i.OutgoingEdges.Intersect(this.OutgoingEdges);
                     if (edgeIntersectPreNode.Count() != 0 && edgeIntersectCurrentNode.Count() != 0)
                     {
-                        addedNode = i;
+                        MainScript.CurrentStepCount += edgeIntersectPreNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                        MainScript.PlayerPath.Add(i);
+                        MainScript.CurrentStepCount += edgeIntersectCurrentNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                        MainScript.PlayerPath.Add(this);
+                        break;
                     }
-                }
-                if (addedNode != null)
-                {
-                    MainScript.PlayerPath.Add(addedNode);
-                    MainScript.PlayerPath.Add(this);
                 }
             }
             else if(edgeIntersect.Count() == 0)
@@ -89,19 +88,19 @@ public class NodeController : MonoBehaviour
                         IEnumerable<EdgeController> edgeIntersectCurrentNode = this.OutgoingEdges.Intersect(i.OutgoingEdges);
                         if (edgeIntersectPreNode.Count() != 0 && edgeIntersectNeighbourOfPreNode.Count() != 0 && edgeIntersectCurrentNode.Count() != 0)
                         {
-                            addedNode = i;
+                            MainScript.CurrentStepCount += edgeIntersectPreNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                            MainScript.PlayerPath.Add(neighbourOfPreNode);
+                            MainScript.CurrentStepCount += edgeIntersectNeighbourOfPreNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                            MainScript.PlayerPath.Add(i);
+                            MainScript.CurrentStepCount += edgeIntersectCurrentNode.ElementAt(0).GetCostForState(MainScript.CurrentState);
+                            MainScript.PlayerPath.Add(this);
+                            break;
                         }
-                    }
-                    if (addedNode != null)
-                    {
-                        MainScript.PlayerPath.Add(neighbourOfPreNode);
-                        MainScript.PlayerPath.Add(addedNode);
-                        MainScript.PlayerPath.Add(this);
-                        break;
                     }
                 }
             }
             else {
+                MainScript.CurrentStepCount += edgeIntersect.ElementAt(0).GetCostForState(MainScript.CurrentState);
                 MainScript.PlayerPath.Add(this);
             }
         }
@@ -109,8 +108,7 @@ public class NodeController : MonoBehaviour
         {
             MainScript.PlayerPath.Add(this);
         }
-        
-        
+        MainScript.UpdateStepCounter();
     }
 
     /**
