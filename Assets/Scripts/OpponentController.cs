@@ -34,8 +34,8 @@ public class OpponentController : MonoBehaviour
         movesToFreezer = false;
         CurrentNodePosition = MainScript.AllNodes[700];
         CalculatePath();
-        intermediateSteps = 30;
-        stepDuration = 0.6f;
+        intermediateSteps = 25;
+        stepDuration = 0.5f;
         opponentIsFrozen = false;
         StartCoroutine(MoveOpponent());
     }
