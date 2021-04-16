@@ -64,7 +64,11 @@ public class EdgeController : MonoBehaviour
      */
     private void OnTriggerExit2D(Collider2D collision)
     {
-        MainScript.CurrentStepCount += GetCostForState(MainScript.CurrentState);
-        MainScript.UpdateStepCounter();
+        if (MainScript.IsBattleGameMode && GameObject.Find("Opponent").GetComponent<BoxCollider2D>().Equals(collision))
+        {
+            GameObject.Find("Opponent").GetComponent<OpponentController>().StepCounter += GetCostForState(MainScript.CurrentState);
+            GameObject.Find("Opponent").GetComponent<OpponentController>().UpdateStepCounter();
+        }
+        
     }
 }

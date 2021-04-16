@@ -652,7 +652,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4b5f43f0681bdda49ab85e9dbf0708a8, type: 2}
+  - {fileID: 2100000, guid: 499c9b3e32cf5e04b9ee6d2bdf416e0b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8596,12 +8596,12 @@ PrefabInstance:
     - target: {fileID: 8133909311079832072, guid: 7593429e4aca54c4589b9f6c1fdaae7b,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.25
+      value: 0.175
       objectReference: {fileID: 0}
     - target: {fileID: 8133909311079832072, guid: 7593429e4aca54c4589b9f6c1fdaae7b,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.25
+      value: 0.175
       objectReference: {fileID: 0}
     - target: {fileID: 8133909311079832072, guid: 7593429e4aca54c4589b9f6c1fdaae7b,
         type: 3}

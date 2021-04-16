@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class OpponentController : MonoBehaviour
 {
@@ -10,7 +12,14 @@ public class OpponentController : MonoBehaviour
     public GameObject endBattleGameController;
     private float intermediateSteps;
     private float stepDuration;
-    
+    private bool moveHorizontal;
+    private float fixedPositionValue;
+    private float differenceBetweenVariablePositionValues;
+    private float variablePositionValueLastNode;
+    private bool opponentIsFrozen;
+    public GameObject dijkstraPrefab;
+    private bool movesToFreezer;
+
     public float OpponentsTime { get; private set; }
     public int StepCounter { get; set; }
     public int ShortestDistance { get; set; }
@@ -22,17 +31,12 @@ public class OpponentController : MonoBehaviour
 
     public void InitializeOpponent()
     {
-        GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
-        ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
-        algorithm.Initialize(MainScript.AllNodes[700], MainScript.AllNodes[19]);
-        algorithm.CalculateModifiedDijkstraAlgorithm();
-        ShortestDistance = algorithm.ShortestDistance;
-        ShortestPath = algorithm.ShortestPath;
+        movesToFreezer = false;
         CurrentNodePosition = MainScript.AllNodes[700];
-        CurrentPositionInShortestPath = 0;
-        Destroy(algorithmObject);
+        CalculatePath();
         intermediateSteps = 45;
         stepDuration = 0.25f;
+        opponentIsFrozen = false;
         StartCoroutine(MoveOpponent());
     }
 
@@ -45,28 +49,19 @@ public class OpponentController : MonoBehaviour
 
         while(CurrentNodePosition.Id != 19)
         {
+            if (CurrentPositionInShortestPath%10 == 0 || CurrentPositionInShortestPath == ShortestPath.Count - 1)
+            {
+                CalculatePath();
+            }
             CurrentPositionInShortestPath++;
             CurrentNodePosition = ShortestPath[CurrentPositionInShortestPath];
-            bool moveHorizontal;
-            float fixedPositionValue;
-            float differenceBetweenVariablePositionValues;
-            float variablePositionValueLastNode;
-            if (gameObject.transform.position.y == CurrentNodePosition.gameObject.transform.position.y)
-            {
-                moveHorizontal = true;
-                fixedPositionValue = gameObject.transform.position.y;
-                variablePositionValueLastNode = gameObject.transform.position.x;
-                differenceBetweenVariablePositionValues = CurrentNodePosition.gameObject.transform.position.x - variablePositionValueLastNode;
-            } 
-            else
-            {
-                moveHorizontal = false;
-                fixedPositionValue = gameObject.transform.position.x;
-                variablePositionValueLastNode = gameObject.transform.position.y;
-                differenceBetweenVariablePositionValues = CurrentNodePosition.gameObject.transform.position.y - variablePositionValueLastNode;
-            }
+            SetMovingValues();
             for(float i = 1; i <= intermediateSteps; i++)
             {
+                while (opponentIsFrozen)
+                {
+                    yield return new WaitForSeconds(stepDuration);
+                }
                 float newValue = variablePositionValueLastNode + (i / intermediateSteps * differenceBetweenVariablePositionValues);
                 if (moveHorizontal)
                 {
@@ -79,6 +74,29 @@ public class OpponentController : MonoBehaviour
                 yield return new WaitForSeconds(1/intermediateSteps * stepDuration);
             }
         }
+        StartCoroutine(MoveToTargetPosition());
+    }
+
+    private void SetMovingValues()
+    {
+        if (gameObject.transform.position.y == CurrentNodePosition.gameObject.transform.position.y)
+        {
+            moveHorizontal = true;
+            fixedPositionValue = gameObject.transform.position.y;
+            variablePositionValueLastNode = gameObject.transform.position.x;
+            differenceBetweenVariablePositionValues = CurrentNodePosition.gameObject.transform.position.x - variablePositionValueLastNode;
+        }
+        else
+        {
+            moveHorizontal = false;
+            fixedPositionValue = gameObject.transform.position.x;
+            variablePositionValueLastNode = gameObject.transform.position.y;
+            differenceBetweenVariablePositionValues = CurrentNodePosition.gameObject.transform.position.y - variablePositionValueLastNode;
+        }
+    }
+
+    IEnumerator MoveToTargetPosition()
+    {
         for (float i = 1; i <= intermediateSteps; i++)
         {
             float newValue = -4.75f + (i / intermediateSteps * -0.5f);
@@ -92,5 +110,65 @@ public class OpponentController : MonoBehaviour
     public void UpdateStepCounter()
     {
         GameObject.Find("OpponentStepCounter").GetComponent<TextMeshProUGUI>().text = "Opponents Steps: " + StepCounter;
+    }
+
+    public IEnumerator FreezeOpponent(int seconds)
+    {
+        opponentIsFrozen = true;
+        yield return new WaitForSeconds(seconds);
+        opponentIsFrozen = false;
+    }
+
+    private void CalculatePath()
+    {
+        if (EndBattleGameMenu.PlayerFinished)
+        {
+            movesToFreezer = false;
+        }
+        if (movesToFreezer)
+        {
+            return;
+        }
+        GameObject dijkstraGameObject;
+        ModifiedDijkstraAlgorithm dijkstraAlgorithm;
+        List<NodeController> shortestPathToNearestFreezer = new List<NodeController>();
+        int distanceToNearestFreezer = Int32.MaxValue;
+        int possibilityToChooseFreezer = 0;
+        if (!EndBattleGameMenu.PlayerFinished)
+        {
+            foreach (FreezerController freezer in MainScript.AllFreezer)
+            {
+                dijkstraGameObject = Instantiate(dijkstraPrefab);
+                dijkstraAlgorithm = dijkstraGameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+                dijkstraAlgorithm.Initialize(CurrentNodePosition, freezer.CorrespondingNode, MainScript.CurrentState);
+                dijkstraAlgorithm.CalculateModifiedDijkstraAlgorithm();
+                if (dijkstraAlgorithm.ShortestDistance < distanceToNearestFreezer)
+                {
+                    distanceToNearestFreezer = dijkstraAlgorithm.ShortestDistance;
+                    shortestPathToNearestFreezer = dijkstraAlgorithm.ShortestPath;
+                }
+                Destroy(dijkstraGameObject);
+            }
+            if (distanceToNearestFreezer != Int32.MaxValue)
+            {
+                possibilityToChooseFreezer = Mathf.Max(0, 50 - distanceToNearestFreezer);
+            }
+        }
+
+        int randomNumber = Random.Range(0, 101);
+        if (randomNumber < possibilityToChooseFreezer && shortestPathToNearestFreezer.Count != 0)
+        {
+            ShortestPath = shortestPathToNearestFreezer;
+        }
+        else
+        {
+            dijkstraGameObject = Instantiate(dijkstraPrefab);
+            dijkstraAlgorithm = dijkstraGameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+            dijkstraAlgorithm.Initialize(CurrentNodePosition, MainScript.AllNodes[19], MainScript.CurrentState);
+            dijkstraAlgorithm.CalculateModifiedDijkstraAlgorithm();
+            ShortestPath = dijkstraAlgorithm.ShortestPath;
+            Destroy(dijkstraGameObject);
+        }
+        CurrentPositionInShortestPath = 0;
     }
 }

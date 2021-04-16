@@ -53,4 +53,12 @@ public class RubyController : MonoBehaviour
         }
         
     }
+
+    public IEnumerator FreezePlayer(int seconds)
+    {
+        Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
+        ruby.constraints = RigidbodyConstraints2D.FreezeAll;
+        yield return new WaitForSeconds(seconds);
+        ruby.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
 }

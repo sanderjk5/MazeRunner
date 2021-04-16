@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using TMPro;
+using Random = UnityEngine.Random;
 
 public class MainScript : MonoBehaviour
 {
@@ -46,6 +47,8 @@ public class MainScript : MonoBehaviour
 
     public static bool IsBattleGameMode { get; set; }
 
+    public static List<FreezerController> AllFreezer { get; private set; }
+
     //The prefab of the walls.
     public GameObject createWallsPrefab;
     //The prefab of the nodes.
@@ -60,6 +63,7 @@ public class MainScript : MonoBehaviour
     public GameObject buttonPrefab;
     //The prefab of generating the obstacles
     public GameObject obstacleGenerationPrefab;
+    public GameObject freezerPrefab;
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
@@ -171,6 +175,7 @@ public class MainScript : MonoBehaviour
 
         if (IsBattleGameMode)
         {
+            GenerateFreezer();
             GameObject.Find("Opponent").GetComponent<OpponentController>().InitializeOpponent();
         }
         //Enables the user input.
@@ -266,6 +271,29 @@ public class MainScript : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    private void GenerateFreezer()
+    {
+        AllFreezer = new List<FreezerController>();
+        for(int i = 0; i < 5; i++)
+        {
+            NodeController randomNode;
+            while (true)
+            {
+                int randomNumber = Random.Range(1, MainScript.NumberOfNodes);
+                if(randomNumber != 700)
+                {
+                    randomNode = MainScript.AllNodes[randomNumber];
+                    break;
+                }
+            }
+            GameObject gameObject = Instantiate(freezerPrefab);
+            gameObject.transform.position = randomNode.gameObject.transform.position;
+            FreezerController freezer = gameObject.GetComponent<FreezerController>();
+            freezer.Initialize(randomNode);
+            AllFreezer.Add(freezer);
         }
     }
 }
