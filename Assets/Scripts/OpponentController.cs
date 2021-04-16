@@ -34,8 +34,8 @@ public class OpponentController : MonoBehaviour
         movesToFreezer = false;
         CurrentNodePosition = MainScript.AllNodes[700];
         CalculatePath();
-        intermediateSteps = 45;
-        stepDuration = 0.25f;
+        intermediateSteps = 30;
+        stepDuration = 0.6f;
         opponentIsFrozen = false;
         StartCoroutine(MoveOpponent());
     }
@@ -51,6 +51,7 @@ public class OpponentController : MonoBehaviour
         {
             if (CurrentPositionInShortestPath%10 == 0 || CurrentPositionInShortestPath == ShortestPath.Count - 1)
             {
+                movesToFreezer = false;
                 CalculatePath();
             }
             CurrentPositionInShortestPath++;
@@ -158,10 +159,12 @@ public class OpponentController : MonoBehaviour
         int randomNumber = Random.Range(0, 101);
         if (randomNumber < possibilityToChooseFreezer && shortestPathToNearestFreezer.Count != 0)
         {
+            movesToFreezer = true;
             ShortestPath = shortestPathToNearestFreezer;
         }
         else
         {
+            movesToFreezer = false;
             dijkstraGameObject = Instantiate(dijkstraPrefab);
             dijkstraAlgorithm = dijkstraGameObject.GetComponent<ModifiedDijkstraAlgorithm>();
             dijkstraAlgorithm.Initialize(CurrentNodePosition, MainScript.AllNodes[19], MainScript.CurrentState);
