@@ -31,6 +31,8 @@ public class MainScript : MonoBehaviour
     public static int CurrentStepCount { get; set; }
     //The optimal path between start and end
     public static List<NodeController> ShortestPath { get; private set; }
+    //The path of the player
+    public static List<NodeController> PlayerPath { get; set; }
     //Scales the maze (1: 18X10, 0.5f: 36X20)
     public static float ScaleMazeSize { get; set; }
     //The current level of the level game modus.
@@ -105,6 +107,7 @@ public class MainScript : MonoBehaviour
         AllNodes = new Dictionary<int, NodeController>();
         AllEdges = new List<EdgeController>();
         AllButtons = new List<ButtonController>();
+        PlayerPath = new List<NodeController>();
 
         //Set all possible colors (at least as many as NumberOfObstacles)
         Colors = new List<Color>
