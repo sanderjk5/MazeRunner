@@ -48,6 +48,8 @@ public class MainScript : MonoBehaviour
     public static bool IsBattleGameMode { get; set; }
 
     public static List<FreezerController> AllFreezer { get; private set; }
+    public static float BattleGameCurrentButtonCounter { get; set; }
+    public static float BattleGameNumberOfItems { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -94,6 +96,8 @@ public class MainScript : MonoBehaviour
             NumberOfButtons = 4;
             ScaleMazeSize = 0.5f;
             IsBattleGameMode = true;
+            BattleGameCurrentButtonCounter = 0;
+            BattleGameNumberOfItems = 8;
             InitializeGame();
         }
     }
@@ -138,15 +142,14 @@ public class MainScript : MonoBehaviour
         a.Initialize((int)Math.Floor(1 / ScaleMazeSize * 18), (int)Math.Floor(1 / ScaleMazeSize * 10));
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
-        //Generates all obstacles
-        gameObject = Instantiate(obstacleGenerationPrefab);
-        ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
-        obstacleGeneration.InsertObstacles();
-        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
-
-
         if (!IsBattleGameMode)
         {
+            //Generates all obstacles
+            gameObject = Instantiate(obstacleGenerationPrefab);
+            ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
+            obstacleGeneration.InsertObstacles();
+            if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
+
             //Calculates the optimal path and distance.
             gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
             ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
@@ -277,7 +280,7 @@ public class MainScript : MonoBehaviour
     private void GenerateFreezer()
     {
         AllFreezer = new List<FreezerController>();
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < BattleGameNumberOfItems; i++)
         {
             NodeController randomNode;
             while (true)

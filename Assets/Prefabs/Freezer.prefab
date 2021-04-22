@@ -124,3 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51c765326e79cb4499fbe42c97c4bf56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  obstacleGenerationPrefab: {fileID: 6842682651385515482, guid: 0441c95c2627bbb4380ac1dcf8c5de8f,
+    type: 3}
