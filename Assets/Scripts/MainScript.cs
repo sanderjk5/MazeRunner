@@ -280,13 +280,45 @@ public class MainScript : MonoBehaviour
     private void GenerateFreezer()
     {
         AllFreezer = new List<FreezerController>();
-        for(int i = 0; i < BattleGameNumberOfItems; i++)
+        for(int i = 0; i < 4; i++)
+        {
+            NodeController randomNode;
+            while (true)
+            {
+                int randomNumber;
+                if(i < 2)
+                {
+                    randomNumber = Random.Range(1, MainScript.NumberOfNodes/2);
+                }
+                else
+                {
+                    randomNumber = Random.Range(MainScript.NumberOfNodes / 2, MainScript.NumberOfNodes);
+                }
+                
+                if(i % 2 == 0 && randomNumber % 20 < 10)
+                {
+                    randomNode = MainScript.AllNodes[randomNumber];
+                    break;
+                }
+                else if(i % 2 == 1 && randomNumber % 20 > 9)
+                {
+                    randomNode = MainScript.AllNodes[randomNumber];
+                    break;
+                }
+            }
+            GameObject gameObject = Instantiate(freezerPrefab);
+            gameObject.transform.position = randomNode.gameObject.transform.position;
+            FreezerController freezer = gameObject.GetComponent<FreezerController>();
+            freezer.Initialize(randomNode);
+            AllFreezer.Add(freezer);
+        }
+        for (int i = 0; i < BattleGameNumberOfItems - 4; i++)
         {
             NodeController randomNode;
             while (true)
             {
                 int randomNumber = Random.Range(1, MainScript.NumberOfNodes);
-                if(randomNumber != 700)
+                if (randomNumber != 700)
                 {
                     randomNode = MainScript.AllNodes[randomNumber];
                     break;

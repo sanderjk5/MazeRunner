@@ -39,7 +39,6 @@ public class FreezerController : MonoBehaviour
             GameObject gameObject = Instantiate(obstacleGenerationPrefab);
             ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
             obstacleGeneration.InsertOneObstacle((int) MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer);
-            Debug.Log(!activatedByPlayer);
             MainScript.BattleGameCurrentButtonCounter++;
         }
         else

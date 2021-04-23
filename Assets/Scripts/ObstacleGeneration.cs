@@ -39,7 +39,6 @@ public class ObstacleGeneration : MonoBehaviour
             ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
             if (onPlayerPath)
             {
-                Debug.Log("d" + onPlayerPath);
                 //path between start and target node
                 algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
 

@@ -152,7 +152,7 @@ public class OpponentController : MonoBehaviour
             }
             if (distanceToNearestFreezer != Int32.MaxValue)
             {
-                possibilityToChooseFreezer = Mathf.Max(0, 50 - distanceToNearestFreezer);
+                possibilityToChooseFreezer = Mathf.Max(0, 60 - distanceToNearestFreezer);
             }
         }
 
