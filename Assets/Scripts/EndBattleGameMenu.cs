@@ -38,11 +38,11 @@ public class EndBattleGameMenu : MonoBehaviour
         //Activates the end game menu.
         endBattleGameMenuUI.SetActive(true);
 
-        float playersScore = MainScript.CurrentStepCount + Mathf.FloorToInt(endBattleGameController.GetComponent<EndBattleGameController>().PlayersTime / 2);
-        float opponentsScore = opponent.GetComponent<OpponentController>().StepCounter + Mathf.FloorToInt(opponent.GetComponent<OpponentController>().OpponentsTime / 2);
+        float playersScore = Mathf.Max(1000 - (MainScript.CurrentStepCount + Mathf.FloorToInt(endBattleGameController.GetComponent<EndBattleGameController>().PlayersTime / 2)), 0);
+        float opponentsScore = Mathf.Max(1000 - (opponent.GetComponent<OpponentController>().StepCounter + Mathf.FloorToInt(opponent.GetComponent<OpponentController>().OpponentsTime / 2)), 0);
         GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>().text = "Your Score:\n" + playersScore;
         GameObject.Find("OpponentsScoreText").GetComponent<TextMeshProUGUI>().text = "Opponents Score:\n" + opponentsScore;
-        if(opponentsScore <= playersScore)
+        if(opponentsScore >= playersScore)
         {
             GameObject.Find("EndGameInfoText").GetComponent<TextMeshProUGUI>().text = "Oh no!\n Your opponent beats you!";
         }
@@ -61,7 +61,6 @@ public class EndBattleGameMenu : MonoBehaviour
      */
     public void QuitGame()
     {
-        Debug.Log("Quit Game");
         Application.Quit();
     }
 }
