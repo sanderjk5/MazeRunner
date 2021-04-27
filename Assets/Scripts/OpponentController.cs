@@ -19,6 +19,7 @@ public class OpponentController : MonoBehaviour
     private bool opponentIsFrozen;
     public GameObject dijkstraPrefab;
     private bool movesToFreezer;
+    private float preCalculatedTime;
 
     public float OpponentsTime { get; private set; }
     public int StepCounter { get; set; }
@@ -37,6 +38,7 @@ public class OpponentController : MonoBehaviour
         intermediateSteps = 25;
         stepDuration = 0.5f;
         opponentIsFrozen = false;
+        preCalculatedTime = 0f;
         StartCoroutine(MoveOpponent());
     }
 
@@ -59,6 +61,10 @@ public class OpponentController : MonoBehaviour
             SetMovingValues();
             for(float i = 1; i <= intermediateSteps; i++)
             {
+                if (EndBattleGameMenu.OpponentFinished)
+                {
+                    yield break;
+                }
                 while (opponentIsFrozen)
                 {
                     yield return new WaitForSeconds(stepDuration);
@@ -74,8 +80,15 @@ public class OpponentController : MonoBehaviour
                 }
                 yield return new WaitForSeconds(1/intermediateSteps * stepDuration);
             }
+            if (EndBattleGameMenu.OpponentFinished)
+            {
+                yield break;
+            }
         }
-        StartCoroutine(MoveToTargetPosition());
+        if (!EndBattleGameMenu.OpponentFinished)
+        {
+            StartCoroutine(MoveToTargetPosition());
+        }
     }
 
     private void SetMovingValues()
@@ -105,7 +118,27 @@ public class OpponentController : MonoBehaviour
             yield return new WaitForSeconds(1 / intermediateSteps * stepDuration);
         }
         EndBattleGameMenu.OpponentFinished = true;
-        OpponentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
+        if(preCalculatedTime != 0)
+        {
+            OpponentsTime = preCalculatedTime;
+        }
+        else
+        {
+            OpponentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
+        }
+        Debug.Log(OpponentsTime);
+    }
+
+    public void CalculateOpponentValues()
+    {
+        GameObject dijkstraGameObject = Instantiate(dijkstraPrefab);
+        ModifiedDijkstraAlgorithm dijkstraAlgorithm = dijkstraGameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+        dijkstraAlgorithm.Initialize(CurrentNodePosition, MainScript.AllNodes[19], MainScript.CurrentState);
+        dijkstraAlgorithm.CalculateModifiedDijkstraAlgorithm();
+        preCalculatedTime = endBattleGameController.GetComponent<EndBattleGameController>().timer + (dijkstraAlgorithm.ShortestPath.Count - 1) * stepDuration;
+        Debug.Log(dijkstraAlgorithm.ShortestPath.Count);
+        Debug.Log(preCalculatedTime);
+        stepDuration = 0.001f;
     }
 
     public void UpdateStepCounter()

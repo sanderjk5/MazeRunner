@@ -53,6 +53,11 @@ public class EndBattleGameController : MonoBehaviour
 
         // Set the end game variable to true
         PlayersTime = timer;
+        if (!EndBattleGameMenu.OpponentFinished)
+        {
+            OpponentController opponent = GameObject.Find("Opponent").GetComponent<OpponentController>();
+            opponent.CalculateOpponentValues();
+        }
         EndBattleGameMenu.PlayerFinished = true;
     }
 }
