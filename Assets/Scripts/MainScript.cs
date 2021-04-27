@@ -130,10 +130,7 @@ public class MainScript : MonoBehaviour
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
 
         //Moves the player to the start point.
-        if (!IsBattleGameMode)
-        {
-            GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
-        }
+        GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
         
 
         //Generates the labyrinth

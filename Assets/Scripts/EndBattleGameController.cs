@@ -58,6 +58,7 @@ public class EndBattleGameController : MonoBehaviour
             OpponentController opponent = GameObject.Find("Opponent").GetComponent<OpponentController>();
             opponent.CalculateOpponentValues();
         }
+        timerIsRunning = false;
         EndBattleGameMenu.PlayerFinished = true;
     }
 }

@@ -21,7 +21,6 @@ public class EndBattleGameMenu : MonoBehaviour
         if (PlayerFinished && OpponentFinished)
         {
             MainScript.EnableUserInput = false;
-            endBattleGameController.GetComponent<EndBattleGameController>().timerIsRunning = false;
             EnableEndBattleGameMenu();
         }
     }
