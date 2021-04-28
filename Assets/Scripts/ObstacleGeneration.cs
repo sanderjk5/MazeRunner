@@ -10,6 +10,8 @@ public class ObstacleGeneration : MonoBehaviour
     public GameObject modifiedDijkstraAlgorithmPrefab;
     //The prefab of the button.
     public GameObject buttonPrefab;
+    private int playerStartPosition;
+    private int opponentStartPosition;
 
     /**
      * Inserts all Obstacles of the maze.
@@ -17,6 +19,8 @@ public class ObstacleGeneration : MonoBehaviour
      */
     public void InsertObstacles()
     {
+        playerStartPosition = 0;
+        opponentStartPosition = (MainScript.Width - 1) * MainScript.Height;
         //Inserts each obstacle.
         for (int i = 0; i < MainScript.NumberOfButtons; i++)
         {
@@ -29,7 +33,20 @@ public class ObstacleGeneration : MonoBehaviour
         }
     }
 
-    public void InsertOneObstacle(int buttonId, bool onPlayerPath)
+    public void InsertObstacleOnPath(int buttonId, bool onPlayerPath, int startPosition)
+    {
+        if (onPlayerPath)
+        {
+            playerStartPosition = startPosition;
+        }
+        else
+        {
+            opponentStartPosition = startPosition;
+        }
+        InsertOneObstacle(buttonId, onPlayerPath);
+    }
+
+    private void InsertOneObstacle(int buttonId, bool onPlayerPath)
     {
         while (true)
         {
@@ -40,13 +57,13 @@ public class ObstacleGeneration : MonoBehaviour
             if (onPlayerPath)
             {
                 //path between start and target node
-                algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                algorithm.Initialize(MainScript.AllNodes[playerStartPosition], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
 
             }
             else
             {
                 //path between the node in the upper right corner and the node in the lower left corner
-                algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                algorithm.Initialize(MainScript.AllNodes[opponentStartPosition], MainScript.AllNodes[MainScript.Height - 1]);
             }
             algorithm.CalculateModifiedDijkstraAlgorithm();
             List<NodeController> shortestPath = algorithm.ShortestPath;
@@ -67,11 +84,11 @@ public class ObstacleGeneration : MonoBehaviour
             ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
             if (onPlayerPath)
             {
-                algorithm1.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                algorithm1.Initialize(MainScript.AllNodes[playerStartPosition], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
             }
             else
             {
-                algorithm1.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                algorithm1.Initialize(MainScript.AllNodes[opponentStartPosition], MainScript.AllNodes[MainScript.Height - 1]);
             }
             algorithm1.CalculateModifiedDijkstraAlgorithm();
             int shortestDistanceWithObstacle = algorithm1.ShortestDistance;
@@ -128,11 +145,11 @@ public class ObstacleGeneration : MonoBehaviour
             ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
             if (onPlayerPath)
             {
-                algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                algorithm.Initialize(MainScript.AllNodes[playerStartPosition], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
             }
             else
             {
-                algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                algorithm.Initialize(MainScript.AllNodes[opponentStartPosition], MainScript.AllNodes[MainScript.Height - 1]);
             }
             algorithm.CalculateModifiedDijkstraAlgorithm();
             int newShortestDistance = algorithm.ShortestDistance;
