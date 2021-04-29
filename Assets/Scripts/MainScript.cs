@@ -50,6 +50,7 @@ public class MainScript : MonoBehaviour
     public static List<FreezerController> AllFreezer { get; private set; }
     public static float BattleGameCurrentButtonCounter { get; set; }
     public static float BattleGameNumberOfItems { get; set; }
+    public static bool UseShooter { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;

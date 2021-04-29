@@ -15,6 +15,6 @@ public class BattleMenu : MonoBehaviour
 
     public void UseShooter()
     {
-
+        MainScript.UseShooter = !MainScript.UseShooter;
     }
 }
