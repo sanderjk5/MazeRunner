@@ -16,11 +16,11 @@ public class FreezerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GameObject.Find("Opponent").GetComponent<BoxCollider2D>().Equals(collision))
+        if (GameObject.Find("Opponent").GetComponent<BoxCollider2D>().Equals(collision) && !EndBattleGameMenu.PlayerFinished)
         {
             ChooseItemProperty(false);
         }
-        else
+        else if(GameObject.Find("Ruby").GetComponent<EdgeCollider2D>().Equals(collision) && !EndBattleGameMenu.OpponentFinished)
         {
             ChooseItemProperty(true);
         }
@@ -38,7 +38,14 @@ public class FreezerController : MonoBehaviour
             //Generates an obstacle
             GameObject gameObject = Instantiate(obstacleGenerationPrefab);
             ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
-            obstacleGeneration.InsertOneObstacle((int) MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer);
+            if (activatedByPlayer)
+            {
+                obstacleGeneration.InsertObstacleOnPath((int)MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer, GameObject.Find("Opponent").GetComponent<OpponentController>().CurrentNodePosition.Id);
+            }
+            else
+            {
+                obstacleGeneration.InsertObstacleOnPath((int)MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer, MainScript.PlayerPath[MainScript.PlayerPath.Count -1].Id);
+            }
             MainScript.BattleGameCurrentButtonCounter++;
         }
         else

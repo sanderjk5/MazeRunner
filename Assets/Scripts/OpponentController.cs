@@ -16,9 +16,9 @@ public class OpponentController : MonoBehaviour
     private float fixedPositionValue;
     private float differenceBetweenVariablePositionValues;
     private float variablePositionValueLastNode;
-    private bool opponentIsFrozen;
     public GameObject dijkstraPrefab;
     private bool movesToFreezer;
+    private float preCalculatedTime;
 
     public float OpponentsTime { get; private set; }
     public int StepCounter { get; set; }
@@ -34,9 +34,9 @@ public class OpponentController : MonoBehaviour
         movesToFreezer = false;
         CurrentNodePosition = MainScript.AllNodes[700];
         CalculatePath();
-        intermediateSteps = 25;
+        intermediateSteps = 40;
         stepDuration = 0.5f;
-        opponentIsFrozen = false;
+        preCalculatedTime = 0f;
         StartCoroutine(MoveOpponent());
     }
 
@@ -49,9 +49,13 @@ public class OpponentController : MonoBehaviour
 
         while(CurrentNodePosition.Id != 19)
         {
-            if (CurrentPositionInShortestPath%10 == 0 || CurrentPositionInShortestPath == ShortestPath.Count - 1)
+            if(CurrentPositionInShortestPath == ShortestPath.Count - 1)
             {
                 movesToFreezer = false;
+                CalculatePath();
+            }
+            else if (CurrentPositionInShortestPath%10 == 0)
+            {
                 CalculatePath();
             }
             CurrentPositionInShortestPath++;
@@ -59,10 +63,6 @@ public class OpponentController : MonoBehaviour
             SetMovingValues();
             for(float i = 1; i <= intermediateSteps; i++)
             {
-                while (opponentIsFrozen)
-                {
-                    yield return new WaitForSeconds(stepDuration);
-                }
                 float newValue = variablePositionValueLastNode + (i / intermediateSteps * differenceBetweenVariablePositionValues);
                 if (moveHorizontal)
                 {
@@ -74,8 +74,15 @@ public class OpponentController : MonoBehaviour
                 }
                 yield return new WaitForSeconds(1/intermediateSteps * stepDuration);
             }
+            if (EndBattleGameMenu.OpponentFinished)
+            {
+                yield break;
+            }
         }
-        StartCoroutine(MoveToTargetPosition());
+        if (!EndBattleGameMenu.OpponentFinished)
+        {
+            StartCoroutine(MoveToTargetPosition());
+        }
     }
 
     private void SetMovingValues()
@@ -105,7 +112,24 @@ public class OpponentController : MonoBehaviour
             yield return new WaitForSeconds(1 / intermediateSteps * stepDuration);
         }
         EndBattleGameMenu.OpponentFinished = true;
-        OpponentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
+        if(preCalculatedTime != 0)
+        {
+            OpponentsTime = preCalculatedTime;
+        }
+        else
+        {
+            OpponentsTime = endBattleGameController.GetComponent<EndBattleGameController>().timer;
+        }
+    }
+
+    public void CalculateOpponentValues()
+    {
+        GameObject dijkstraGameObject = Instantiate(dijkstraPrefab);
+        ModifiedDijkstraAlgorithm dijkstraAlgorithm = dijkstraGameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+        dijkstraAlgorithm.Initialize(CurrentNodePosition, MainScript.AllNodes[19], MainScript.CurrentState);
+        dijkstraAlgorithm.CalculateModifiedDijkstraAlgorithm();
+        preCalculatedTime = endBattleGameController.GetComponent<EndBattleGameController>().timer + (dijkstraAlgorithm.ShortestPath.Count - 1) * stepDuration;
+        stepDuration = 0.001f;
     }
 
     public void UpdateStepCounter()
@@ -115,9 +139,9 @@ public class OpponentController : MonoBehaviour
 
     public IEnumerator FreezeOpponent(int seconds)
     {
-        opponentIsFrozen = true;
+        stepDuration *= 2;
         yield return new WaitForSeconds(seconds);
-        opponentIsFrozen = false;
+        stepDuration /= 2;
     }
 
     private void CalculatePath()
@@ -152,7 +176,7 @@ public class OpponentController : MonoBehaviour
             }
             if (distanceToNearestFreezer != Int32.MaxValue)
             {
-                possibilityToChooseFreezer = Mathf.Max(0, 60 - distanceToNearestFreezer);
+                possibilityToChooseFreezer = Mathf.Max(0, 50 - distanceToNearestFreezer);
             }
         }
 
