@@ -38,13 +38,10 @@ public class RubyFireAim : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            Shot.direction = playerPosition - GetMouseWorldPosition();
+            Shot.direction = GetMouseWorldPosition() - playerPosition;
             Shot.direction.Normalize();
-            Shot.direction.x = -Shot.direction.x;
-            Shot.direction.y = -Shot.direction.y;
             Shoot();
         }
-
     }
 
     void Shoot()
