@@ -48,9 +48,10 @@ public class EndBattleGameController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other)
     {
         // Freeze the character
-        Rigidbody2D ruby = GameObject.Find("Ruby").GetComponent<Rigidbody2D>();
-        ruby.constraints = RigidbodyConstraints2D.FreezeAll;
-
+        GameObject ruby = GameObject.Find("Ruby");
+        Rigidbody2D rubyRigidbody = ruby.GetComponent<Rigidbody2D>();
+        rubyRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+        ruby.GetComponentInChildren<ParticleSystem>().Stop();
         // Set the end game variable to true
         PlayersTime = timer;
         if (!EndBattleGameMenu.OpponentFinished)
