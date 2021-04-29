@@ -37,7 +37,7 @@ public class RubyController : MonoBehaviour
     {
         if(MainScript.ScaleMazeSize == 0.5f)
         {
-            gameObject.transform.position = new Vector3(8.75f, -4.75f);
+            gameObject.transform.position = new Vector3(-8.75f, 4.75f);
             gameObject.transform.localScale = new Vector3(0.175f, 0.175f);
             playerSpeed = 1.125f;
         } else
