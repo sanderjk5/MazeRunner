@@ -9,11 +9,14 @@ public class RubyFireAim : MonoBehaviour
     private GameObject player;
     private readonly float distance = .24f;
     public GameObject shotPrefab;
+    public int shotCounter;
 
     private void Awake()
     {
         aimTransform = transform.Find("Fire");
         player = GameObject.Find("Ruby");
+        shotCounter = 0;
+        GameObject.Find("Fire").SetActive(true);
     }
 
   
@@ -41,6 +44,12 @@ public class RubyFireAim : MonoBehaviour
             Shot.direction = GetMouseWorldPosition() - playerPosition;
             Shot.direction.Normalize();
             Shoot();
+            shotCounter++;
+        }
+        if (shotCounter > 2)
+        {
+            GameObject.Find("Fire").SetActive(false);
+            this.enabled = false;
         }
     }
 
@@ -57,25 +66,9 @@ public class RubyFireAim : MonoBehaviour
         return vec;
     }
 
-    public static Vector3 GetMouseWorldPositionWithZ()
-    {
-        return GetMouseWorldPositionWithZ(Input.mousePosition, Camera.main);
-    }
-
-    public static Vector3 GetMouseWorldPositionWithZ(Camera worldCamera)
-    {
-        return GetMouseWorldPositionWithZ(Input.mousePosition, worldCamera);
-    }
-
     public static Vector3 GetMouseWorldPositionWithZ(Vector3 screenPosition, Camera worldCamera)
     {
         Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
         return worldPosition;
-    }
-
-    public static Vector3 GetDirToMouse(Vector3 fromPosition)
-    {
-        Vector3 mouseWorldPosition = GetMouseWorldPosition();
-        return (mouseWorldPosition - fromPosition).normalized;
     }
 }
