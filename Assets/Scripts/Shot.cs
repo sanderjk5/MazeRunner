@@ -25,8 +25,7 @@ public class Shot : MonoBehaviour
         if (collision.name.Equals("Opponent"))
         {
             //_ = Instantiate(deathExplosion, OpponentTransform.transform.position, Quaternion.identity);
-            GameObject.Find("Opponent").GetComponent<OpponentController>().CurrentNodePosition = MainScript.AllNodes[700];
-            OpponentObject.transform.position = new Vector3(8.75f, 4.75f, 0f);
+            GameObject.Find("Opponent").GetComponent<OpponentController>().ResetPosition();
         }
     }
 }  

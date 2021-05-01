@@ -44,7 +44,7 @@ public class RubyFireAim : MonoBehaviour
             Shot.direction = GetMouseWorldPosition() - playerPosition;
             Shot.direction.Normalize();
             Shoot();
-            shotCounter++;
+            //shotCounter++;
         }
         if (shotCounter > 2)
         {

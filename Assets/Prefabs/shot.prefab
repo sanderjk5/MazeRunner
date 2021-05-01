@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2896120226118579978}
   - component: {fileID: 2896120226118579979}
   - component: {fileID: -1498204455751477986}
-  m_Layer: 10
+  m_Layer: 13
   m_Name: shot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,5 +133,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe6611377aeb9aa4680fda385f27e746, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
   body: {fileID: 2896120226118579978}
+  deathExplosion: {fileID: 0}
