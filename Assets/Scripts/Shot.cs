@@ -21,11 +21,12 @@ public class Shot : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision.name);
         if (collision.name.Equals("Opponent"))
         {
             Instantiate(DeathExplosion, OpponentObject.transform.position, Quaternion.identity);
             GameObject.Find("Opponent").GetComponent<OpponentController>().ResetPosition();
+            Destroy(gameObject);
         }
+        
     }
 }  

@@ -33,18 +33,27 @@ public class FreezerController : MonoBehaviour
 
     private void ChooseItemProperty(bool activatedByPlayer)
     {
-        float possibilityToChooseObstacle = 100f * ((4f - MainScript.BattleGameCurrentButtonCounter)/MainScript.AllFreezer.Count);
+        float possibilityToChooseShooter = 0f;
+        if (activatedByPlayer)
+        {
+            possibilityToChooseShooter = 50f * ((2f - MainScript.BattleGameCurrentShooterCounter)/2);
+        }
+        float possibilityToChooseObstacle = (100f - possibilityToChooseShooter) * ((4f - MainScript.BattleGameCurrentButtonCounter)/MainScript.AllFreezer.Count);
+
         int randomNumber = Random.Range(1, 101);
-        if(randomNumber < possibilityToChooseObstacle)
+        if(randomNumber < possibilityToChooseShooter)
+        {
+            GameObject.Find("Ruby").GetComponent<RubyFireAim>().EnableShooting();
+            MainScript.BattleGameCurrentShooterCounter++;
+        }
+        else if(randomNumber < possibilityToChooseObstacle + possibilityToChooseShooter)
         {
             //Generates an obstacle
             GameObject gameObject = Instantiate(obstacleGenerationPrefab);
             ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
             if (activatedByPlayer)
             {
-                rubyFireAim = gameObject.AddComponent<RubyFireAim>();
-                rubyFireAim.enabled = true;
-                //obstacleGeneration.InsertObstacleOnPath((int)MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer, GameObject.Find("Opponent").GetComponent<OpponentController>().CurrentNodePosition.Id);
+                obstacleGeneration.InsertObstacleOnPath((int)MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer, GameObject.Find("Opponent").GetComponent<OpponentController>().CurrentNodePosition.Id);
             }
             else
             {
@@ -56,16 +65,8 @@ public class FreezerController : MonoBehaviour
         {
             if (activatedByPlayer)
             {
-                int randomNumber2 = Random.Range(0, 2);
-                if (randomNumber2 == 0 || randomNumber2 == 1)
-                {
-                   rubyFireAim = gameObject.AddComponent<RubyFireAim>();
-                   rubyFireAim.enabled = true;
-                }
-                else
-                {
-                    StartCoroutine(GameObject.Find("Opponent").GetComponent<OpponentController>().FreezeOpponent(10));
-                } 
+
+                StartCoroutine(GameObject.Find("Opponent").GetComponent<OpponentController>().FreezeOpponent(10));
             }
             else
             {

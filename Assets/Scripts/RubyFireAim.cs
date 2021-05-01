@@ -13,19 +13,20 @@ public class RubyFireAim : MonoBehaviour
     private GameObject fire;
     public int shotCounter;
 
+    private bool shootingEnabled;
+
     private void Awake()
     {
         //Debug.Log(shotPrefab.name);
         //shotPrefab = Resources.Load("Prefabs/shot") as GameObject;
         //Debug.Log(shotPrefab.name);
+        //aimTransform = transform.Find("Fire");
         player = GameObject.Find("Ruby");
         fire = FindObject(player, "Fire");
         fire.SetActive(true);
         aimTransform = fire.transform;
         shotCounter = 0;
-        //fire = GameObject.Find("Fire");
-        //fire.SetActive(true);
-        //GameObject.Find("Fire").SetActive(true);
+        shootingEnabled = true;
     }
 
     //created because GameObject.Find only find active GameObjects, but we want to find "Fire" even when it's inactive
@@ -61,7 +62,7 @@ public class RubyFireAim : MonoBehaviour
         float yPos = Mathf.Sin(Mathf.Deg2Rad * angle) * distance;
         aimTransform.position = new Vector3(playerPosition.x + xPos, playerPosition.y + yPos - 0.2f, 0);
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && shootingEnabled && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished)
         {
             Shot.direction = GetMouseWorldPosition() - playerPosition;
             Shot.direction.Normalize();
@@ -70,15 +71,14 @@ public class RubyFireAim : MonoBehaviour
         }
         if (shotCounter > 2)
         {
-            fire.SetActive(false);
-            this.enabled = false;
+            DisableShooting();
         }
     }
 
     void Shoot()
     {
         Instantiate(shotPrefab, player.transform.position, player.transform.rotation);
-        EditorUtility.SetDirty(shotPrefab);
+        //EditorUtility.SetDirty(shotPrefab);
     }
 
     // Get Mouse Position in World with Z = 0f
@@ -93,5 +93,18 @@ public class RubyFireAim : MonoBehaviour
     {
         Vector3 worldPosition = worldCamera.ScreenToWorldPoint(screenPosition);
         return worldPosition;
+    }
+
+    public void EnableShooting()
+    {
+        shotCounter -= 5;
+        fire.SetActive(true);
+        shootingEnabled = true;
+    }
+
+    public void DisableShooting()
+    {
+        fire.SetActive(false);
+        shootingEnabled = false;
     }
 }

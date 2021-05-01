@@ -49,6 +49,7 @@ public class MainScript : MonoBehaviour
 
     public static List<FreezerController> AllFreezer { get; private set; }
     public static float BattleGameCurrentButtonCounter { get; set; }
+    public static float BattleGameCurrentShooterCounter { get; set; }
     public static float BattleGameNumberOfItems { get; set; }
 
     //The prefab of the walls.
@@ -97,7 +98,8 @@ public class MainScript : MonoBehaviour
             ScaleMazeSize = 0.5f;
             IsBattleGameMode = true;
             BattleGameCurrentButtonCounter = 0;
-            BattleGameNumberOfItems = 8;
+            BattleGameCurrentShooterCounter = 0;
+            BattleGameNumberOfItems = 10;
             InitializeGame();
         }
     }

@@ -51,7 +51,7 @@ public class EndBattleGameController : MonoBehaviour
         GameObject ruby = GameObject.Find("Ruby");
         Rigidbody2D rubyRigidbody = ruby.GetComponent<Rigidbody2D>();
         rubyRigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
-        ruby.GetComponentInChildren<ParticleSystem>().Stop();
+        ruby.GetComponent<RubyFireAim>().DisableShooting();
         // Set the end game variable to true
         PlayersTime = timer;
         if (!EndBattleGameMenu.OpponentFinished)
