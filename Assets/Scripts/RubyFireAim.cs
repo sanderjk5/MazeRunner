@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class RubyFireAim : MonoBehaviour
@@ -9,17 +10,38 @@ public class RubyFireAim : MonoBehaviour
     private GameObject player;
     private readonly float distance = .24f;
     public GameObject shotPrefab;
+    private GameObject fire;
     public int shotCounter;
 
     private void Awake()
     {
-        aimTransform = transform.Find("Fire");
+        //Debug.Log(shotPrefab.name);
+        //shotPrefab = Resources.Load("Prefabs/shot") as GameObject;
+        //Debug.Log(shotPrefab.name);
         player = GameObject.Find("Ruby");
+        fire = FindObject(player, "Fire");
+        fire.SetActive(true);
+        aimTransform = fire.transform;
         shotCounter = 0;
-        GameObject.Find("Fire").SetActive(true);
+        //fire = GameObject.Find("Fire");
+        //fire.SetActive(true);
+        //GameObject.Find("Fire").SetActive(true);
     }
 
-  
+    //created because GameObject.Find only find active GameObjects, but we want to find "Fire" even when it's inactive
+    public static GameObject FindObject(GameObject parent, string name)
+    {
+        Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
+        foreach (Transform t in trs)
+        {
+            if (t.name == name)
+            {
+                return t.gameObject;
+            }
+        }
+        return null;
+    }
+
     // Update is called once per frame
     private void Update()
     {
@@ -44,11 +66,11 @@ public class RubyFireAim : MonoBehaviour
             Shot.direction = GetMouseWorldPosition() - playerPosition;
             Shot.direction.Normalize();
             Shoot();
-            //shotCounter++;
+            shotCounter++;
         }
         if (shotCounter > 2)
         {
-            GameObject.Find("Fire").SetActive(false);
+            fire.SetActive(false);
             this.enabled = false;
         }
     }
@@ -56,6 +78,7 @@ public class RubyFireAim : MonoBehaviour
     void Shoot()
     {
         Instantiate(shotPrefab, player.transform.position, player.transform.rotation);
+        EditorUtility.SetDirty(shotPrefab);
     }
 
     // Get Mouse Position in World with Z = 0f

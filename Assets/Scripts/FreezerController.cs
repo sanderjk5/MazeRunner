@@ -9,6 +9,8 @@ public class FreezerController : MonoBehaviour
     //The prefab of generating the obstacles
     public GameObject obstacleGenerationPrefab;
 
+    public RubyFireAim rubyFireAim;
+
     public void Initialize(NodeController correspondingNode)
     {
         CorrespondingNode = correspondingNode;
@@ -40,7 +42,9 @@ public class FreezerController : MonoBehaviour
             ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
             if (activatedByPlayer)
             {
-                obstacleGeneration.InsertObstacleOnPath((int)MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer, GameObject.Find("Opponent").GetComponent<OpponentController>().CurrentNodePosition.Id);
+                rubyFireAim = gameObject.AddComponent<RubyFireAim>();
+                rubyFireAim.enabled = true;
+                //obstacleGeneration.InsertObstacleOnPath((int)MainScript.BattleGameCurrentButtonCounter, !activatedByPlayer, GameObject.Find("Opponent").GetComponent<OpponentController>().CurrentNodePosition.Id);
             }
             else
             {
@@ -52,7 +56,16 @@ public class FreezerController : MonoBehaviour
         {
             if (activatedByPlayer)
             {
-                StartCoroutine(GameObject.Find("Opponent").GetComponent<OpponentController>().FreezeOpponent(10));
+                int randomNumber2 = Random.Range(0, 2);
+                if (randomNumber2 == 0 || randomNumber2 == 1)
+                {
+                   rubyFireAim = gameObject.AddComponent<RubyFireAim>();
+                   rubyFireAim.enabled = true;
+                }
+                else
+                {
+                    StartCoroutine(GameObject.Find("Opponent").GetComponent<OpponentController>().FreezeOpponent(10));
+                } 
             }
             else
             {
