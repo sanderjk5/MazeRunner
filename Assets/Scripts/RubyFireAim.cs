@@ -97,7 +97,7 @@ public class RubyFireAim : MonoBehaviour
 
     public void EnableShooting()
     {
-        shotCounter -= 5;
+        shotCounter -= 3;
         fire.SetActive(true);
         shootingEnabled = true;
     }
