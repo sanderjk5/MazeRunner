@@ -9,6 +9,8 @@ public class FreezerController : MonoBehaviour
     //The prefab of generating the obstacles
     public GameObject obstacleGenerationPrefab;
 
+    public RubyFireAim rubyFireAim;
+
     public void Initialize(NodeController correspondingNode)
     {
         CorrespondingNode = correspondingNode;
@@ -31,9 +33,20 @@ public class FreezerController : MonoBehaviour
 
     private void ChooseItemProperty(bool activatedByPlayer)
     {
-        float possibilityToChooseObstacle = 100f * ((4f - MainScript.BattleGameCurrentButtonCounter)/MainScript.AllFreezer.Count);
+        float possibilityToChooseShooter = 0f;
+        if (activatedByPlayer)
+        {
+            possibilityToChooseShooter = 50f * ((2f - MainScript.BattleGameCurrentShooterCounter)/2);
+        }
+        float possibilityToChooseObstacle = (100f - possibilityToChooseShooter) * ((4f - MainScript.BattleGameCurrentButtonCounter)/MainScript.AllFreezer.Count);
+
         int randomNumber = Random.Range(1, 101);
-        if(randomNumber < possibilityToChooseObstacle)
+        if(randomNumber < possibilityToChooseShooter)
+        {
+            GameObject.Find("Ruby").GetComponent<RubyFireAim>().EnableShooting();
+            MainScript.BattleGameCurrentShooterCounter++;
+        }
+        else if(randomNumber < possibilityToChooseObstacle + possibilityToChooseShooter)
         {
             //Generates an obstacle
             GameObject gameObject = Instantiate(obstacleGenerationPrefab);
@@ -52,6 +65,7 @@ public class FreezerController : MonoBehaviour
         {
             if (activatedByPlayer)
             {
+
                 StartCoroutine(GameObject.Find("Opponent").GetComponent<OpponentController>().FreezeOpponent(10));
             }
             else
