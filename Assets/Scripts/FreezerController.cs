@@ -34,7 +34,7 @@ public class FreezerController : MonoBehaviour
     private void ChooseItemProperty(bool activatedByPlayer)
     {
         float possibilityToChooseShooter = 0f;
-        if (activatedByPlayer)
+        if (activatedByPlayer && MainScript.UseShooter)
         {
             possibilityToChooseShooter = 50f * ((2f - MainScript.BattleGameCurrentShooterCounter)/2);
         }

@@ -21,12 +21,15 @@ public class RubyFireAim : MonoBehaviour
         //shotPrefab = Resources.Load("Prefabs/shot") as GameObject;
         //Debug.Log(shotPrefab.name);
         //aimTransform = transform.Find("Fire");
-        player = GameObject.Find("Ruby");
-        fire = FindObject(player, "Fire");
-        fire.SetActive(true);
-        aimTransform = fire.transform;
-        shotCounter = 0;
-        shootingEnabled = true;
+        if (MainScript.UseShooter)
+        {
+            player = GameObject.Find("Ruby");
+            fire = FindObject(player, "Fire");
+            fire.SetActive(true);
+            aimTransform = fire.transform;
+            shotCounter = 0;
+            shootingEnabled = true;
+        }
     }
 
     //created because GameObject.Find only find active GameObjects, but we want to find "Fire" even when it's inactive
@@ -53,25 +56,28 @@ public class RubyFireAim : MonoBehaviour
         aimTransform.eulerAngles = new Vector3(0, 0, angle);
         Debug.Log(angle);
         */
-        Vector3 mousePosition = GetMouseWorldPosition();
-        Vector3 playerPosition = player.transform.position;
-        mousePosition -= playerPosition;
-        float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
-        if (angle < 0.0f) angle += 360.0f;
-        float xPos = Mathf.Cos(Mathf.Deg2Rad * angle) * distance;
-        float yPos = Mathf.Sin(Mathf.Deg2Rad * angle) * distance;
-        aimTransform.position = new Vector3(playerPosition.x + xPos, playerPosition.y + yPos - 0.2f, 0);
+        if (MainScript.UseShooter)
+        {
+            Vector3 mousePosition = GetMouseWorldPosition();
+            Vector3 playerPosition = player.transform.position;
+            mousePosition -= playerPosition;
+            float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+            if (angle < 0.0f) angle += 360.0f;
+            float xPos = Mathf.Cos(Mathf.Deg2Rad * angle) * distance;
+            float yPos = Mathf.Sin(Mathf.Deg2Rad * angle) * distance;
+            aimTransform.position = new Vector3(playerPosition.x + xPos, playerPosition.y + yPos - 0.2f, 0);
 
-        if (Input.GetButtonDown("Fire1") && shootingEnabled && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished)
-        {
-            Shot.direction = GetMouseWorldPosition() - playerPosition;
-            Shot.direction.Normalize();
-            Shoot();
-            shotCounter++;
-        }
-        if (shotCounter > 2)
-        {
-            DisableShooting();
+            if (Input.GetButtonDown("Fire1") && shootingEnabled && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished)
+            {
+                Shot.direction = GetMouseWorldPosition() - playerPosition;
+                Shot.direction.Normalize();
+                Shoot();
+                shotCounter++;
+            }
+            if (shotCounter > 2)
+            {
+                DisableShooting();
+            }
         }
     }
 
