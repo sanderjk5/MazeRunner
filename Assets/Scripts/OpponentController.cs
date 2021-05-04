@@ -19,7 +19,6 @@ public class OpponentController : MonoBehaviour
     public GameObject dijkstraPrefab;
     private bool movesToFreezer;
     private float preCalculatedTime;
-    private bool resetPosition;
 
     public float OpponentsTime { get; private set; }
     public int StepCounter { get; set; }
@@ -50,15 +49,7 @@ public class OpponentController : MonoBehaviour
 
         while(CurrentNodePosition.Id != 19)
         {
-            if (resetPosition)
-            {
-                movesToFreezer = false;
-                gameObject.transform.position = new Vector3(8.75f, 4.75f, 0f);
-                CurrentNodePosition = MainScript.AllNodes[700];
-                CalculatePath();
-                resetPosition = false;
-            }
-            else if(CurrentPositionInShortestPath == ShortestPath.Count - 1)
+            if(CurrentPositionInShortestPath == ShortestPath.Count - 1)
             {
                 movesToFreezer = false;
                 CalculatePath();
@@ -72,10 +63,6 @@ public class OpponentController : MonoBehaviour
             SetMovingValues();
             for(float i = 1; i <= intermediateSteps; i++)
             {
-                if (resetPosition)
-                {
-                    break;
-                }
                 float newValue = variablePositionValueLastNode + (i / intermediateSteps * differenceBetweenVariablePositionValues);
                 if (moveHorizontal)
                 {
@@ -189,7 +176,7 @@ public class OpponentController : MonoBehaviour
             }
             if (distanceToNearestFreezer != Int32.MaxValue)
             {
-                possibilityToChooseFreezer = Mathf.Max(0, 45 - distanceToNearestFreezer);
+                possibilityToChooseFreezer = Mathf.Max(0, 40 - distanceToNearestFreezer);
             }
         }
 
@@ -210,10 +197,5 @@ public class OpponentController : MonoBehaviour
             Destroy(dijkstraGameObject);
         }
         CurrentPositionInShortestPath = 0;
-    }
-
-    public void ResetPosition()
-    {
-        resetPosition = true;
     }
 }
