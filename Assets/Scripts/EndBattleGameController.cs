@@ -17,8 +17,6 @@ public class EndBattleGameController : MonoBehaviour
     {
         timer = 0;
         timerIsRunning = true;
-        EndBattleGameMenu.OpponentFinished = false;
-        EndBattleGameMenu.PlayerFinished = false;
     }
 
     // Update is called once per frame
