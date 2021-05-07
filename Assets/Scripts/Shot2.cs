@@ -25,7 +25,7 @@ public class Shot2 : MonoBehaviour
         if (collision.name.Equals("Ruby"))
         {
             Instantiate(DeathExplosion, RubyObject.transform.position, Quaternion.identity);
-            RubyObject.transform.position = new Vector3(-8.75f, 4.5f, 0);
+            RubyObject.transform.position = new Vector3(-8.75f, 4.75f, 0);
             Destroy(gameObject);
         }
 

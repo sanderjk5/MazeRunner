@@ -33,18 +33,23 @@ public class FreezerController : MonoBehaviour
 
     private void ChooseItemProperty(bool activatedByPlayer)
     {
-        float possibilityToChooseShooter = 0f;
-        if (activatedByPlayer)
-        {
-            possibilityToChooseShooter = 50f * ((2f - MainScript.BattleGameCurrentShooterCounter)/2);
-        }
+        float possibilityToChooseShooter = 50f * ((2f - MainScript.BattleGameCurrentShooterCounter)/2);
         float possibilityToChooseObstacle = (100f - possibilityToChooseShooter) * ((4f - MainScript.BattleGameCurrentButtonCounter)/MainScript.AllFreezer.Count);
 
         int randomNumber = Random.Range(1, 101);
         if(randomNumber < possibilityToChooseShooter)
         {
-            GameObject.Find("Ruby").GetComponent<RubyFireAim>().EnableShooting();
-            MainScript.BattleGameCurrentShooterCounter++;
+            if (activatedByPlayer)
+            {
+                GameObject.Find("Ruby").GetComponent<RubyFireAim>().EnableShooting();
+                MainScript.BattleGameCurrentShooterCounter++;
+            }
+            else
+            {
+                GameObject.Find("Opponent").GetComponent<OpponentFireAim>().EnableShooting();
+                MainScript.BattleGameCurrentShooterCounter++;
+
+            }
         }
         else if(randomNumber < possibilityToChooseObstacle + possibilityToChooseShooter)
         {
