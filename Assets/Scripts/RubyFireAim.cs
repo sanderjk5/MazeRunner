@@ -67,7 +67,7 @@ public class RubyFireAim : MonoBehaviour
             float yPos = Mathf.Sin(Mathf.Deg2Rad * angle) * distance;
             aimTransform.position = new Vector3(playerPosition.x + xPos, playerPosition.y + yPos - 0.2f, 0);
 
-            if (Input.GetButtonDown("Fire1") && shootingEnabled && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished)
+            if (Input.GetButtonDown("Fire1") && shootingEnabled && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished && !GameMenu.gameMenuIsActivated)
             {
                 Shot.direction = GetMouseWorldPosition() - playerPosition;
                 Shot.direction.Normalize();
