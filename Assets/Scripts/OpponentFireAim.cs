@@ -22,7 +22,6 @@ public class OpponentFireAim : MonoBehaviour
         
         //set surrounding fire active
         fire2 = RubyFireAim.FindObject(opponentObject, "OpFire");
-        Debug.Log("Fire2 name: " + fire2.name);
         fire2.SetActive(true);
         aimTransform = fire2.transform;
 
@@ -46,7 +45,6 @@ public class OpponentFireAim : MonoBehaviour
         //let the opponent shoot at given timings 'Shoot' is called only once for every timing, since the if statement checks if WhenToShoot is empty
         if (shootingEnabled && WhenToShoot.Count!=0 && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished && !EndBattleGameMenu.OpponentFinished)
         {
-            Debug.Log(WhenToShoot.Peek());
             //Invoke is called in every update() call. It loads the shoot timings instantly and call the shoot method after each timing once
             Invoke("Shoot", WhenToShoot.Dequeue());
         }
@@ -76,7 +74,7 @@ public class OpponentFireAim : MonoBehaviour
         float Timing = 0;
         for(int i = 0; i<amount; i++)
         {
-            Timing = Random.Range(0.0f,10.0f);
+            Timing = Random.Range(0.0f,20.0f);
             WhenToShoot.Enqueue(Timing);
         }
     }

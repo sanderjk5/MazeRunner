@@ -99,7 +99,7 @@ public class MainScript : MonoBehaviour
             IsBattleGameMode = true;
             BattleGameCurrentButtonCounter = 0;
             BattleGameCurrentShooterCounter = 0;
-            BattleGameNumberOfItems = 10;
+            BattleGameNumberOfItems = 12;
             InitializeGame();
         }
     }

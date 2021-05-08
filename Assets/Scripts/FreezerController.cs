@@ -33,7 +33,7 @@ public class FreezerController : MonoBehaviour
 
     private void ChooseItemProperty(bool activatedByPlayer)
     {
-        float possibilityToChooseShooter = 50f * ((2f - MainScript.BattleGameCurrentShooterCounter)/2);
+        float possibilityToChooseShooter = 50f * ((4f - MainScript.BattleGameCurrentShooterCounter)/4);
         float possibilityToChooseObstacle = (100f - possibilityToChooseShooter) * ((4f - MainScript.BattleGameCurrentButtonCounter)/MainScript.AllFreezer.Count);
 
         int randomNumber = Random.Range(1, 101);
