@@ -100,6 +100,8 @@ public class MainScript : MonoBehaviour
             IsBattleGameMode = true;
             BattleGameCurrentButtonCounter = 0;
             BattleGameCurrentShooterCounter = 0;
+            EndBattleGameMenu.OpponentFinished = false;
+            EndBattleGameMenu.PlayerFinished = false;
             if (UseShooter)
             {
                 BattleGameNumberOfItems = 10;
