@@ -21,10 +21,10 @@ public class Shot2 : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Collision Name: " + collision.name);
         if (collision.name.Equals("Ruby"))
         {
             Instantiate(DeathExplosion, RubyObject.transform.position, Quaternion.identity);
+            NodeController.PlayerReset = true;
             RubyObject.transform.position = new Vector3(-8.75f, 4.75f, 0);
             Destroy(gameObject);
         }
