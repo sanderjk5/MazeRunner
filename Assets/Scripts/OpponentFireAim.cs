@@ -17,41 +17,47 @@ public class OpponentFireAim : MonoBehaviour
 
     private void Awake()
     {
-        opponentObject = GameObject.Find("Opponent");
-        rubyObject = GameObject.Find("Ruby");
-        
-        //set surrounding fire active
-        fire2 = RubyFireAim.FindObject(opponentObject, "OpFire");
-        fire2.SetActive(true);
-        aimTransform = fire2.transform;
+        if (MainScript.UseShooter)
+        {
+            opponentObject = GameObject.Find("Opponent");
+            rubyObject = GameObject.Find("Ruby");
 
-        //set up shooting enabling relevant variables
-        shotCounter = 0;
-        shootingEnabled = true;
-        
-        //set up shooting timings
-        WhenToShoot = new Queue<float>();
-        GenerateShootTimings(3);
+            //set surrounding fire active
+            fire2 = RubyFireAim.FindObject(opponentObject, "OpFire");
+            fire2.SetActive(true);
+            aimTransform = fire2.transform;
+
+            //set up shooting enabling relevant variables
+            shotCounter = 0;
+            shootingEnabled = true;
+
+            //set up shooting timings
+            WhenToShoot = new Queue<float>();
+            GenerateShootTimings(3);
+        }
     }
 
     // Update is called once per frame
     private void Update()
     {
-        //calculate circular position of the fire around the opponent
-        Vector3 opponentPosition = opponentObject.transform.position;
-        Vector3 ShootingDirection = GetShootingDirection() * distance;
-        aimTransform.position = new Vector3((opponentPosition.x + ShootingDirection.x), (opponentPosition.y + ShootingDirection.y), 0);
+        if (MainScript.UseShooter)
+        {
+            //calculate circular position of the fire around the opponent
+            Vector3 opponentPosition = opponentObject.transform.position;
+            Vector3 ShootingDirection = GetShootingDirection() * distance;
+            aimTransform.position = new Vector3((opponentPosition.x + ShootingDirection.x), (opponentPosition.y + ShootingDirection.y), 0);
 
-        //let the opponent shoot at given timings 'Shoot' is called only once for every timing, since the if statement checks if WhenToShoot is empty
-        if (shootingEnabled && WhenToShoot.Count!=0 && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished && !EndBattleGameMenu.OpponentFinished)
-        {
-            //Invoke is called in every update() call. It loads the shoot timings instantly and call the shoot method after each timing once
-            Invoke("Shoot", WhenToShoot.Dequeue());
-        }
-        //Disables Shooting after 3 shots.
-        if (shotCounter > 2)
-        {
-            DisableShooting();
+            //let the opponent shoot at given timings 'Shoot' is called only once for every timing, since the if statement checks if WhenToShoot is empty
+            if (shootingEnabled && WhenToShoot.Count != 0 && CountdownController.GameStarted && !EndBattleGameMenu.PlayerFinished && !EndBattleGameMenu.OpponentFinished)
+            {
+                //Invoke is called in every update() call. It loads the shoot timings instantly and call the shoot method after each timing once
+                Invoke("Shoot", WhenToShoot.Dequeue());
+            }
+            //Disables Shooting after 3 shots.
+            if (shotCounter > 2)
+            {
+                DisableShooting();
+            }
         }
     }
 
