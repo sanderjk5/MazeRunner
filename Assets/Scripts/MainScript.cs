@@ -51,6 +51,7 @@ public class MainScript : MonoBehaviour
     public static float BattleGameCurrentButtonCounter { get; set; }
     public static float BattleGameCurrentShooterCounter { get; set; }
     public static float BattleGameNumberOfItems { get; set; }
+    public static bool UseShooter { get; set; }
 
     //The prefab of the walls.
     public GameObject createWallsPrefab;
@@ -99,7 +100,16 @@ public class MainScript : MonoBehaviour
             IsBattleGameMode = true;
             BattleGameCurrentButtonCounter = 0;
             BattleGameCurrentShooterCounter = 0;
-            BattleGameNumberOfItems = 12;
+            EndBattleGameMenu.OpponentFinished = false;
+            EndBattleGameMenu.PlayerFinished = false;
+            if (UseShooter)
+            {
+                BattleGameNumberOfItems = 10;
+            }
+            else
+            {
+                BattleGameNumberOfItems = 8;
+            }
             InitializeGame();
         }
     }
