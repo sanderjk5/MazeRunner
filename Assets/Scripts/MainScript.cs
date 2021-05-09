@@ -2,6 +2,7 @@
 using UnityEngine;
 using System;
 using TMPro;
+using Random = UnityEngine.Random;
 
 public class MainScript : MonoBehaviour
 {
@@ -44,6 +45,14 @@ public class MainScript : MonoBehaviour
     //Enables/Disables the user input.
     public static bool EnableUserInput { get; set; }
 
+    public static bool IsBattleGameMode { get; set; }
+
+    public static List<FreezerController> AllFreezer { get; private set; }
+    public static float BattleGameCurrentButtonCounter { get; set; }
+    public static float BattleGameCurrentShooterCounter { get; set; }
+    public static float BattleGameNumberOfItems { get; set; }
+    public static bool UseShooter { get; set; }
+
     //The prefab of the walls.
     public GameObject createWallsPrefab;
     //The prefab of the nodes.
@@ -58,10 +67,12 @@ public class MainScript : MonoBehaviour
     public GameObject buttonPrefab;
     //The prefab of generating the obstacles
     public GameObject obstacleGenerationPrefab;
+    public GameObject freezerPrefab;
 
     // Start is called before the first frame update. Calls the MazeGeneration and the CreateAllWalls method.
     void Start()
     {
+        CountdownController.GameStarted = false;
         //Initializes the NumberOfButtons and the ScaleMazeSize
         if (gameObject.scene.name.Equals("LevelGameScene"))
         {
@@ -70,13 +81,35 @@ public class MainScript : MonoBehaviour
             GarbageCollectorGameObjects = new List<GameObject>();
             NumberOfButtons = 0;
             ScaleMazeSize = 1;
+            IsBattleGameMode = false;          
             InitializeGame();
         }
-        else
+        else if(gameObject.scene.name.Equals("GameScene"))
         {
             //Normal game modus
             CurrentLevelCount = -1;
             ApplyDifficulty();
+            IsBattleGameMode = false;
+            InitializeGame();
+        }
+        else if (gameObject.scene.name.Equals("BattleGameScene"))
+        {
+            CurrentLevelCount = -1;
+            NumberOfButtons = 4;
+            ScaleMazeSize = 0.5f;
+            IsBattleGameMode = true;
+            BattleGameCurrentButtonCounter = 0;
+            BattleGameCurrentShooterCounter = 0;
+            EndBattleGameMenu.OpponentFinished = false;
+            EndBattleGameMenu.PlayerFinished = false;
+            if (UseShooter)
+            {
+                BattleGameNumberOfItems = 10;
+            }
+            else
+            {
+                BattleGameNumberOfItems = 8;
+            }
             InitializeGame();
         }
     }
@@ -107,8 +140,10 @@ public class MainScript : MonoBehaviour
 
         //Initializes the number of states.
         NumberOfStates = (int)Math.Pow(2, NumberOfButtons);
+
         //Moves the player to the start point.
         GameObject.Find("Ruby").GetComponent<RubyController>().SetPositionAndScale();
+        
 
         //Generates the labyrinth
         GameObject gameObject = Instantiate(aldousBroderAlgorithmPrefab);
@@ -116,29 +151,33 @@ public class MainScript : MonoBehaviour
         a.Initialize((int)Math.Floor(1 / ScaleMazeSize * 18), (int)Math.Floor(1 / ScaleMazeSize * 10));
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
-        //Generates all obstacles
-        gameObject = Instantiate(obstacleGenerationPrefab);
-        ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
-        obstacleGeneration.InsertObstacles();
-        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
+        if (!IsBattleGameMode)
+        {
+            //Generates all obstacles
+            gameObject = Instantiate(obstacleGenerationPrefab);
+            ObstacleGeneration obstacleGeneration = gameObject.GetComponent<ObstacleGeneration>();
+            obstacleGeneration.InsertObstacles();
+            if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
-        //Calculates the optimal path and distance.
-        gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
-        ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
-        if (ScaleMazeSize == 0.5f)
-        {
-            dijkstra.Initialize(AllNodes[0], AllNodes[719]);
+            //Calculates the optimal path and distance.
+            gameObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            ModifiedDijkstraAlgorithm dijkstra = gameObject.GetComponent<ModifiedDijkstraAlgorithm>();
+            if (ScaleMazeSize == 0.5f)
+            {
+                dijkstra.Initialize(AllNodes[0], AllNodes[719]);
+            }
+            else
+            {
+                dijkstra.Initialize(AllNodes[0], AllNodes[179]);
+            }
+            dijkstra.CalculateModifiedDijkstraAlgorithm();
+            GameObject stepCounterText = GameObject.Find("OptimalSteps");
+            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
+            OptimalStepCount = dijkstra.ShortestDistance;
+            ShortestPath = dijkstra.ShortestPath;
+
+            if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
         }
-        else
-        {
-            dijkstra.Initialize(AllNodes[0], AllNodes[179]);
-        }
-        dijkstra.CalculateModifiedDijkstraAlgorithm();
-        GameObject stepCounterText = GameObject.Find("OptimalSteps");
-        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Optimal: " + dijkstra.ShortestDistance;
-        OptimalStepCount = dijkstra.ShortestDistance;
-        ShortestPath = dijkstra.ShortestPath;
-        if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(gameObject);
 
         //Creates all walls of the maze.
         GameObject createWallsObject = Instantiate(createWallsPrefab);
@@ -146,6 +185,11 @@ public class MainScript : MonoBehaviour
         createWallsScript.CreateAllWalls();
         if (CurrentLevelCount != -1) GarbageCollectorGameObjects.Add(createWallsObject);
 
+        if (IsBattleGameMode)
+        {
+            GenerateFreezer();
+            GameObject.Find("Opponent").GetComponent<OpponentController>().InitializeOpponent();
+        }
         //Enables the user input.
         EnableUserInput = true;
     }
@@ -188,7 +232,14 @@ public class MainScript : MonoBehaviour
     {
         //Finds the game object.
         GameObject stepCounterText = GameObject.Find("StepCounter");
-        stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps: " + CurrentStepCount;
+        if (IsBattleGameMode)
+        {
+            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Your Steps: " + CurrentStepCount;
+        }
+        else {
+            stepCounterText.GetComponent<TextMeshProUGUI>().text = "Steps: " + CurrentStepCount;
+        }
+            
     }
 
     /**
@@ -232,6 +283,61 @@ public class MainScript : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    private void GenerateFreezer()
+    {
+        AllFreezer = new List<FreezerController>();
+        for(int i = 0; i < 4; i++)
+        {
+            NodeController randomNode;
+            while (true)
+            {
+                int randomNumber;
+                if(i < 2)
+                {
+                    randomNumber = Random.Range(1, MainScript.NumberOfNodes/2);
+                }
+                else
+                {
+                    randomNumber = Random.Range(MainScript.NumberOfNodes / 2, MainScript.NumberOfNodes);
+                }
+                
+                if(i % 2 == 0 && randomNumber % 20 < 10)
+                {
+                    randomNode = MainScript.AllNodes[randomNumber];
+                    break;
+                }
+                else if(i % 2 == 1 && randomNumber % 20 > 9)
+                {
+                    randomNode = MainScript.AllNodes[randomNumber];
+                    break;
+                }
+            }
+            GameObject gameObject = Instantiate(freezerPrefab);
+            gameObject.transform.position = randomNode.gameObject.transform.position;
+            FreezerController freezer = gameObject.GetComponent<FreezerController>();
+            freezer.Initialize(randomNode);
+            AllFreezer.Add(freezer);
+        }
+        for (int i = 0; i < BattleGameNumberOfItems - 4; i++)
+        {
+            NodeController randomNode;
+            while (true)
+            {
+                int randomNumber = Random.Range(1, MainScript.NumberOfNodes);
+                if (randomNumber != 700)
+                {
+                    randomNode = MainScript.AllNodes[randomNumber];
+                    break;
+                }
+            }
+            GameObject gameObject = Instantiate(freezerPrefab);
+            gameObject.transform.position = randomNode.gameObject.transform.position;
+            FreezerController freezer = gameObject.GetComponent<FreezerController>();
+            freezer.Initialize(randomNode);
+            AllFreezer.Add(freezer);
         }
     }
 }

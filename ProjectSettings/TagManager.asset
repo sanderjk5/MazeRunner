@@ -14,11 +14,11 @@ TagManager:
   - 
   - 
   - EndGameLayer
-  - 
-  - 
-  - 
-  - 
-  - 
+  - OpponentLayer
+  - PlayerLayer
+  - OpponentExitLayer
+  - PlayerExitLayer
+  - ShotLayer
   - 
   - 
   - 

@@ -52,8 +52,13 @@ public class NodeController : MonoBehaviour
     /**
      * Store the node if the player stepped on it.
      */
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D collision)
     {
+        if (MainScript.IsBattleGameMode && GameObject.Find("Opponent").GetComponent<BoxCollider2D>().Equals(collision))
+        {
+            return;
+        }
+
         if (MainScript.PlayerPath.Count != 0)
         {
             NodeController preNode = MainScript.PlayerPath[MainScript.PlayerPath.Count - 1];

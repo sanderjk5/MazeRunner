@@ -57,3 +57,5 @@ MonoBehaviour:
     type: 3}
   obstacleGenerationPrefab: {fileID: 6842682651385515482, guid: 0441c95c2627bbb4380ac1dcf8c5de8f,
     type: 3}
+  freezerPrefab: {fileID: 4372080914817066479, guid: 35a351065593b504bba13a7dfd54f32a,
+    type: 3}

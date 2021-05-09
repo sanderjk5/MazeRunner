@@ -10,6 +10,8 @@ public class ObstacleGeneration : MonoBehaviour
     public GameObject modifiedDijkstraAlgorithmPrefab;
     //The prefab of the button.
     public GameObject buttonPrefab;
+    private int playerStartPosition;
+    private int opponentStartPosition;
 
     /**
      * Inserts all Obstacles of the maze.
@@ -17,70 +19,95 @@ public class ObstacleGeneration : MonoBehaviour
      */
     public void InsertObstacles()
     {
+        playerStartPosition = 0;
+        opponentStartPosition = (MainScript.Width - 1) * MainScript.Height;
         //Inserts each obstacle.
         for (int i = 0; i < MainScript.NumberOfButtons; i++)
         {
-            while(true)
+            bool onPlayerPath = false;
+            if(Random.Range(0, 2) == 0)
             {
-                //Generates randomly the location of the obstacle (0: path between start and target node, 1: not the path between start and target node)
-                int obstacleLocation = Random.Range(0, 2);
+                onPlayerPath = true;
+            }
+            InsertOneObstacle(i, onPlayerPath);
+        }
+    }
 
-                //Calculates the shortest distance before adding the obstacle.
-                GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
-                if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject);
-                ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
-                if(obstacleLocation == 0)
-                {
-                    //path between start and target node
-                    algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes-1]);
-                } else
-                {
-                    //path between the node in the upper right corner and the node in the lower left corner
-                    algorithm.Initialize(MainScript.AllNodes[(MainScript.Width-1)*MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
-                }
-                algorithm.CalculateModifiedDijkstraAlgorithm();
-                List<NodeController> shortestPath = algorithm.ShortestPath;
+    public void InsertObstacleOnPath(int buttonId, bool onPlayerPath, int startPosition)
+    {
+        if (onPlayerPath)
+        {
+            playerStartPosition = startPosition;
+        }
+        else
+        {
+            opponentStartPosition = startPosition;
+        }
+        InsertOneObstacle(buttonId, onPlayerPath);
+    }
 
-                //Gets randomly a node of the shortest path as obstacle.
-                int randomNumber = Random.Range((int) Math.Floor((double)shortestPath.Count / 4), (int) (shortestPath.Count - Math.Floor((double)shortestPath.Count / 10)));
-                NodeController startNode = shortestPath[randomNumber];
-                NodeController targetNode = shortestPath[randomNumber + 1];
+    private void InsertOneObstacle(int buttonId, bool onPlayerPath)
+    {
+        while (true)
+        {
+            //Calculates the shortest distance before adding the obstacle.
+            GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject);
+            ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
+            if (onPlayerPath)
+            {
+                //path between start and target node
+                algorithm.Initialize(MainScript.AllNodes[playerStartPosition], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
 
-                //Sets the new values of the obstacle
-                EdgeController edge = startNode.GetEdgeToNode(targetNode);
-                if (edge.Obstacle != -1) continue;
-                TransformEdge(edge, i);
+            }
+            else
+            {
+                //path between the node in the upper right corner and the node in the lower left corner
+                algorithm.Initialize(MainScript.AllNodes[opponentStartPosition], MainScript.AllNodes[MainScript.Height - 1]);
+            }
+            algorithm.CalculateModifiedDijkstraAlgorithm();
+            List<NodeController> shortestPath = algorithm.ShortestPath;
 
-                //Calculates the shortest distance after adding the obstacle.
-                GameObject algorithmObject1 = Instantiate(modifiedDijkstraAlgorithmPrefab);
-                if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject1);
-                ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
-                if (obstacleLocation == 0)
-                {
-                    algorithm1.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
-                }
-                else
-                {
-                    algorithm1.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
-                }
-                algorithm1.CalculateModifiedDijkstraAlgorithm();
-                int shortestDistanceWithObstacle = algorithm1.ShortestDistance;
-                
-                //Tries to insert a valid button
-                if (InsertButton(shortestDistanceWithObstacle, startNode, shortestPath, i, obstacleLocation, edge))
-                {
-                    Destroy(algorithmObject);
-                    Destroy(algorithmObject1);
-                    //Changes the color of the obstacle to its initial value.
-                    edge.ChangeColorOfObstacle(0);
-                    break;
-                } else
-                {
-                    //Resets the edge and tries to find another location for the obstacle.
-                    Destroy(algorithmObject);
-                    Destroy(algorithmObject1);
-                    ResetEdge(edge);
-                }
+            //Gets randomly a node of the shortest path as obstacle.
+            int randomNumber = Random.Range((int)Math.Floor((double)shortestPath.Count / 4), (int)(shortestPath.Count - Math.Floor((double)shortestPath.Count / 10)));
+            NodeController startNode = shortestPath[randomNumber];
+            NodeController targetNode = shortestPath[randomNumber + 1];
+
+            //Sets the new values of the obstacle
+            EdgeController edge = startNode.GetEdgeToNode(targetNode);
+            if (edge.Obstacle != -1) continue;
+            TransformEdge(edge, buttonId);
+
+            //Calculates the shortest distance after adding the obstacle.
+            GameObject algorithmObject1 = Instantiate(modifiedDijkstraAlgorithmPrefab);
+            if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject1);
+            ModifiedDijkstraAlgorithm algorithm1 = algorithmObject1.GetComponent<ModifiedDijkstraAlgorithm>();
+            if (onPlayerPath)
+            {
+                algorithm1.Initialize(MainScript.AllNodes[playerStartPosition], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+            }
+            else
+            {
+                algorithm1.Initialize(MainScript.AllNodes[opponentStartPosition], MainScript.AllNodes[MainScript.Height - 1]);
+            }
+            algorithm1.CalculateModifiedDijkstraAlgorithm();
+            int shortestDistanceWithObstacle = algorithm1.ShortestDistance;
+
+            //Tries to insert a valid button
+            if (InsertButton(shortestDistanceWithObstacle, startNode, shortestPath, buttonId, onPlayerPath, edge))
+            {
+                Destroy(algorithmObject);
+                Destroy(algorithmObject1);
+                //Changes the color of the obstacle to its initial value.
+                edge.ChangeColorOfObstacle(0);
+                break;
+            }
+            else
+            {
+                //Resets the edge and tries to find another location for the obstacle.
+                Destroy(algorithmObject);
+                Destroy(algorithmObject1);
+                ResetEdge(edge);
             }
         }
     }
@@ -91,11 +118,11 @@ public class ObstacleGeneration : MonoBehaviour
      * <param name="nodeAtObstacle">The node in front of the obstacle.</param>
      * <param name="optimalPathWithoutObstacle">The optimal path before adding the obstacle.</param>
      * <param name="buttonId">The id of the button.</param>
-     * <param name="obstacleLocation">The location flag of the obstacle.</param>
+     * <param name="onPlayerPath">The location flag of the obstacle.</param>
      * <param name="obstacle">The corresponding obstacle.</param>
      * <returns>Whether the operation was successful.</returns>
      */
-    private bool InsertButton(int shortestDistance, NodeController nodeAtObstacle, List<NodeController> optimalPathWithoutObstacle, int buttonId, int obstacleLocation, EdgeController obstacle)
+    private bool InsertButton(int shortestDistance, NodeController nodeAtObstacle, List<NodeController> optimalPathWithoutObstacle, int buttonId, bool onPlayerPath, EdgeController obstacle)
     {
         //Counts the number of tested nodes.
         int counter = 0;
@@ -116,13 +143,13 @@ public class ObstacleGeneration : MonoBehaviour
             GameObject algorithmObject = Instantiate(modifiedDijkstraAlgorithmPrefab);
             if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(algorithmObject);
             ModifiedDijkstraAlgorithm algorithm = algorithmObject.GetComponent<ModifiedDijkstraAlgorithm>();
-            if (obstacleLocation == 0)
+            if (onPlayerPath)
             {
-                algorithm.Initialize(MainScript.AllNodes[0], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
+                algorithm.Initialize(MainScript.AllNodes[playerStartPosition], MainScript.AllNodes[MainScript.NumberOfNodes - 1]);
             }
             else
             {
-                algorithm.Initialize(MainScript.AllNodes[(MainScript.Width - 1) * MainScript.Height], MainScript.AllNodes[MainScript.Height - 1]);
+                algorithm.Initialize(MainScript.AllNodes[opponentStartPosition], MainScript.AllNodes[MainScript.Height - 1]);
             }
             algorithm.CalculateModifiedDijkstraAlgorithm();
             int newShortestDistance = algorithm.ShortestDistance;

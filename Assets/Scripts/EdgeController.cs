@@ -56,4 +56,19 @@ public class EdgeController : MonoBehaviour
             gameObject.GetComponent<Transform>().localScale = new Vector3(0.97f * MainScript.ScaleMazeSize, 0.01f);
         }
     }
+
+    /**
+     * <summary>Updates the step counter of the game if the player collides the edge.</summary>
+     * <param name="collision">The collision which results in the update of the step counter.</param>
+     * 
+     */
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (MainScript.IsBattleGameMode && GameObject.Find("Opponent").GetComponent<BoxCollider2D>().Equals(collision))
+        {
+            GameObject.Find("Opponent").GetComponent<OpponentController>().StepCounter += GetCostForState(MainScript.CurrentState);
+            GameObject.Find("Opponent").GetComponent<OpponentController>().UpdateStepCounter();
+        }
+        
+    }
 }

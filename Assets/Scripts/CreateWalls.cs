@@ -28,7 +28,7 @@ public class CreateWalls : MonoBehaviour
             GameObject gameObject = Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, MainScript.Height / 2 * MainScript.ScaleMazeSize, 0), Quaternion.identity);
             gameObject.transform.localScale = newScale;
             if (MainScript.CurrentLevelCount != -1) MainScript.GarbageCollectorGameObjects.Add(gameObject);
-            if (i != (MainScript.Width / 2) - 1)
+            if (i != (MainScript.Width / 2) - 1 && !(MainScript.IsBattleGameMode && i == -MainScript.Width / 2))
             {
                 gameObject = Instantiate(wallPrefab, new Vector3((i + 0.5f) * MainScript.ScaleMazeSize, -MainScript.Height / 2 * MainScript.ScaleMazeSize, 0), Quaternion.identity);
                 gameObject.transform.localScale = newScale;

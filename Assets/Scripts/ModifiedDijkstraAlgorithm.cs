@@ -12,6 +12,7 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     private int[,] allDistances;
     public GameObject helperNodePrefab;
     private ArrayList garbage = new ArrayList();
+    private int initialState;
 
     // Properties
     public int ShortestDistance { get; private set; }
@@ -22,6 +23,16 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
     {
         startNode = node0;
         endNode = node1;
+        prioQueue = new SimplePriorityQueue<HelperNodeController>();
+        this.initialState = 0;
+        InitializeAllDistances();
+    }
+
+    public void Initialize(NodeController node0, NodeController node1, int initialState)
+    {
+        startNode = node0;
+        endNode = node1;
+        this.initialState = initialState;
         prioQueue = new SimplePriorityQueue<HelperNodeController>();
         InitializeAllDistances();
     }
@@ -47,10 +58,10 @@ public class ModifiedDijkstraAlgorithm : MonoBehaviour
         // Add the start node with state = 0 and distance = 0 to the SimplePriorityQueue
         GameObject helpObject = Instantiate(helperNodePrefab);
         HelperNodeController help = helpObject.GetComponent<HelperNodeController>();
-        help.Initialize(startNode.Id, 0, 0, null);
+        help.Initialize(startNode.Id, initialState, 0, null);
         prioQueue.Enqueue(help, 0);
         garbage.Add(helpObject);
-        allDistances[startNode.Id, 0] = 0;
+        allDistances[startNode.Id, initialState] = 0;
 
         while(prioQueue.Count != 0)
         {
