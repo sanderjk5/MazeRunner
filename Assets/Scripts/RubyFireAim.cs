@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class RubyFireAim : MonoBehaviour
 {
-    // Start is called before the first frame update
     private Transform aimTransform;
     private GameObject player;
     private readonly float distance = .24f;
@@ -17,10 +16,6 @@ public class RubyFireAim : MonoBehaviour
 
     private void Awake()
     {
-        //Debug.Log(shotPrefab.name);
-        //shotPrefab = Resources.Load("Prefabs/shot") as GameObject;
-        //Debug.Log(shotPrefab.name);
-        //aimTransform = transform.Find("Fire");
         if (MainScript.UseShooter)
         {
             player = GameObject.Find("Ruby");
@@ -33,14 +28,14 @@ public class RubyFireAim : MonoBehaviour
     }
 
     //created because GameObject.Find only find active GameObjects, but we want to find "Fire" even when it's inactive
-    public static GameObject FindObject(GameObject parent, string name)
+    public static GameObject FindObject(GameObject parent, string searchedName)
     {
-        Transform[] trs = parent.GetComponentsInChildren<Transform>(true);
-        foreach (Transform t in trs)
+        Transform[] parentsComponents = parent.GetComponentsInChildren<Transform>(true);
+        foreach (Transform child in parentsComponents)
         {
-            if (t.name == name)
+            if (child.name == searchedName)
             {
-                return t.gameObject;
+                return child.gameObject;
             }
         }
         return null;
@@ -49,13 +44,6 @@ public class RubyFireAim : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        /*
-        Vector3 mousePosition = Input.mousePosition;
-        Vector3 aimDirection = (mousePosition - transform.position).normalized;
-        float angle = Mathf.Atan2(aimDirection.x, aimDirection.y) * Mathf.Rad2Deg;
-        aimTransform.eulerAngles = new Vector3(0, 0, angle);
-        Debug.Log(angle);
-        */
         if (MainScript.UseShooter)
         {
             Vector3 mousePosition = GetMouseWorldPosition();
@@ -84,7 +72,6 @@ public class RubyFireAim : MonoBehaviour
     void Shoot()
     {
         Instantiate(shotPrefab, player.transform.position, player.transform.rotation);
-        //EditorUtility.SetDirty(shotPrefab);
     }
 
     // Get Mouse Position in World with Z = 0f

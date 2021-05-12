@@ -16,6 +16,8 @@ public class NodeController : MonoBehaviour
     //All neighbour nodes.
     public List<NodeController> Neighbours { get; set; }
 
+    public static bool PlayerReset { get; set; }
+
     /**
      * Sets all variables of the node.
      */
@@ -59,7 +61,7 @@ public class NodeController : MonoBehaviour
             return;
         }
 
-        if (MainScript.PlayerPath.Count != 0)
+        if (MainScript.PlayerPath.Count != 0 && !PlayerReset)
         {
             NodeController preNode = MainScript.PlayerPath[MainScript.PlayerPath.Count - 1];
             IEnumerable<EdgeController> edgeIntersect = this.OutgoingEdges.Intersect(preNode.OutgoingEdges);
@@ -112,6 +114,7 @@ public class NodeController : MonoBehaviour
         else
         {
             MainScript.PlayerPath.Add(this);
+            PlayerReset = false;
         }
         MainScript.UpdateStepCounter();
     }

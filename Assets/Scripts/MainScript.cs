@@ -104,7 +104,7 @@ public class MainScript : MonoBehaviour
             EndBattleGameMenu.PlayerFinished = false;
             if (UseShooter)
             {
-                BattleGameNumberOfItems = 10;
+                BattleGameNumberOfItems = 12;
             }
             else
             {
